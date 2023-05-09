@@ -12,7 +12,7 @@ generator client {
 }
 
 // ----------------------------
-// user's table
+// user's tables
 // ----------------------------
 
 // users 
@@ -21,17 +21,60 @@ model user {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  user_name        String             @db.VarChar(255)
-  user_last        String             @db.VarChar(255)
-  email            String?
-  password         String?
-  cart             cart[]
-  favorite         favorite[]
+  user_name String  @db.VarChar(255)
+  user_last String  @db.VarChar(255)
+  email     String?
+  password  String?
+
+  user_shipping user_shipping[]
+  user_payment  user_payment[]
+
+  cart     cart[]
+  favorite favorite[]
+
   order            order[]
   purchase_history purchase_history[]
 }
 
-// user assests ----
+// user shipping info
+model user_shipping {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  mobile        String?
+  address_line1 String?
+  address_line2 String?
+  city          String?
+  postal_code   Int
+  country       String?
+
+  user_id  Int
+  user_ref user @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+}
+
+// user payment info
+model user_payment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  payment_type String?
+  provider     String?
+  account_no   Int
+  expiry       DateTime
+
+  user_id  Int
+  user_ref user @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+}
+
+// ----------------------------
+// user's assests tables
+// ----------------------------
 
 // cart 
 model cart {
@@ -67,7 +110,9 @@ model favorite {
   @@index([user_id])
 }
 
-// user history ---- 
+// ----------------------------
+// purchase's tables
+// ----------------------------
 
 // order
 model order {
