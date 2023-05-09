@@ -34,6 +34,7 @@ model user {
 
   order            order[]
   purchase_history purchase_history[]
+  review           review[]
 }
 
 // user shipping info
@@ -180,8 +181,10 @@ model product {
   cart     cart[]
   favorite favorite[]
 
-  order_product order_product[]
-  discount      discount[]
+  order_product   order_product[]
+  discount        discount[]
+  review          review[]
+  technical_point technical_point[]
 }
 
 // ----------------------------
@@ -229,6 +232,48 @@ model discount {
   discount_desc       String  @db.VarChar(255)
   discount_percentage Decimal @db.Decimal(5, 5)
   isActive            Boolean
+
+  product_id  Int
+  product_ref product @relation(fields: [product_id], references: [id])
+
+  @@index([product_id])
+}
+
+// ----------------------------
+// review table
+// ----------------------------
+
+// review 
+model review {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  review_rate    Int
+  review_date    DateTime @default(now())
+  review_message String?
+
+  product_id  Int
+  product_ref product @relation(fields: [product_id], references: [id])
+
+  user_id  Int
+  user_ref user @relation(fields: [user_id], references: [id])
+
+  @@index([product_id])
+  @@index([user_id])
+}
+
+// ----------------------------
+// technical table
+// ----------------------------
+
+// technical 
+model technical_point {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  point String
 
   product_id  Int
   product_ref product @relation(fields: [product_id], references: [id])
