@@ -187,6 +187,7 @@ model product {
   technical_point   technical_point[]
   image             image[]
   product_selection product_selection[]
+  product_sku       product_sku[]
 }
 
 // ----------------------------
@@ -321,6 +322,24 @@ model image {
   image_file        String?
   image_description String?
   image_name        String?
+
+  product_id  Int
+  product_ref product @relation(fields: [product_id], references: [id])
+
+  @@index([product_id])
+}
+
+// ----------------------------
+// product's sku tables
+// ----------------------------
+
+// sku 
+model product_sku {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  product_sku String @db.VarChar(10000)
 
   product_id  Int
   product_ref product @relation(fields: [product_id], references: [id])
