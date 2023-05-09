@@ -185,6 +185,7 @@ model product {
   discount        discount[]
   review          review[]
   technical_point technical_point[]
+  image           image[]
 }
 
 // ----------------------------
@@ -240,7 +241,7 @@ model discount {
 }
 
 // ----------------------------
-// review table
+// product's assests tables
 // ----------------------------
 
 // review 
@@ -263,10 +264,6 @@ model review {
   @@index([user_id])
 }
 
-// ----------------------------
-// technical table
-// ----------------------------
-
 // technical 
 model technical_point {
   id        Int      @id @default(autoincrement())
@@ -274,6 +271,22 @@ model technical_point {
   updatedAt DateTime @default(now()) @updatedAt
 
   point String
+
+  product_id  Int
+  product_ref product @relation(fields: [product_id], references: [id])
+
+  @@index([product_id])
+}
+
+// images
+model image {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  image_file        String?
+  image_description String?
+  image_name        String?
 
   product_id  Int
   product_ref product @relation(fields: [product_id], references: [id])
