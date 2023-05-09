@@ -21,13 +21,14 @@ model user {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  user_name String     @db.VarChar(255)
-  user_last String     @db.VarChar(255)
-  email     String?
-  password  String?
-  cart      cart[]
-  favorite  favorite[]
-  order     order[]
+  user_name        String             @db.VarChar(255)
+  user_last        String             @db.VarChar(255)
+  email            String?
+  password         String?
+  cart             cart[]
+  favorite         favorite[]
+  order            order[]
+  purchase_history purchase_history[]
 }
 
 // user assests ----
@@ -77,7 +78,8 @@ model order {
   user_id  Int
   user_ref user @relation(fields: [user_id], references: [id])
 
-  order_product order_product[]
+  order_product    order_product[]
+  purchase_history purchase_history[]
 
   @@index([user_id])
 }
@@ -94,6 +96,22 @@ model order_product {
 
   @@index([order_id])
   @@index([product_id])
+}
+
+// purchase history 
+model purchase_history {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  user_id  Int
+  user_ref user @relation(fields: [user_id], references: [id])
+
+  order_id  Int
+  order_ref order @relation(fields: [order_id], references: [id])
+
+  @@index([user_id])
+  @@index([order_id])
 }
 
 // ----------------------------
