@@ -181,9 +181,14 @@ model product {
   favorite favorite[]
 
   order_product order_product[]
+  discount      discount[]
 }
 
-// category tables many-to-many
+// ----------------------------
+// category's table (m-2-m)
+// ----------------------------
+
+// category
 model category {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -208,4 +213,25 @@ model product_category {
 
   @@index([product_id])
   @@index([category_id])
+}
+
+// ----------------------------
+// discount table
+// ----------------------------
+
+// discount 
+model discount {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  discount_name       String  @db.VarChar(255)
+  discount_desc       String  @db.VarChar(255)
+  discount_percentage Decimal @db.Decimal(5, 5)
+  isActive            Boolean
+
+  product_id  Int
+  product_ref product @relation(fields: [product_id], references: [id])
+
+  @@index([product_id])
 }
