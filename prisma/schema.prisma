@@ -11,6 +11,18 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// admin table 
+model admin {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  user_id  Int
+  user_ref user @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+}
+
 // ----------------------------
 // user's tables
 // ----------------------------
@@ -21,11 +33,11 @@ model user {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  user_name String  @db.VarChar(255)
-  user_last String  @db.VarChar(255)
-  email     String?
-  password  String?
-
+  user_name     String          @db.VarChar(255)
+  user_last     String          @db.VarChar(255)
+  email         String?
+  password      String?
+  isAdmin       Boolean         @default(false)
   user_shipping user_shipping[]
   user_payment  user_payment[]
 
@@ -35,6 +47,7 @@ model user {
   order            order[]
   purchase_history purchase_history[]
   review           review[]
+  admin            admin[]
 }
 
 // user shipping info
