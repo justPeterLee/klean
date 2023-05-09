@@ -3,7 +3,7 @@
 
 datasource db {
   provider     = "mysql"
-  url          = env("DATABASE_URL")
+  url          = env("DATABASE_URL_BRANCH")
   relationMode = "prisma"
 }
 
@@ -37,4 +37,10 @@ model User {
   name    String?
   posts   Post[]
   profile Profile?
+}
+
+model People {
+  id   Int     @id @default(autoincrement())
+  name String?
+  last String?
 }
