@@ -21,11 +21,12 @@ model user {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  user_name String  @db.VarChar(255)
-  user_last String  @db.VarChar(255)
+  user_name String     @db.VarChar(255)
+  user_last String     @db.VarChar(255)
   email     String?
   password  String?
   cart      cart[]
+  favorite  favorite[]
 }
 
 // user assests ----
@@ -37,6 +38,22 @@ model cart {
   updatedAt DateTime @default(now()) @updatedAt
 
   cart_quanity Int
+
+  product_id  Int
+  product_ref product @relation(fields: [product_id], references: [id])
+
+  user_id  Int
+  user_ref user @relation(fields: [user_id], references: [id])
+
+  @@index([product_id])
+  @@index([user_id])
+}
+
+// favorite
+model favorite {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   product_id  Int
   product_ref product @relation(fields: [product_id], references: [id])
@@ -65,6 +82,7 @@ model product {
   // category m-2-m
   product_category product_category[]
   cart             cart[]
+  favorite         favorite[]
 }
 
 // category tables many-to-many
