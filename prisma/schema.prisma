@@ -181,11 +181,12 @@ model product {
   cart     cart[]
   favorite favorite[]
 
-  order_product   order_product[]
-  discount        discount[]
-  review          review[]
-  technical_point technical_point[]
-  image           image[]
+  order_product     order_product[]
+  discount          discount[]
+  review            review[]
+  technical_point   technical_point[]
+  image             image[]
+  product_selection product_selection[]
 }
 
 // ----------------------------
@@ -220,7 +221,44 @@ model product_category {
 }
 
 // ----------------------------
-// discount table
+// product's assests tables
+// ----------------------------
+
+// product_selection
+model product_selection {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  selection_name        String?
+  selection_description String?
+  selection_sku         String?
+
+  product_id     Int
+  product_ref    product          @relation(fields: [product_id], references: [id])
+  product_option product_option[]
+
+  @@index([product_id])
+}
+
+// product_option
+model product_option {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  option_name        String?
+  option_description String?
+  option_sku         String?
+
+  selection_id  Int
+  selection_ref product_selection @relation(fields: [selection_id], references: [id])
+
+  @@index([selection_id])
+}
+
+// ----------------------------
+// product's assests tables
 // ----------------------------
 
 // discount 
@@ -239,10 +277,6 @@ model discount {
 
   @@index([product_id])
 }
-
-// ----------------------------
-// product's assests tables
-// ----------------------------
 
 // review 
 model review {
