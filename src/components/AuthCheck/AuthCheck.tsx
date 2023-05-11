@@ -8,8 +8,8 @@ export default function AuthCheck({ children }: { children: React.ReactNode }) {
   console.log(session, status);
 
   if (status === "authenticated") {
-    return <>{children}</>;
+    return <>{"asdf"}</>;
   } else {
-    return <></>;
+    return <>not</>;
   }
 }

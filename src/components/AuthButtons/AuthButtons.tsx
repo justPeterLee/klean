@@ -28,5 +28,11 @@ export function SignInButton() {
 }
 
 export function SignOutButton() {
-  return <button onClick={() => signOut()}>Sign out</button>;
+  return (
+    <button
+      onClick={() => signOut().then(() => console.log("user signed out"))}
+    >
+      Sign out
+    </button>
+  );
 }

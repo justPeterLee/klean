@@ -2,18 +2,17 @@ import NextAuth from "next-auth/next";
 import type { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
-import {
-  CredentialsProvider,
-  CredentialsProviderType,
-} from "next-auth/providers/credentials";
+import db from "../../../../../lib/db";
 import * as dotenv from "dotenv";
 dotenv.config();
 
 import { comparePassword } from "../../../../../lib/encrypt";
+import { SessionOptions } from "next-auth";
 
 // type credentials = { email: string; password: string };
 
 export const authOptions: NextAuthOptions = {
+  session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GithubProvider({
@@ -22,7 +21,6 @@ export const authOptions: NextAuthOptions = {
     }),
 
     Credentials({
-      name: "credentials",
       credentials: {},
       async authorize(credentials) {
         console.log("is next working");
@@ -57,6 +55,22 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+
+  callbacks: {
+    async session({ token, session }) {
+      if (token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+      }
+
+      return session;
+    },
+
+    // async jwt({token, user}){
+    //   const dbUser = await
+    // }
+  },
 };
 
 const handler = NextAuth(authOptions);
