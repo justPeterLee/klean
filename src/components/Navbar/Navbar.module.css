@@ -6,6 +6,11 @@
   width: 100%;
 
   background-color: rgb(220, 220, 220);
+
+  position: fixed;
+  top: 0px;
+
+  transition: top ease 0.2s;
 }
 
 .subContainer {
