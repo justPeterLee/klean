@@ -1,29 +1,20 @@
+// next auth
 import NextAuth from "next-auth/next";
 import type { NextAuthOptions } from "next-auth";
-import GithubProvider from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
-import db from "../../../../../lib/db";
-import * as dotenv from "dotenv";
-dotenv.config();
 
+// database
+import prisma from "../../../../../lib/db";
 import { comparePassword } from "../../../../../lib/encrypt";
-import { SessionOptions } from "next-auth";
-
-// type credentials = { email: string; password: string };
 
 export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
-    }),
-
     Credentials({
       credentials: {},
       async authorize(credentials) {
-        console.log("is next working");
+        await prisma.$connect();
         const { email, password } = credentials as {
           email: string;
           password: string;
@@ -51,25 +42,34 @@ export const authOptions: NextAuthOptions = {
 
         // disconnect to db
         await prisma.$disconnect();
-        return { email: isUser.email } as any;
+
+        return {
+          id: `${isUser.id}`,
+          name: `${isUser.user_name} ${isUser.user_last}`,
+          email: `${isUser.email}`,
+          role: `${isUser.isAdmin}`,
+        };
       },
     }),
   ],
-
   callbacks: {
     async session({ token, session }) {
       if (token) {
-        session.user.id = token.id;
+        session.user.id = token.sub;
         session.user.name = token.name;
         session.user.email = token.email;
+        session.user.role = token.role;
       }
-
       return session;
     },
-
-    // async jwt({token, user}){
-    //   const dbUser = await
-    // }
+    async jwt(params) {
+      // update token
+      if (params.user?.role) {
+        params.token.role = params.user.role;
+      }
+      // // return final_token
+      return params.token;
+    },
   },
 };
 
