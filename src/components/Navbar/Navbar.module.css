@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+
+  background-color: rgb(220, 220, 220);
+}
+
+.subContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5rem;
+
+  width: 60rem;
+  height: 6.2rem;
+}
+
+.linkContainer {
+  display: flex;
+  gap: 2rem;
+
+  margin-left: -17rem;
+}
+
+.iconContainer {
+  display: flex;
+  gap: 2rem;
+}
