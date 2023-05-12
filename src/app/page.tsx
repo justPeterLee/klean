@@ -4,7 +4,6 @@ import { MainFeature } from "@/components/Feature/Feature";
 export default function Home() {
   return (
     <main className={styles.main}>
-      <p>hello</p>
       <MainFeature />
     </main>
   );

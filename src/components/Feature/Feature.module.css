@@ -1,11 +1,13 @@
 .MainFeatureContainer {
-  background-color: rgba(38, 104, 103, 0.6);
+  background-color: rgb(38, 104, 103, 0.6);
   height: 23rem;
   width: 50rem;
 
   border-radius: 20px;
 
   position: relative;
+
+  transition: background-color ease 0.3s;
 }
 
 .viewProductButton {
