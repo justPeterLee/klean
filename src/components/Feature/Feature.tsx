@@ -99,6 +99,7 @@ export function StoreFeature(props: CaruselItem) {
 }
 
 interface SideFeatureProps {
+  id: number;
   product_name: string;
   product_descrption: string;
   product_image?: string;
@@ -110,5 +111,13 @@ interface SideFeatureProps {
   };
 }
 export function SideFeature(props: SideFeatureProps) {
-  return <div></div>;
+  return (
+    <div className={styles.SideFeatureContainer}>
+      <div className={styles.SideFeatureInfo}>
+        <p className={styles.SideTitle}></p>
+        <p className={styles.SideDesc}></p>
+      </div>
+      <button className={styles.SideButton}></button>
+    </div>
+  );
 }
