@@ -41,10 +41,27 @@ interface CaruselItem {
 
 export function StoreFeature(props: CaruselItem) {
   const { caruselItem } = props;
+  const [carouselPosition, setCarouselPosition] = useState(0);
+
+  const handleCarouselLeft = () => {
+    if (carouselPosition > 0) {
+      setCarouselPosition(carouselPosition - 1);
+    }
+  };
+
+  const handleCarouselRight = () => {
+    if (carouselPosition < 5) {
+      setCarouselPosition(carouselPosition + 1);
+    }
+  };
 
   return (
     <div className={styles.storeFeature}>
-      <button className={styles.storeButton} style={{ left: "-5rem" }}>
+      <button
+        className={styles.storeButton}
+        style={{ left: "-5rem" }}
+        onClick={handleCarouselLeft}
+      >
         {"<"}
       </button>
       <div className={styles.storeCarousel}>
@@ -58,7 +75,11 @@ export function StoreFeature(props: CaruselItem) {
             />
           ))}
       </div>
-      <button className={styles.storeButton} style={{ right: "-5rem" }}>
+      <button
+        className={styles.storeButton}
+        style={{ right: "-5rem" }}
+        onClick={handleCarouselRight}
+      >
         {">"}
       </button>
     </div>
