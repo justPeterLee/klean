@@ -27,3 +27,12 @@ export function MainFeature() {
     </div>
   );
 }
+
+export function storeFeature() {
+  return (
+    <div className={styles.storeFeature}>
+      <button className={styles.storeButton}>{"<"}</button>
+      <button className={styles.storeButton}>{">"}</button>
+    </div>
+  );
+}
