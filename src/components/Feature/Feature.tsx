@@ -28,10 +28,31 @@ export function MainFeature() {
   );
 }
 
-export function storeFeature() {
+interface CaruselItem {
+  caruselItem: {
+    id: number;
+    product_name: string;
+    product_image: string;
+    price: string;
+  }[];
+}
+export function storeFeature(props: CaruselItem) {
+  const { caruselItem } = props;
+
   return (
     <div className={styles.storeFeature}>
       <button className={styles.storeButton}>{"<"}</button>
+      <div className={styles.storeCarousel}>
+        {caruselItem &&
+          caruselItem.map((item) => (
+            <button key={item.id}>
+              <div>image</div>
+              <div>
+                <p>{item.product_name}</p> <p>{item.price}</p>
+              </div>
+            </button>
+          ))}
+      </div>
       <button className={styles.storeButton}>{">"}</button>
     </div>
   );
