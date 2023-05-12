@@ -97,3 +97,18 @@ export function StoreFeature(props: CaruselItem) {
     </div>
   );
 }
+
+interface SideFeatureProps {
+  product_name: string;
+  product_descrption: string;
+  product_image?: string;
+  styling?: {
+    featureBackgroundColor: string;
+    buttonBackgroundColor: string;
+    buttonPostionTop: string;
+    buttonPostionLeft: string;
+  };
+}
+export function SideFeature(props: SideFeatureProps) {
+  return <div></div>;
+}
