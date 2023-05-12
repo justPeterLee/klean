@@ -28,6 +28,8 @@ export function MainFeature() {
   );
 }
 
+import FeatureStoreItem from "./FeatureStoreItem/FeatureStoreItem";
+
 interface CaruselItem {
   caruselItem: {
     id: number;
@@ -36,6 +38,7 @@ interface CaruselItem {
     price: string;
   }[];
 }
+
 export function storeFeature(props: CaruselItem) {
   const { caruselItem } = props;
 
@@ -45,12 +48,12 @@ export function storeFeature(props: CaruselItem) {
       <div className={styles.storeCarousel}>
         {caruselItem &&
           caruselItem.map((item) => (
-            <button key={item.id}>
-              <div>image</div>
-              <div>
-                <p>{item.product_name}</p> <p>{item.price}</p>
-              </div>
-            </button>
+            <FeatureStoreItem
+              key={item.id}
+              id={item.id}
+              name={item.product_name}
+              price={item.price}
+            />
           ))}
       </div>
       <button className={styles.storeButton}>{">"}</button>
