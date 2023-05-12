@@ -1,7 +1,10 @@
 "use client";
 import { useState } from "react";
 import Menu from "@/components/Feature/Menu/Menu";
-import CommentBlock from "@/components/AboutPage/CommentBlock";
+import {
+  CommentBlock,
+  TeamHeadShot,
+} from "@/components/AboutPage/CommentBlock";
 import styles from "../../styling/About.module.css";
 
 const text1 =
@@ -20,6 +23,12 @@ const comments = [
   { title: "", comment: text4 },
 ];
 
+const team = [
+  { image: "", name: "Peter Lee", role: "CEO" },
+  { image: "", name: "Name name", role: "Developer" },
+  { image: "", name: "Name name", role: "Developer" },
+  { image: "", name: "Name name", role: "Developer" },
+];
 export default function About() {
   const [optionSelected, setOptionSelected] = useState("About Us");
 
@@ -55,7 +64,17 @@ export default function About() {
 
       {/* Our Team container */}
       {optionSelected === "Our Team" && (
-        <div className={styles.teamContainer}>our team</div>
+        <div className={styles.teamContainer}>
+          {team &&
+            team.map((person, index) => (
+              <TeamHeadShot
+                key={index}
+                image={person.image}
+                name={person.name}
+                role={person.role}
+              />
+            ))}
+        </div>
       )}
     </main>
   );
