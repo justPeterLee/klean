@@ -49,6 +49,7 @@ interface MenuProps {
     top?: string;
     left?: string;
     borderRadius?: string;
+    backgroundColor?: string;
   };
 
   optionStyle?: {
@@ -58,11 +59,12 @@ interface MenuProps {
     fontSize?: string;
     color?: string;
   };
-
+  hover: string;
   selected: string;
 }
 export default function Menu(props: MenuProps) {
-  const { options, readOption, containerStyle, optionStyle, selected } = props;
+  const { options, readOption, containerStyle, optionStyle, selected, hover } =
+    props;
   const sendOption = (selectedOption: string) => {
     readOption(selectedOption);
   };
@@ -71,16 +73,33 @@ export default function Menu(props: MenuProps) {
     backgroundColor: "transparent",
   });
 
+  const [hoverColor, setHoverColor] = useState(hover);
+  const [containerStyleState, setContainerStyle] = useState(containerStyle);
+
   const showSelected = () => {
     setSelectedStyle({ backgroundColor: "rgb(00, 00, 00, 0.5)" });
+    if (hover && containerStyle?.backgroundColor) {
+      setHoverColor(containerStyle?.backgroundColor);
+      setContainerStyle({
+        ...containerStyleState,
+        backgroundColor: hoverColor,
+      });
+    }
   };
   const hideSelected = () => {
     setSelectedStyle({ backgroundColor: "transparent" });
+    if (hover && containerStyle?.backgroundColor) {
+      setHoverColor(hover);
+      setContainerStyle({
+        ...containerStyleState,
+        backgroundColor: hoverColor,
+      });
+    }
   };
   return (
     <div
       className={styles.container}
-      style={containerStyle ? containerStyle : {}}
+      style={containerStyle ? containerStyleState : {}}
       onMouseEnter={showSelected}
       onMouseLeave={hideSelected}
     >

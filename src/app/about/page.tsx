@@ -28,15 +28,22 @@ export default function About() {
   };
   return (
     <main className={` ${styles.container}`}>
+      {/* Menu */}
       <div className={styles.menuContainer}>
         <Menu
           options={["About Us", "Our Team"]}
           readOption={readOption}
           selected={optionSelected}
-          containerStyle={{ top: "0", left: "0" }}
+          containerStyle={{
+            top: "0",
+            left: "0",
+            backgroundColor: "rgb(0, 0, 0, 0.03)",
+          }}
+          hover={"rgb(0, 0, 0, 0.1)"}
         />
       </div>
 
+      {/* About Us container */}
       {optionSelected === "About Us" && (
         <div className={styles.aboutContainer}>
           {comments &&
@@ -45,6 +52,8 @@ export default function About() {
             ))}
         </div>
       )}
+
+      {/* Our Team container */}
       {optionSelected === "Our Team" && (
         <div className={styles.teamContainer}>our team</div>
       )}
