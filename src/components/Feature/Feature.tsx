@@ -39,7 +39,7 @@ interface CaruselItem {
   }[];
 }
 
-export function storeFeature(props: CaruselItem) {
+export function StoreFeature(props: CaruselItem) {
   const { caruselItem } = props;
 
   return (
