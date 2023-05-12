@@ -11,16 +11,18 @@ export default function Menu(props: MenuProps) {
   };
   return (
     <div className={styles.container}>
-      {options.map((option, index) => (
-        <button
-          key={index}
-          onClick={() => {
-            sendOption(option);
-          }}
-        >
-          {option}
-        </button>
-      ))}
+      {options &&
+        options.map((option, index) => (
+          <button
+            className={styles.menuButton}
+            key={index}
+            onClick={() => {
+              sendOption(option);
+            }}
+          >
+            {option}
+          </button>
+        ))}
     </div>
   );
 }
