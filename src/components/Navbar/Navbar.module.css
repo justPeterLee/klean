@@ -11,6 +11,8 @@
   top: 0px;
 
   transition: top ease 0.2s;
+
+  z-index: 100;
 }
 
 .subContainer {
