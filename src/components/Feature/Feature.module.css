@@ -32,3 +32,54 @@
 }
 
 /* ---------- store feature ------------ */
+
+/* store item */
+.StoreItemContainer {
+  display: flex;
+  flex-direction: column;
+}
+.StoreItemImage {
+  height: 16rem;
+  width: 16.35rem;
+  border-radius: 5px;
+  border: none;
+}
+
+.StoreItemInfo {
+  display: flex;
+  justify-content: space-between;
+}
+
+.StoreItemInfo p {
+  margin: 0;
+}
+
+/* store carusel */
+.storeFeature {
+  display: flex;
+  align-items: center;
+  width: 50rem;
+  height: 15.5rem;
+  position: relative;
+}
+
+.storeButton {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 100%;
+  border: none;
+
+  position: absolute;
+
+  transition: background-color ease 0.1s;
+}
+
+.storeButton:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.storeCarousel {
+  display: flex;
+  gap: 0.5rem;
+  overflow: hidden;
+}

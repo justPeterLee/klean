@@ -44,7 +44,9 @@ export function StoreFeature(props: CaruselItem) {
 
   return (
     <div className={styles.storeFeature}>
-      <button className={styles.storeButton}>{"<"}</button>
+      <button className={styles.storeButton} style={{ left: "-5rem" }}>
+        {"<"}
+      </button>
       <div className={styles.storeCarousel}>
         {caruselItem &&
           caruselItem.map((item) => (
@@ -56,7 +58,9 @@ export function StoreFeature(props: CaruselItem) {
             />
           ))}
       </div>
-      <button className={styles.storeButton}>{">"}</button>
+      <button className={styles.storeButton} style={{ right: "-5rem" }}>
+        {">"}
+      </button>
     </div>
   );
 }
