@@ -106,21 +106,40 @@ interface SideFeatureProps {
     image?: string;
   };
   styling?: {
-    featureBackgroundColor: string;
-    buttonBackgroundColor: string;
-    buttonPostionTop: string;
-    buttonPostionLeft: string;
+    featureBackgroundColor?: string;
+    lineColor?: string;
+    productInfoTop?: string;
+    productInfoLeft?: string;
+    buttonPostionTop?: string;
+    buttonPostionLeft?: string;
   };
 }
 export function SideFeature(props: SideFeatureProps) {
   const { product_info, styling } = props;
   return (
-    <div className={styles.SideFeatureContainer}>
-      <div className={styles.SideFeatureInfo}>
+    <div
+      className={styles.SideFeatureContainer}
+      style={{
+        backgroundColor: styling?.featureBackgroundColor,
+        color: styling?.lineColor,
+      }}
+    >
+      <div
+        className={styles.SideFeatureInfo}
+        style={{ top: styling?.productInfoTop, left: styling?.productInfoLeft }}
+      >
         <p className={styles.SideTitle}>{product_info.name}</p>
         <p className={styles.SideDesc}>{product_info.description}</p>
       </div>
-      <button className={styles.SideButton}>see details</button>
+      <button
+        className={styles.SideButton}
+        style={{
+          top: styling?.buttonPostionTop,
+          left: styling?.buttonPostionLeft,
+        }}
+      >
+        see details
+      </button>
     </div>
   );
 }

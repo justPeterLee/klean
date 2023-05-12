@@ -26,6 +26,15 @@ export default function Home() {
       <MainFeature />
       <StoreFeature caruselItem={items} />
       <SideFeature product_info={product_info1} />
+      <SideFeature
+        product_info={product_info1}
+        styling={{
+          featureBackgroundColor: "#F58800",
+          lineColor: "#FFE3BF",
+          productInfoLeft: "4rem",
+          buttonPostionLeft: "6rem",
+        }}
+      />
     </main>
   );
 }
