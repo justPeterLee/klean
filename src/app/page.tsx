@@ -4,6 +4,7 @@ import {
   MainFeature,
   StoreFeature,
   SideFeature,
+  ContactButton,
 } from "@/components/Feature/Feature";
 
 const items = [
@@ -35,6 +36,7 @@ export default function Home() {
           buttonPostionLeft: "6rem",
         }}
       />
+      <ContactButton />
     </main>
   );
 }

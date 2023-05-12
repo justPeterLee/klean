@@ -143,3 +143,7 @@ export function SideFeature(props: SideFeatureProps) {
     </div>
   );
 }
+
+export function ContactButton() {
+  return <button className={styles.contactButton}>contact us</button>;
+}

@@ -156,3 +156,17 @@
   background-color: #fff1cc;
   color: rgba(248, 188, 36, 1);
 }
+
+.contactButton {
+  height: 4rem;
+  width: 15rem;
+  border-radius: 15px;
+  border: none;
+
+  transition: background-color ease 0.1s;
+}
+
+.contactButton:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.2);
+}
