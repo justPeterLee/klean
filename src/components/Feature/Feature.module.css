@@ -40,7 +40,7 @@
 }
 .StoreItemImage {
   height: 16rem;
-  width: 16.35rem;
+  width: 16.3rem;
   border-radius: 5px;
   border: none;
 }
@@ -79,7 +79,23 @@
   background-color: rgba(0, 0, 0, 0.2);
 }
 .storeCarousel {
+  overflow: hidden;
+}
+
+.storeCarouselSub {
   display: flex;
   gap: 0.5rem;
-  overflow: hidden;
+  transition: transform ease 0.3s;
+}
+
+.right1 {
+  transform: translateX(-33.6rem);
+}
+
+.right2 {
+  transform: translateX(-50.4rem);
+}
+
+.right3 {
+  transform: translateX(-67.2rem);
 }

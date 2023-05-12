@@ -50,7 +50,7 @@ export function StoreFeature(props: CaruselItem) {
   };
 
   const handleCarouselRight = () => {
-    if (carouselPosition < 5) {
+    if (carouselPosition < 3) {
       setCarouselPosition(carouselPosition + 1);
     }
   };
@@ -65,15 +65,27 @@ export function StoreFeature(props: CaruselItem) {
         {"<"}
       </button>
       <div className={styles.storeCarousel}>
-        {caruselItem &&
-          caruselItem.map((item) => (
-            <FeatureStoreItem
-              key={item.id}
-              id={item.id}
-              name={item.product_name}
-              price={item.price}
-            />
-          ))}
+        <div
+          className={`${styles.storeCarouselSub} ${
+            carouselPosition === 1
+              ? styles.right1
+              : carouselPosition === 2
+              ? styles.right2
+              : carouselPosition === 3
+              ? styles.right3
+              : {}
+          }`}
+        >
+          {caruselItem &&
+            caruselItem.map((item) => (
+              <FeatureStoreItem
+                key={item.id}
+                id={item.id}
+                name={item.product_name}
+                price={item.price}
+              />
+            ))}
+        </div>
       </div>
       <button
         className={styles.storeButton}
