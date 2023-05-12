@@ -6,9 +6,6 @@
 
   position: absolute;
 
-  top: 1rem;
-  left: 1rem;
-
   border-radius: 12px;
 
   display: flex;
@@ -25,7 +22,7 @@
 
 .menuButton {
   height: 2rem;
-  width: 3.5rem;
+
   min-width: 3.5rem;
 
   border: none;

@@ -26,6 +26,7 @@ export function MainFeature() {
         options={["color1", "color2", "color3"]}
         readOption={readOption}
         selected={optionSelected}
+        containerStyle={{ top: "1rem", left: "1rem" }}
       />
       <button className={styles.viewProductButton}>view product</button>
     </div>

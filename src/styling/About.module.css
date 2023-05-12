@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+.menuContainer {
+  width: 10rem;
+  position: relative;
+}
+
+.aboutContainer,
+.teamContainer {
+  width: 40rem;
+}
