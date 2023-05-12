@@ -1,8 +1,8 @@
 .container {
   background-color: transparent;
-  transition: background-color ease 0.1s;
-  min-height: 5rem;
-  min-width: 10rem;
+  transition: background-color ease 0.2s;
+  min-height: 3rem;
+  min-width: 7rem;
 
   position: absolute;
 
@@ -10,8 +10,34 @@
   left: 1rem;
 
   border-radius: 12px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1rem;
 }
 
 .container:hover {
-  background-color: rgb(00, 00, 00, 0.1);
+  background-color: rgb(00, 00, 00, 0.05);
+}
+
+.menuButton {
+  height: 2rem;
+  width: 3.5rem;
+  min-width: 3.5rem;
+
+  border: none;
+  border-radius: 5px;
+  background-color: transparent;
+
+  transition: color ease 0.15s;
+
+  font-size: 17px;
+}
+
+.menuButton:hover {
+  color: rgb(00, 00, 00, 0.5);
+  cursor: pointer;
 }
