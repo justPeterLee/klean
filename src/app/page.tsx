@@ -1,6 +1,10 @@
 import styles from "../styling/page.module.css";
 
-import { MainFeature, StoreFeature } from "@/components/Feature/Feature";
+import {
+  MainFeature,
+  StoreFeature,
+  SideFeature,
+} from "@/components/Feature/Feature";
 
 const items = [
   { id: 1, product_name: "product_1", product_image: "image", price: "$100" },
@@ -9,11 +13,19 @@ const items = [
   { id: 4, product_name: "product_1", product_image: "image", price: "$100" },
   { id: 5, product_name: "product_1", product_image: "image", price: "$100" },
 ];
+
+const product_info1 = {
+  id: 1,
+  name: "Product 1",
+  description:
+    "Introducing the all-new ZenithX Pro-7, a revolutionary product that will transform your everyday life like never before. With its cutting-edge technology and sleek design, the ZenithX Pro-7 is the ultimate companion for the modern individual seeking enhanced productivity and unrivaled performance.",
+};
 export default function Home() {
   return (
     <main className={styles.main}>
       <MainFeature />
       <StoreFeature caruselItem={items} />
+      <SideFeature product_info={product_info1} />
     </main>
   );
 }

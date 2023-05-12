@@ -99,10 +99,12 @@ export function StoreFeature(props: CaruselItem) {
 }
 
 interface SideFeatureProps {
-  id: number;
-  product_name: string;
-  product_descrption: string;
-  product_image?: string;
+  product_info: {
+    id: number;
+    name: string;
+    description: string;
+    image?: string;
+  };
   styling?: {
     featureBackgroundColor: string;
     buttonBackgroundColor: string;
@@ -111,13 +113,14 @@ interface SideFeatureProps {
   };
 }
 export function SideFeature(props: SideFeatureProps) {
+  const { product_info, styling } = props;
   return (
     <div className={styles.SideFeatureContainer}>
       <div className={styles.SideFeatureInfo}>
-        <p className={styles.SideTitle}></p>
-        <p className={styles.SideDesc}></p>
+        <p className={styles.SideTitle}>{product_info.name}</p>
+        <p className={styles.SideDesc}>{product_info.description}</p>
       </div>
-      <button className={styles.SideButton}></button>
+      <button className={styles.SideButton}>see details</button>
     </div>
   );
 }
