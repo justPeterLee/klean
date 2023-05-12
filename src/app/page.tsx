@@ -16,9 +16,9 @@ const items = [
 
 const product_info1 = {
   id: 1,
-  name: "Product 1",
+  name: "ZenithX Pro-7",
   description:
-    "Introducing the all-new ZenithX Pro-7, a revolutionary product that will transform your everyday life like never before. With its cutting-edge technology and sleek design, the ZenithX Pro-7 is the ultimate companion for the modern individual seeking enhanced productivity and unrivaled performance.",
+    "Introducing the all-new ZenithX Pro-7, a revolutionary product that will transform your everyday life like never before. With its cutting-edge technology and sleek design.",
 };
 export default function Home() {
   return (
