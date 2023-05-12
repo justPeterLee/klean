@@ -30,7 +30,14 @@ import styles from "./Menu.module.css";
     - able to add custom styling to the menu
     - an object used to add inline styling
     - height, width, top, left borderRadius
-    
+  
+  
+  (readOption)
+  const [optionSelected, setOptionSelected] = useState("color 1");
+
+  const readOption = (option: string) => {
+    setOptionSelected(option);
+  };
 ------------------------------------------------------ */
 interface MenuProps {
   options: string[];
