@@ -22,7 +22,11 @@ export function MainFeature() {
           : {}
       }
     >
-      <Menu options={["color1", "color2", "color3"]} readOption={readOption} />
+      <Menu
+        options={["color1", "color2", "color3"]}
+        readOption={readOption}
+        selected={optionSelected}
+      />
       <button className={styles.viewProductButton}>view product</button>
     </div>
   );

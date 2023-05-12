@@ -35,9 +35,24 @@
   transition: color ease 0.15s;
 
   font-size: 17px;
+
+  position: relative;
 }
 
 .menuButton:hover {
   color: rgb(00, 00, 00, 0.5);
   cursor: pointer;
+}
+
+.selected {
+  height: 0.3rem;
+  width: 0.3rem;
+  border-radius: 100%;
+  background-color: transparent;
+  position: absolute;
+
+  top: 48%;
+  left: -10px;
+
+  transition: background-color ease 0.2s;
 }
