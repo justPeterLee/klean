@@ -1,0 +1,30 @@
+.MainFeatureContainer {
+  background-color: rgba(38, 104, 103, 0.6);
+  height: 23rem;
+  width: 50rem;
+
+  border-radius: 20px;
+
+  position: relative;
+}
+
+.viewProductButton {
+  height: 3rem;
+  width: 10rem;
+  border-radius: 7px;
+  border: none;
+
+  position: absolute;
+  bottom: 2.5rem;
+  right: 3rem;
+
+  background-color: rgba(38, 104, 103, 0.8);
+  color: white;
+
+  transition: background-color ease 0.07s;
+}
+
+.viewProductButton:hover {
+  cursor: pointer;
+  background-color: rgba(18, 84, 83);
+}
