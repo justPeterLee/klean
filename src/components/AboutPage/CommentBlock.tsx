@@ -22,7 +22,7 @@ interface TeamHeadShot {
 export function TeamHeadShot(props: TeamHeadShot) {
   const { image, name, role } = props;
   return (
-    <div className={styles.teamContainer}>
+    <div className={styles.headShotContainer}>
       <div className={styles.teamImage}></div>
       <div className={styles.teamInfo}>
         <p className={styles.teamName}>{name}</p>
