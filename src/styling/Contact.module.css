@@ -6,3 +6,26 @@
 
   min-height: 50vh;
 }
+
+.ContactFormContainer {
+  background-color: rgb(0, 0, 0, 0.1);
+  height: 25rem;
+  width: 50rem;
+
+  border-radius: 20px;
+}
+
+.description {
+  height: 9rem;
+  width: 45rem;
+  background-color: #fc9c28;
+  border-radius: 20px;
+  color: #ffe3bf;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
