@@ -59,7 +59,7 @@ interface MenuProps {
     fontSize?: string;
     color?: string;
   };
-  hover: string;
+  hover?: string;
   selected: string;
 }
 export default function Menu(props: MenuProps) {

@@ -33,3 +33,65 @@
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
+
+.errorText {
+  position: absolute;
+  bottom: -15px;
+  color: red;
+  margin: 0;
+  font-size: 11px;
+}
+
+.nameContainer {
+  display: flex;
+  padding: 10rem;
+}
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  width: 15rem;
+  position: relative;
+}
+.label {
+  position: absolute;
+  top: 4px;
+  left: 1.5px;
+  font-size: 15px;
+
+  transition: all ease 0.15s;
+}
+.labelActive {
+  top: -15px;
+  left: -5px;
+  font-size: 10px;
+}
+.labelError {
+  color: red;
+}
+.input {
+  border: none;
+  background-color: transparent;
+  border-bottom: solid 1px rgb(0, 0, 0, 0.5);
+  height: 1.5rem;
+  font-size: 15px;
+  outline: none;
+}
+.inputError {
+  border-bottom: solid 1px red;
+}
+.input::placeholder {
+  opacity: 0;
+  transition: all ease 0.3s;
+}
+.input:focus::placeholder {
+  opacity: 100;
+}
+.input:focus {
+  border-bottom: solid 1px blue;
+}
+.input:focus + .label {
+  top: -15px;
+  left: -5px;
+  font-size: 10px;
+  color: blue;
+}
