@@ -34,6 +34,14 @@
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
 
+.formContainer {
+  display: flex;
+  flex-direction: column;
+
+  padding: 4rem;
+  gap: 1.5rem;
+}
+
 .errorText {
   position: absolute;
   bottom: -15px;
@@ -44,19 +52,19 @@
 
 .nameContainer {
   display: flex;
-  padding: 10rem;
+  gap: 1.5rem;
 }
 .inputContainer {
   display: flex;
   flex-direction: column;
-  width: 15rem;
+  width: 16rem;
   position: relative;
 }
 .label {
   position: absolute;
-  top: 4px;
+  top: 10px;
   left: 1.5px;
-  font-size: 15px;
+  font-size: 11px;
 
   transition: all ease 0.15s;
 }
@@ -94,4 +102,10 @@
   left: -5px;
   font-size: 10px;
   color: blue;
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 }
