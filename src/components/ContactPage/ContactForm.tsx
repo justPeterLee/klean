@@ -65,6 +65,15 @@ interface ProxyError {
   subject: boolean;
   message: boolean;
 }
+
+interface ProxyInput {
+  first: string;
+  last: string;
+  email: string;
+  order: string;
+  subject: string;
+  message: string;
+}
 export function ContactForm() {
   const [error, setError] = useState({
     first: true,
@@ -85,56 +94,38 @@ export function ContactForm() {
     e.preventDefault();
 
     let proxyErrorObj: ProxyError = error;
+    let proxyInputObj: any = {
+      first: first,
+      last: last,
+      email: email,
+      order: order,
+      subject: subject,
+      message: message,
+    };
 
-    if (!first.replace(/\s/g, "")) {
-      proxyErrorObj = { ...proxyErrorObj, first: false };
-      setError({ ...proxyErrorObj, first: false });
-    } else {
-      proxyErrorObj = { ...proxyErrorObj, first: true };
-      setError({ ...proxyErrorObj, first: true });
+    let keys: string[] = Object.keys(error);
+
+    for (const key of keys) {
+      if (!proxyInputObj[key].replace(/\s/g, "")) {
+        proxyErrorObj = { ...proxyErrorObj, [key]: false };
+        setError({ ...proxyErrorObj, [key]: false });
+      } else {
+        proxyErrorObj = { ...proxyErrorObj, [key]: true };
+        setError({ ...proxyErrorObj, [key]: true });
+      }
     }
 
-    console.log(error);
+    const values: string[] = Object.values(proxyErrorObj);
 
-    if (!last.replace(/\s/g, "")) {
-      proxyErrorObj = { ...proxyErrorObj, last: false };
-      setError({ ...proxyErrorObj, last: false });
-    } else {
-      proxyErrorObj = { ...proxyErrorObj, last: true };
-      setError({ ...proxyErrorObj, last: true });
+    for (const value of values) {
+      if (!value) {
+        console.log("Failed!");
+        return;
+      }
     }
 
-    if (!email.replace(/\s/g, "")) {
-      proxyErrorObj = { ...proxyErrorObj, email: false };
-      setError({ ...proxyErrorObj, email: false });
-    } else {
-      proxyErrorObj = { ...proxyErrorObj, email: true };
-      setError({ ...error, email: true });
-    }
-
-    if (!order.replace(/\s/g, "")) {
-      proxyErrorObj = { ...proxyErrorObj, order: false };
-      setError({ ...proxyErrorObj, order: false });
-    } else {
-      proxyErrorObj = { ...proxyErrorObj, order: true };
-      setError({ ...proxyErrorObj, order: true });
-    }
-
-    if (!subject.replace(/\s/g, "")) {
-      proxyErrorObj = { ...proxyErrorObj, subject: false };
-      setError({ ...proxyErrorObj, subject: false });
-    } else {
-      proxyErrorObj = { ...proxyErrorObj, subject: true };
-      setError({ ...proxyErrorObj, subject: true });
-    }
-
-    if (!message.replace(/\s/g, "")) {
-      proxyErrorObj = { ...proxyErrorObj, message: false };
-      setError({ ...proxyErrorObj, message: false });
-    } else {
-      proxyErrorObj = { ...proxyErrorObj, message: true };
-      setError({ ...proxyErrorObj, message: true });
-    }
+    console.log("Success!");
+    return;
   };
   return (
     <div className={styles.ContactFormContainer}>
@@ -168,7 +159,7 @@ export function ContactForm() {
             triggerError={error.email}
             errorMessage="must include your email"
             sendValue={(value) => {
-              setFirst(value);
+              setEmail(value);
             }}
           />
 
@@ -178,7 +169,7 @@ export function ContactForm() {
             triggerError={error.order}
             errorMessage="must include order id"
             sendValue={(value) => {
-              setLast(value);
+              setOrder(value);
             }}
           />
         </div>
