@@ -37,9 +37,11 @@
 .formContainer {
   display: flex;
   flex-direction: column;
-
+  justify-content: center;
+  align-items: center;
   padding: 4rem;
-  gap: 1.5rem;
+  gap: 2rem;
+  position: relative;
 }
 
 .errorText {
@@ -108,4 +110,22 @@
   display: flex;
   flex-direction: column;
   gap: 3rem;
+}
+
+.submitButton {
+  height: 3rem;
+  width: 10rem;
+  border-radius: 10px;
+  border: none;
+  background-color: #203d4b;
+  color: white;
+
+  position: absolute;
+  bottom: -1.2rem;
+  right: 8rem;
+}
+
+.submitButton:hover {
+  cursor: pointer;
+  background-color: #162a34;
 }

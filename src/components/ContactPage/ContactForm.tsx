@@ -198,7 +198,9 @@ export function ContactForm() {
           />
         </div>
 
-        <button type="submit">submit</button>
+        <button type="submit" className={styles.submitButton}>
+          submit
+        </button>
       </form>
     </div>
   );
