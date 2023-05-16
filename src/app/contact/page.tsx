@@ -8,7 +8,7 @@ export default function Contact() {
   const readEmailData = async (emailData: any) => {
     console.log(emailData);
 
-    const req = await fetch("/api/contact", {
+    const req = await fetch("/api/contact/sendEmail", {
       method: "POST",
       body: JSON.stringify(emailData),
       headers: {

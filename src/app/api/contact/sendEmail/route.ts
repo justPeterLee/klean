@@ -28,8 +28,8 @@ export async function POST(req: any) {
   };
 
   const mailOptions = {
-    from: emailData.email,
-    to: process.env.CONTACT_INFO,
+    to: emailData.email,
+    from: process.env.CONTACT_INFO,
     subject: `${emailData.subject}`,
     text: `First: ${emailData.first}\nLast: ${emailData.last}\nOrderID: ${emailData.order}\nEmail: ${emailData.email}\n\n ${emailData.message}`,
   };
