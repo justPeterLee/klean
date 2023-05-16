@@ -74,7 +74,14 @@ interface ProxyInput {
   subject: string;
   message: string;
 }
-export function ContactForm() {
+
+// contact form MAIN component
+interface ContactForm {
+  sendEmailData: (params: any) => void;
+}
+
+export function ContactForm(props: ContactForm) {
+  const { sendEmailData } = props;
   const [error, setError] = useState({
     first: true,
     last: true,
@@ -117,6 +124,7 @@ export function ContactForm() {
 
     const values: string[] = Object.values(proxyErrorObj);
 
+    // if input validation fails
     for (const value of values) {
       if (!value) {
         console.log("Failed!");
@@ -124,7 +132,9 @@ export function ContactForm() {
       }
     }
 
-    console.log("Success!");
+    // if input validation pass
+
+    sendEmailData(proxyInputObj);
     return;
   };
   return (
