@@ -11,9 +11,16 @@ interface inputValidationProps {
   width?: {
     width?: string;
   };
+  characterLimit?: number;
 }
-function InputValidation(props: inputValidationProps) {
-  const { valueName, errorMessage, triggerError, sendValue, width } = props;
+function InputValidation({
+  valueName,
+  errorMessage,
+  triggerError,
+  sendValue,
+  width,
+  characterLimit,
+}: inputValidationProps) {
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState({ [valueName]: true });
 
