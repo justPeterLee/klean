@@ -1,8 +1,7 @@
-import { category } from "@prisma/client";
 import styles from "../../styling/Shop.module.css";
 
 interface ShopMenuProps {
-  categories: { category: string; link: string }[];
+  categories: { category: string; link: string; amount: number }[];
 }
 
 export function ShopMenu(props: ShopMenuProps) {
@@ -11,7 +10,9 @@ export function ShopMenu(props: ShopMenuProps) {
   return (
     <span className={styles.MenuContainer}>
       {categories.map((category, index) => (
-        <button key={index}>{category.category}</button>
+        <button key={index}>
+          {category.category} ({category.amount})
+        </button>
       ))}
     </span>
   );

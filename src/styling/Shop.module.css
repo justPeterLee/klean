@@ -6,3 +6,32 @@
 
   min-height: 100vh;
 }
+
+/* ---------- store menu ---------- */
+.MenuContainer {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: flex-start;
+  gap: 1.5rem;
+  background-color: rgb(220, 220, 220);
+
+  min-height: 11rem;
+  min-width: 9rem;
+  max-width: 15rem;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.MenuContainer button {
+  border: none;
+  background-color: transparent;
+  transition: all ease 0.1s;
+  font-size: 17px;
+  white-space: nowrap;
+}
+
+.MenuContainer button:hover {
+  cursor: pointer;
+  color: rgb(75, 75, 75);
+}
