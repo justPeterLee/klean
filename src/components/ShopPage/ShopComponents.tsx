@@ -56,3 +56,25 @@ export function ShopItem({ id, image, name, price }: ShopItemProps) {
     </button>
   );
 }
+
+interface ShopItemDisplayProps {
+  items: ShopItemProps[];
+}
+export function ShopItemDisplay({ items }: ShopItemDisplayProps) {
+  return (
+    <div>
+      {items.length ? (
+        items.map((item) => (
+          <ShopItem
+            id={item.id}
+            name={item.name}
+            price={item.price}
+            image={item.image}
+          />
+        ))
+      ) : (
+        <p>no items</p>
+      )}
+    </div>
+  );
+}
