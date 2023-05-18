@@ -31,3 +31,28 @@ export function ShopMenu(props: ShopMenuProps) {
     </span>
   );
 }
+
+interface ShopItemProps {
+  id: string;
+  image: string;
+  name: string;
+  price: string;
+}
+
+export function ShopItem({ id, image, name, price }: ShopItemProps) {
+  const router = useRouter();
+
+  return (
+    <button
+      onClick={() => {
+        router.push(`/product/${id}`);
+      }}
+    >
+      <div>{image}</div>
+      <div>
+        <p>{name}</p>
+        <p>{price}</p>
+      </div>
+    </button>
+  );
+}
