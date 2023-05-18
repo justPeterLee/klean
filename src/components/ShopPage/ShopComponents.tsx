@@ -11,6 +11,13 @@ export function ShopMenu(props: ShopMenuProps) {
 
   return (
     <span className={styles.MenuContainer}>
+      <button
+        onClick={() => {
+          router.push(`/shop/`);
+        }}
+      >
+        All Products (6)
+      </button>
       {categories.map((category, index) => (
         <button
           key={index}
