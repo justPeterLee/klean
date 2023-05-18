@@ -13,7 +13,7 @@ interface inputValidationProps {
   };
   characterLimit?: number;
 }
-function InputValidation({
+export function InputValidation({
   valueName,
   errorMessage,
   triggerError,
