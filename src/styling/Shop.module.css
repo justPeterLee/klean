@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 4rem;
+  gap: 2rem;
 
   min-height: 100vh;
 }
@@ -34,4 +34,15 @@
 .MenuContainer button:hover {
   cursor: pointer;
   color: rgb(75, 75, 75);
+}
+
+/* ---------- store display ---------- */
+.ItemDisplayContainer {
+  width: 45rem;
+  background-color: aqua;
+
+  display: grid;
+  grid-template-columns: repeat(3, 33%);
+  justify-content: center;
+  gap: 0.75rem;
 }
