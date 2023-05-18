@@ -66,6 +66,7 @@ export function ShopItemDisplay({ items }: ShopItemDisplayProps) {
       {items.length ? (
         items.map((item) => (
           <ShopItem
+            key={item.id}
             id={item.id}
             name={item.name}
             price={item.price}
