@@ -39,10 +39,45 @@
 /* ---------- store display ---------- */
 .ItemDisplayContainer {
   width: 45rem;
-  background-color: aqua;
 
   display: grid;
   grid-template-columns: repeat(3, 33%);
   justify-content: center;
   gap: 0.75rem;
+}
+
+/* ---------- store item ---------- */
+.ItemContainer {
+  height: 15rem;
+  border-radius: 10px;
+  border: none;
+  padding: 0;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+  background-color: rgb(252, 252, 252);
+}
+
+.ItemContainer:hover {
+  cursor: pointer;
+}
+
+.Image {
+  background-color: rgb(200, 200, 200);
+  height: 12rem;
+  width: 100%;
+
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -5.36px;
+}
+
+.ItemInfo {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
