@@ -44,14 +44,15 @@ export function ShopItem({ id, image, name, price }: ShopItemProps) {
 
   return (
     <button
+      className={styles.ItemContainer}
       onClick={() => {
         router.push(`/product/${id}`);
       }}
     >
-      <div>{image}</div>
-      <div>
-        <p>{name}</p>
-        <p>{price}</p>
+      <div className={styles.Image}>{image}</div>
+      <div className={styles.ItemInfo}>
+        <p className={styles.Name}>{name}</p>
+        <p className={styles.Price}>{price}</p>
       </div>
     </button>
   );
@@ -62,7 +63,7 @@ interface ShopItemDisplayProps {
 }
 export function ShopItemDisplay({ items }: ShopItemDisplayProps) {
   return (
-    <div>
+    <div className={styles.ItemDisplayContainer}>
       {items.length ? (
         items.map((item) => (
           <ShopItem

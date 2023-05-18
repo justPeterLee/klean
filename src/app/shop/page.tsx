@@ -11,9 +11,5 @@ const items = [
 ];
 
 export default async function Shop() {
-  return (
-    <main className={styles.main}>
-      <ShopItemDisplay items={items} />
-    </main>
-  );
+  return <ShopItemDisplay items={items} />;
 }
