@@ -76,7 +76,7 @@ export function CreateForm() {
             <button>{point}</button>
           ))}
 
-          <button>add point</button>
+          <button className={styles.technicalAdd}>add point</button>
         </div>
       </div>
       <div className={styles.image}></div>
