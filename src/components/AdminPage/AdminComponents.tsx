@@ -27,6 +27,9 @@ export function CreateForm() {
   const [selection, setSelection] = useState([]);
   const [discount, setDiscount] = useState([]);
 
+  const [descriptionStyle, setDescriptionStyle] = useState({
+    minHeight: "2rem",
+  });
   return (
     <div className={styles.CreateFormContainer}>
       <div className={styles.overview}>
@@ -40,24 +43,41 @@ export function CreateForm() {
         />
 
         <InputValidation
-          valueName="price"
+          valueName="Price (USD)"
           triggerError={error.name}
-          errorMessage="must include product price"
+          errorMessage="include price"
           sendValue={(value) => {
             setPrice(value);
           }}
+          width={{ width: "6rem" }}
+          isNumber={true}
         />
       </div>
 
+      <select className={styles.category} name={"category"}>
+        <option>Computer Mouse</option>
+        <option>Mechanical Keyboard</option>
+      </select>
+
       <div className={styles.info}>
-        <InputValidation
-          valueName="price"
-          triggerError={error.name}
-          errorMessage="must include product price"
-          sendValue={(value) => {
-            setPrice(value);
+        <textarea
+          className={styles.description}
+          style={descriptionStyle}
+          onFocus={() => {
+            setDescriptionStyle({ minHeight: "5rem" });
+          }}
+          onBlur={() => {
+            setDescriptionStyle({ minHeight: "2rem" });
           }}
         />
+
+        <div className={styles.technicalContainer}>
+          {technical.map((point, index) => (
+            <button>{point}</button>
+          ))}
+
+          <button>add point</button>
+        </div>
       </div>
       <div className={styles.image}></div>
       <div className={styles.selection}></div>
