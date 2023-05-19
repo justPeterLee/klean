@@ -36,16 +36,21 @@ export function CreateForm() {
   const [newTechnical, setNewTechnial] = useState("");
 
   const readPoint = (newPoint: { point: string; index: number }) => {
-    // console.log("working, ", newPoint);
-    // let proxyTechArr = technical;
-    // proxyTechArr[newPoint.index] = newPoint.point;
-    // setTechnical(proxyTechArr);
-    // setTestPoint(newPoint.point);
-
     const updatedTechArr = technical.map((point, index) => {
       if (index === newPoint.index) {
         return newPoint.point;
       }
+      return point;
+    });
+
+    setTechnical(updatedTechArr);
+  };
+
+  const removePoint = (pointIndex: number) => {
+    const proxyArr = technical;
+    proxyArr.splice(pointIndex, 1);
+
+    const updatedTechArr = proxyArr.map((point, index) => {
       return point;
     });
 
@@ -99,6 +104,7 @@ export function CreateForm() {
               point={point}
               index={index}
               sendPoint={readPoint}
+              removePoint={removePoint}
               key={index}
             />
           ))}
@@ -146,15 +152,17 @@ function TechnicalPoint({
   point,
   index,
   sendPoint,
+  removePoint,
 }: {
   point: string;
   index: number;
   sendPoint: (param: { point: string; index: number }) => void;
+  removePoint: (param: number) => void;
 }) {
   const [changePoint, setChangePoint] = useState(false);
   const [newPoint, setNewPoint] = useState(point);
   return (
-    <>
+    <div className={styles.pointContainer}>
       {!changePoint ? (
         <button
           id={styles.technicalButton}
@@ -187,6 +195,13 @@ function TechnicalPoint({
           }}
         />
       )}
-    </>
+
+      <div
+        className={styles.pointRemove}
+        onClick={() => {
+          removePoint(index);
+        }}
+      ></div>
+    </div>
   );
 }

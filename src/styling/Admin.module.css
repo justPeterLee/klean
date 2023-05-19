@@ -79,3 +79,28 @@
   cursor: pointer;
   background-color: rgb(250, 250, 250);
 }
+
+/* ----------
+point
+--------- */
+
+.pointContainer {
+  position: relative;
+}
+.pointRemove {
+  position: absolute;
+  left: -1.5rem;
+  top: 1.19rem;
+  border-radius: 100%;
+  border: none;
+  background-color: black;
+  height: 7px;
+  width: 7px;
+
+  transition: all ease 0.1s;
+}
+
+.pointRemove:hover {
+  background-color: red;
+  cursor: pointer;
+}
