@@ -6,3 +6,44 @@
 
   min-height: 91vh;
 }
+
+.CreateFormContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  justify-content: center;
+  /* align-items: center; */
+  width: 24rem;
+  /* background-color: aqua; */
+}
+.overview {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  /* width: 24; */
+}
+
+.category {
+  width: 100%;
+  height: 2rem;
+  border: none;
+  border-bottom: solid 1px black;
+  outline: none;
+}
+
+.description {
+  resize: none;
+  width: 22rem;
+  border-radius: 10px;
+  /* border: none; */
+  /* border-bottom: solid 1px black; */
+  outline: none;
+  height: 2rem;
+
+  transition: all ease 0.4s;
+
+  padding: 1rem;
+  padding-bottom: 0;
+  font-size: 15px;
+  font-family: inherit;
+}
