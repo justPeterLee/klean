@@ -22,7 +22,7 @@ export function CreateForm() {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescrption] = useState("");
-  const [technical, setTechnical] = useState([]);
+  const [technical, setTechnical] = useState<string[]>([]);
   const [image, setImage] = useState([]);
   const [selection, setSelection] = useState([]);
   const [discount, setDiscount] = useState([]);
@@ -30,6 +30,10 @@ export function CreateForm() {
   const [descriptionStyle, setDescriptionStyle] = useState({
     minHeight: "2rem",
   });
+
+  const [addTechnical, setAddTechnical] = useState(false);
+  const [newTechnical, setNewTechnial] = useState("");
+
   return (
     <div className={styles.CreateFormContainer}>
       <div className={styles.overview}>
@@ -73,10 +77,41 @@ export function CreateForm() {
 
         <div className={styles.technicalContainer}>
           {technical.map((point, index) => (
-            <button>{point}</button>
+            <button id={styles.technicalButton} className={styles.technicalAdd}>
+              {point}
+            </button>
           ))}
 
-          <button className={styles.technicalAdd}>add point</button>
+          {addTechnical && (
+            <input
+              autoFocus
+              placeholder="add new point"
+              id={styles.technicalNewInput}
+              className={styles.technicalAdd}
+              onChange={(e) => {
+                setNewTechnial(e.target.value);
+              }}
+              onBlur={() => {
+                if (!newTechnical.replace(/\s/g, "")) {
+                  setAddTechnical(false);
+                } else {
+                  setTechnical([...technical, newTechnical]);
+                  setAddTechnical(false);
+                  setNewTechnial("");
+                }
+              }}
+            />
+          )}
+
+          <button
+            id={styles.technicalButton}
+            className={styles.technicalAdd}
+            onClick={() => {
+              setAddTechnical(true);
+            }}
+          >
+            add point
+          </button>
         </div>
       </div>
       <div className={styles.image}></div>
