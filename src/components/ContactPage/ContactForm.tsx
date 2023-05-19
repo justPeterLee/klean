@@ -12,6 +12,7 @@ interface inputValidationProps {
     width?: string;
   };
   characterLimit?: number;
+  isNumber?: boolean;
 }
 export function InputValidation({
   valueName,
@@ -20,6 +21,7 @@ export function InputValidation({
   sendValue,
   width,
   characterLimit,
+  isNumber,
 }: inputValidationProps) {
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState({ [valueName]: true });
@@ -31,24 +33,55 @@ export function InputValidation({
   }, [triggerError]);
   return (
     <span className={styles.inputContainer} style={width}>
-      <input
-        className={`${styles.input} ${!error[valueName] && styles.inputError}`}
-        id={`${valueName}`}
-        value={inputValue}
-        onChange={(e) => {
-          setInputValue(e.target.value);
-          sendValue(e.target.value);
-        }}
-        onBlur={() => {
-          !inputValue.replace(/\s/g, "")
-            ? setError({ [valueName]: false })
-            : setError({ [valueName]: true });
-        }}
-        onFocus={() => {
-          setError({ [valueName]: true });
-        }}
-        placeholder={`${valueName}`}
-      />
+      {!isNumber ? (
+        <input
+          style={width}
+          className={`${styles.input} ${
+            !error[valueName] && styles.inputError
+          }`}
+          id={`${valueName}`}
+          value={inputValue}
+          onChange={(e) => {
+            setInputValue(e.target.value);
+            sendValue(e.target.value);
+          }}
+          onBlur={() => {
+            !inputValue.replace(/\s/g, "")
+              ? setError({ [valueName]: false })
+              : setError({ [valueName]: true });
+          }}
+          onFocus={() => {
+            setError({ [valueName]: true });
+          }}
+          placeholder={`${valueName}`}
+        />
+      ) : (
+        <input
+          type="number"
+          min="0.01"
+          step="0.01"
+          max="2500"
+          style={width}
+          className={`${styles.input} ${
+            !error[valueName] && styles.inputError
+          }`}
+          id={`${valueName}`}
+          value={inputValue}
+          onChange={(e) => {
+            setInputValue(e.target.value);
+            sendValue(e.target.value);
+          }}
+          onBlur={() => {
+            !inputValue.replace(/\s/g, "")
+              ? setError({ [valueName]: false })
+              : setError({ [valueName]: true });
+          }}
+          onFocus={() => {
+            setError({ [valueName]: true });
+          }}
+          placeholder={`${valueName}`}
+        />
+      )}
       <label
         className={`${styles.label} ${
           inputValue.replace(/\s/g, "") && styles.labelActive
