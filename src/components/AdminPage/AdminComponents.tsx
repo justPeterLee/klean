@@ -23,6 +23,7 @@ export function CreateForm() {
   const [category, setCategory] = useState("");
   const [description, setDescrption] = useState("");
   const [technical, setTechnical] = useState<string[]>([]);
+  const [testPoint, setTestPoint] = useState("");
   const [image, setImage] = useState([]);
   const [selection, setSelection] = useState([]);
   const [discount, setDiscount] = useState([]);
@@ -33,6 +34,23 @@ export function CreateForm() {
 
   const [addTechnical, setAddTechnical] = useState(false);
   const [newTechnical, setNewTechnial] = useState("");
+
+  const readPoint = (newPoint: { point: string; index: number }) => {
+    // console.log("working, ", newPoint);
+    // let proxyTechArr = technical;
+    // proxyTechArr[newPoint.index] = newPoint.point;
+    // setTechnical(proxyTechArr);
+    // setTestPoint(newPoint.point);
+
+    const updatedTechArr = technical.map((point, index) => {
+      if (index === newPoint.index) {
+        return newPoint.point;
+      }
+      return point;
+    });
+
+    setTechnical(updatedTechArr);
+  };
 
   return (
     <div className={styles.CreateFormContainer}>
@@ -77,17 +95,20 @@ export function CreateForm() {
 
         <div className={styles.technicalContainer}>
           {technical.map((point, index) => (
-            <button id={styles.technicalButton} className={styles.technicalAdd}>
-              {point}
-            </button>
+            <TechnicalPoint
+              point={point}
+              index={index}
+              sendPoint={readPoint}
+              key={index}
+            />
           ))}
-
           {addTechnical && (
             <input
               autoFocus
               placeholder="add new point"
               id={styles.technicalNewInput}
               className={styles.technicalAdd}
+              value={newTechnical}
               onChange={(e) => {
                 setNewTechnial(e.target.value);
               }}
@@ -118,5 +139,54 @@ export function CreateForm() {
       <div className={styles.selection}></div>
       <div className={styles.discount}></div>
     </div>
+  );
+}
+
+function TechnicalPoint({
+  point,
+  index,
+  sendPoint,
+}: {
+  point: string;
+  index: number;
+  sendPoint: (param: { point: string; index: number }) => void;
+}) {
+  const [changePoint, setChangePoint] = useState(false);
+  const [newPoint, setNewPoint] = useState(point);
+  return (
+    <>
+      {!changePoint ? (
+        <button
+          id={styles.technicalButton}
+          className={styles.technicalAdd}
+          onClick={() => {
+            setChangePoint(true);
+          }}
+        >
+          {point}
+        </button>
+      ) : (
+        <input
+          autoFocus
+          placeholder="changing point"
+          id={styles.technicalNewInput}
+          className={styles.technicalAdd}
+          value={newPoint}
+          onChange={(e) => {
+            setNewPoint(e.target.value);
+          }}
+          onBlur={() => {
+            if (!newPoint.replace(/\s/g, "")) {
+              setChangePoint(false);
+              setNewPoint(point);
+            } else {
+              sendPoint({ point: newPoint, index: index });
+              setChangePoint(false);
+              // setNewPoint(newPoint);
+            }
+          }}
+        />
+      )}
+    </>
   );
 }
