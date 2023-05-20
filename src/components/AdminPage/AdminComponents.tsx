@@ -98,6 +98,11 @@ export function CreateForm() {
     } else if (sentOption.mutation === "change") {
       proxySelection[sentOption.index].options[sentOption.optionIndex!] =
         sentOption.option;
+    } else if (sentOption.mutation === "remove") {
+      proxySelection[sentOption.index].options.splice(
+        sentOption.optionIndex!,
+        1
+      );
     }
     const updatedArr = proxySelection.map((value) => {
       return value;
@@ -344,8 +349,7 @@ function SelectionDisplay({
 }) {
   const [changeSelection, setChangeSelection] = useState(false);
   const [newSelection, setNewSelection] = useState(selection);
-  const [selectionIndex, setSelectionIndex] = useState(index);
-
+  const selectionIndex = index;
   const [addOption, setAddOption] = useState(false);
   const [newOption, setNewOption] = useState("");
   const mutateOption = (optionData: {
@@ -468,7 +472,17 @@ function OptionDisplay({
 
   return (
     <span className={styles.selectioMainContainer}>
-      <div className={styles.pointRemove}></div>
+      <div
+        className={styles.pointRemove}
+        onClick={() => {
+          sendChangeOption({
+            option: newOption,
+            optionIndex: index,
+            index: selectionIndex,
+            mutation: "remove",
+          });
+        }}
+      ></div>
       {changeOption ? (
         <input
           autoFocus
