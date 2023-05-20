@@ -26,8 +26,11 @@ export function CreateForm() {
   const [testPoint, setTestPoint] = useState("");
   const [image, setImage] = useState([]);
   const [selection, setSelection] = useState<
-    { selection: string; options: string[]; skuValue: string }[]
-  >([]);
+    { selection: string; options: string[]; skuValue?: string }[]
+  >([
+    { selection: "selection 1", options: ["option 1", "option 2", "option 2"] },
+    { selection: "selection 1", options: ["option 1", "option 2", "option 2"] },
+  ]);
   const [discount, setDiscount] = useState([]);
 
   const [descriptionStyle, setDescriptionStyle] = useState({
@@ -159,7 +162,18 @@ export function CreateForm() {
       {/* -----------------------------
             selection
         ----------------------------- */}
-      <div className={styles.selection}></div>
+      <div className={styles.selection}>
+        {selection.map((option, index) => (
+          <span key={index}>
+            <button>{option.selection}</button>
+            <span>
+              {option.options.map((option, index) => (
+                <button key={index}>{option}</button>
+              ))}
+            </span>
+          </span>
+        ))}
+      </div>
 
       {/* -----------------------------
             Overview
