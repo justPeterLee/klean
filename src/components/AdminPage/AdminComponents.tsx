@@ -28,7 +28,7 @@ export function CreateForm() {
   const [selection, setSelection] = useState<
     { selection: string; options: string[]; skuValue?: string }[]
   >([
-    { selection: "selection 1", options: ["option 1", "option 2", "option 2"] },
+    { selection: "selection 1", options: ["option 1"] },
     { selection: "selection 1", options: ["option 1", "option 2"] },
   ]);
   const [discount, setDiscount] = useState([]);
@@ -37,6 +37,9 @@ export function CreateForm() {
     minHeight: "2rem",
   });
 
+  /* -------------------
+  technical
+  -------------------*/
   const [addTechnical, setAddTechnical] = useState(false);
   const [newTechnical, setNewTechnial] = useState("");
 
@@ -61,6 +64,12 @@ export function CreateForm() {
 
     setTechnical(updatedTechArr);
   };
+
+  /* -------------------
+  selection
+  -------------------*/
+  const [addSelection, setAddSelection] = useState(false);
+  const [newSelection, setNewSelection] = useState("");
 
   return (
     <div className={styles.CreateFormContainer}>
@@ -190,6 +199,40 @@ export function CreateForm() {
             </span>
           </span>
         ))}
+
+        <span className={styles.addSelectionContainer}>
+          {addSelection && (
+            <input
+              autoFocus
+              placeholder="add new selection"
+              id={styles.technicalNewInput}
+              className={styles.technicalAdd}
+              value={newSelection}
+              onChange={(e) => {
+                setNewSelection(e.target.value);
+              }}
+              onBlur={() => {
+                if (!newSelection.replace(/\s/g, "")) {
+                  setAddSelection(false);
+                } else {
+                  // setTechnical([...technical, newTechnical]);
+                  setAddSelection(false);
+                  setNewSelection("");
+                }
+              }}
+            />
+          )}
+
+          <button
+            id={styles.technicalButton}
+            className={styles.technicalAdd}
+            onClick={() => {
+              setAddSelection(true);
+            }}
+          >
+            add selection
+          </button>
+        </span>
       </div>
 
       {/* -----------------------------
