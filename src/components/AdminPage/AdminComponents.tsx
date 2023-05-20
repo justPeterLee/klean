@@ -164,11 +164,15 @@ export function CreateForm() {
         ----------------------------- */}
       <div className={styles.selection}>
         {selection.map((option, index) => (
-          <span key={index}>
-            <button>{option.selection}</button>
-            <span>
+          <span key={index} className={styles.selectionItemContainer}>
+            <button className={styles.selectionSelection}>
+              {option.selection}
+            </button>
+            <span className={styles.selectionOptionContainer}>
               {option.options.map((option, index) => (
-                <button key={index}>{option}</button>
+                <button key={index} className={styles.selectionContainer}>
+                  {option}
+                </button>
               ))}
             </span>
           </span>
