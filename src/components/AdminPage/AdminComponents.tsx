@@ -85,10 +85,20 @@ export function CreateForm() {
     setSelection(updatedArr);
   };
 
-  const addOption = (sentOption: { option: string; index: number }) => {
+  const mutateOption = (sentOption: {
+    option: string;
+    optionIndex?: number;
+    index: number;
+    mutation: string;
+  }) => {
     let proxySelection = selection;
-    proxySelection[sentOption.index].options.push(sentOption.option);
 
+    if (sentOption.mutation === "add") {
+      proxySelection[sentOption.index].options.push(sentOption.option);
+    } else if (sentOption.mutation === "change") {
+      proxySelection[sentOption.index].options[sentOption.optionIndex!] =
+        sentOption.option;
+    }
     const updatedArr = proxySelection.map((value) => {
       return value;
     });
@@ -204,7 +214,7 @@ export function CreateForm() {
             options={option.options}
             index={index}
             sendSelection={sendSelection}
-            addNewOption={addOption}
+            addNewOption={mutateOption}
           />
         ))}
 
@@ -326,13 +336,26 @@ function SelectionDisplay({
   options: string[];
   index: number;
   sendSelection: (param: { selection: string; index: number }) => void;
-  addNewOption: (param: { option: string; index: number }) => void;
+  addNewOption: (param: {
+    option: string;
+    index: number;
+    mutation: string;
+  }) => void;
 }) {
   const [changeSelection, setChangeSelection] = useState(false);
   const [newSelection, setNewSelection] = useState(selection);
+  const [selectionIndex, setSelectionIndex] = useState(index);
 
   const [addOption, setAddOption] = useState(false);
   const [newOption, setNewOption] = useState("");
+  const mutateOption = (optionData: {
+    option: string;
+    optionIndex: number;
+    index: number;
+    mutation: string;
+  }) => {
+    addNewOption(optionData);
+  };
   return (
     <span className={styles.selectionItemContainer}>
       <span className={styles.selectioMainContainer}>
@@ -372,7 +395,14 @@ function SelectionDisplay({
 
       <span className={styles.selectionOptionContainer}>
         {options.map((option, index) => (
-          <OptionDisplay option={option} key={index} />
+          <OptionDisplay
+            selection={newSelection}
+            option={option}
+            index={index}
+            key={index}
+            selectionIndex={selectionIndex}
+            sendChangeOption={mutateOption}
+          />
         ))}
 
         {!addOption ? (
@@ -388,7 +418,7 @@ function SelectionDisplay({
         ) : (
           <input
             autoFocus
-            placeholder="add new selection"
+            placeholder="add new option"
             id={styles.optionInput}
             className={styles.selectionContainer}
             value={newOption}
@@ -399,11 +429,11 @@ function SelectionDisplay({
               if (!newOption.replace(/\s/g, "")) {
                 setAddOption(false);
               } else {
-                // setSelection([
-                //   ...selection,
-                //   { selection: newSelection, options: [] },
-                // ]);
-                addNewOption({ option: newOption, index: index });
+                addNewOption({
+                  option: newOption,
+                  index: index,
+                  mutation: "add",
+                });
                 setAddOption(false);
                 setNewOption("");
               }
@@ -415,13 +445,67 @@ function SelectionDisplay({
   );
 }
 
-function OptionDisplay({ option }: { option: string }) {
+function OptionDisplay({
+  option,
+  selection,
+  index,
+  selectionIndex,
+  sendChangeOption,
+}: {
+  option: string;
+  selection: string;
+  index: number;
+  selectionIndex: number;
+  sendChangeOption: (param: {
+    option: string;
+    optionIndex: number;
+    index: number;
+    mutation: string;
+  }) => void;
+}) {
+  const [changeOption, setChangeOption] = useState(false);
+  const [newOption, setNewOption] = useState(option);
+
   return (
     <span className={styles.selectioMainContainer}>
       <div className={styles.pointRemove}></div>
-      <button className={styles.selectionContainer} id={styles.optionButton}>
-        {option}
-      </button>
+      {changeOption ? (
+        <input
+          autoFocus
+          placeholder="changing option..."
+          id={styles.optionInput}
+          className={styles.selectionContainer}
+          value={newOption}
+          onChange={(e) => {
+            setNewOption(e.target.value);
+          }}
+          onBlur={() => {
+            if (!newOption.replace(/\s/g, "")) {
+              setChangeOption(false);
+              setNewOption(option);
+            } else {
+              //   addNewOption({ option: newOption, index: index });
+              sendChangeOption({
+                option: newOption,
+                optionIndex: index,
+                index: selectionIndex,
+                mutation: "change",
+              });
+              setChangeOption(false);
+            }
+          }}
+        />
+      ) : (
+        <button
+          className={styles.selectionContainer}
+          id={styles.optionButton}
+          onClick={() => {
+            setChangeOption(true);
+          }}
+        >
+          {selection} : {option}
+        </button>
+      )}
     </span>
   );
 }
