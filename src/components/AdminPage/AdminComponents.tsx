@@ -74,9 +74,15 @@ export function CreateForm() {
   const sendSelection = (sentSelection: {
     selection: string;
     index: number;
+    mutation: string;
   }) => {
     let proxySelection = selection;
-    proxySelection[sentSelection.index].selection = sentSelection.selection;
+
+    if (sentSelection.mutation === "change") {
+      proxySelection[sentSelection.index].selection = sentSelection.selection;
+    } else if (sentSelection.mutation === "remove") {
+      proxySelection.splice(sentSelection.index, 1);
+    }
 
     const updatedArr = proxySelection.map((value) => {
       return value;
@@ -340,7 +346,11 @@ function SelectionDisplay({
   selection: string;
   options: string[];
   index: number;
-  sendSelection: (param: { selection: string; index: number }) => void;
+  sendSelection: (param: {
+    selection: string;
+    index: number;
+    mutation: string;
+  }) => void;
   addNewOption: (param: {
     option: string;
     index: number;
@@ -363,7 +373,16 @@ function SelectionDisplay({
   return (
     <span className={styles.selectionItemContainer}>
       <span className={styles.selectioMainContainer}>
-        <div className={styles.pointRemove}></div>
+        <div
+          className={styles.pointRemove}
+          onClick={() => {
+            sendSelection({
+              selection: newSelection,
+              index: index,
+              mutation: "remove",
+            });
+          }}
+        ></div>
         {!changeSelection ? (
           <button
             className={styles.selectionSelection}
@@ -389,7 +408,11 @@ function SelectionDisplay({
                 setChangeSelection(false);
                 setNewSelection(selection);
               } else {
-                sendSelection({ selection: newSelection, index: index });
+                sendSelection({
+                  selection: newSelection,
+                  index: index,
+                  mutation: "change",
+                });
                 setChangeSelection(false);
               }
             }}
