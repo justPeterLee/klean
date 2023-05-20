@@ -173,31 +173,11 @@ export function CreateForm() {
         ----------------------------- */}
       <div className={styles.selection}>
         {selection.map((option, index) => (
-          <span key={index} className={styles.selectionItemContainer}>
-            <span className={styles.selectioMainContainer}>
-              <div className={styles.pointRemove}></div>
-              <button
-                className={styles.selectionSelection}
-                id={styles.technicalButton}
-              >
-                {option.selection}
-              </button>
-            </span>
-
-            <span className={styles.selectionOptionContainer}>
-              {option.options.map((option, index) => (
-                <span key={index} className={styles.selectioMainContainer}>
-                  <div className={styles.pointRemove}></div>
-                  <button
-                    className={styles.selectionContainer}
-                    id={styles.optionButton}
-                  >
-                    {option}
-                  </button>
-                </span>
-              ))}
-            </span>
-          </span>
+          <SelectionDisplay
+            key={index}
+            selection={option.selection}
+            options={option.options}
+          />
         ))}
 
         <span className={styles.addSelectionContainer}>
@@ -215,7 +195,10 @@ export function CreateForm() {
                 if (!newSelection.replace(/\s/g, "")) {
                   setAddSelection(false);
                 } else {
-                  // setTechnical([...technical, newTechnical]);
+                  setSelection([
+                    ...selection,
+                    { selection: newSelection, options: [] },
+                  ]);
                   setAddSelection(false);
                   setNewSelection("");
                 }
@@ -299,5 +282,43 @@ function TechnicalPoint({
         }}
       ></div>
     </div>
+  );
+}
+
+// ---------- selection display -------------
+
+function SelectionDisplay({
+  selection,
+  options,
+}: {
+  selection: string;
+  options: string[];
+}) {
+  return (
+    <span className={styles.selectionItemContainer}>
+      <span className={styles.selectioMainContainer}>
+        <div className={styles.pointRemove}></div>
+        <button
+          className={styles.selectionSelection}
+          id={styles.technicalButton}
+        >
+          {selection}
+        </button>
+      </span>
+
+      <span className={styles.selectionOptionContainer}>
+        {options.map((option, index) => (
+          <span key={index} className={styles.selectioMainContainer}>
+            <div className={styles.pointRemove}></div>
+            <button
+              className={styles.selectionContainer}
+              id={styles.optionButton}
+            >
+              {option}
+            </button>
+          </span>
+        ))}
+      </span>
+    </span>
   );
 }
