@@ -25,7 +25,9 @@ export function CreateForm() {
   const [technical, setTechnical] = useState<string[]>([]);
   const [testPoint, setTestPoint] = useState("");
   const [image, setImage] = useState([]);
-  const [selection, setSelection] = useState([]);
+  const [selection, setSelection] = useState<
+    { selection: string; options: string[]; skuValue: string }[]
+  >([]);
   const [discount, setDiscount] = useState([]);
 
   const [descriptionStyle, setDescriptionStyle] = useState({
@@ -59,6 +61,9 @@ export function CreateForm() {
 
   return (
     <div className={styles.CreateFormContainer}>
+      {/* -----------------------------
+            Overview
+        ----------------------------- */}
       <div className={styles.overview}>
         <InputValidation
           valueName="Name"
@@ -85,6 +90,10 @@ export function CreateForm() {
         <option>Computer Mouse</option>
         <option>Mechanical Keyboard</option>
       </select>
+
+      {/* -----------------------------
+            Info
+        ----------------------------- */}
 
       <div className={styles.info}>
         <textarea
@@ -141,13 +150,26 @@ export function CreateForm() {
           </button>
         </div>
       </div>
+
+      {/* -----------------------------
+            image
+        ----------------------------- */}
       <div className={styles.image}></div>
+
+      {/* -----------------------------
+            selection
+        ----------------------------- */}
       <div className={styles.selection}></div>
+
+      {/* -----------------------------
+            Overview
+        ----------------------------- */}
       <div className={styles.discount}></div>
     </div>
   );
 }
 
+// ---------- technical point ------------
 function TechnicalPoint({
   point,
   index,
