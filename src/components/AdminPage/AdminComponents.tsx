@@ -29,7 +29,7 @@ export function CreateForm() {
     { selection: string; options: string[]; skuValue?: string }[]
   >([
     { selection: "selection 1", options: ["option 1", "option 2", "option 2"] },
-    { selection: "selection 1", options: ["option 1", "option 2", "option 2"] },
+    { selection: "selection 1", options: ["option 1", "option 2"] },
   ]);
   const [discount, setDiscount] = useState([]);
 
@@ -165,14 +165,27 @@ export function CreateForm() {
       <div className={styles.selection}>
         {selection.map((option, index) => (
           <span key={index} className={styles.selectionItemContainer}>
-            <button className={styles.selectionSelection}>
-              {option.selection}
-            </button>
+            <span className={styles.selectioMainContainer}>
+              <div className={styles.pointRemove}></div>
+              <button
+                className={styles.selectionSelection}
+                id={styles.technicalButton}
+              >
+                {option.selection}
+              </button>
+            </span>
+
             <span className={styles.selectionOptionContainer}>
               {option.options.map((option, index) => (
-                <button key={index} className={styles.selectionContainer}>
-                  {option}
-                </button>
+                <span key={index} className={styles.selectioMainContainer}>
+                  <div className={styles.pointRemove}></div>
+                  <button
+                    className={styles.selectionContainer}
+                    id={styles.optionButton}
+                  >
+                    {option}
+                  </button>
+                </span>
               ))}
             </span>
           </span>
