@@ -308,17 +308,20 @@ function SelectionDisplay({
 
       <span className={styles.selectionOptionContainer}>
         {options.map((option, index) => (
-          <span key={index} className={styles.selectioMainContainer}>
-            <div className={styles.pointRemove}></div>
-            <button
-              className={styles.selectionContainer}
-              id={styles.optionButton}
-            >
-              {option}
-            </button>
-          </span>
+          <OptionDisplay option={option} key={index} />
         ))}
       </span>
+    </span>
+  );
+}
+
+function OptionDisplay({ option }: { option: string }) {
+  return (
+    <span className={styles.selectioMainContainer}>
+      <div className={styles.pointRemove}></div>
+      <button className={styles.selectionContainer} id={styles.optionButton}>
+        {option}
+      </button>
     </span>
   );
 }
