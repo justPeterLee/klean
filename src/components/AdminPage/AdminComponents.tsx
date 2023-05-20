@@ -71,6 +71,19 @@ export function CreateForm() {
   const [addSelection, setAddSelection] = useState(false);
   const [newSelection, setNewSelection] = useState("");
 
+  const sendSelection = (sentSelection: {
+    selection: string;
+    index: number;
+  }) => {
+    let proxySelection = selection;
+    proxySelection[sentSelection.index].selection = sentSelection.selection;
+
+    const updatedArr = proxySelection.map((value) => {
+      return value;
+    });
+
+    setSelection(updatedArr);
+  };
   return (
     <div className={styles.CreateFormContainer}>
       {/* -----------------------------
@@ -177,6 +190,8 @@ export function CreateForm() {
             key={index}
             selection={option.selection}
             options={option.options}
+            index={index}
+            sendSelection={sendSelection}
           />
         ))}
 
@@ -290,20 +305,52 @@ function TechnicalPoint({
 function SelectionDisplay({
   selection,
   options,
+  index,
+  sendSelection,
 }: {
   selection: string;
   options: string[];
+  index: number;
+  sendSelection: (param: { selection: string; index: number }) => void;
 }) {
+  const [changeSelection, setChangeSelection] = useState(false);
+  const [newSelection, setNewSelection] = useState(selection);
+
   return (
     <span className={styles.selectionItemContainer}>
       <span className={styles.selectioMainContainer}>
         <div className={styles.pointRemove}></div>
-        <button
-          className={styles.selectionSelection}
-          id={styles.technicalButton}
-        >
-          {selection}
-        </button>
+        {!changeSelection ? (
+          <button
+            className={styles.selectionSelection}
+            id={styles.technicalButton}
+            onClick={() => {
+              setChangeSelection(true);
+            }}
+          >
+            {selection}
+          </button>
+        ) : (
+          <input
+            autoFocus
+            placeholder="changing point"
+            id={styles.technicalNewInput}
+            className={styles.technicalAdd}
+            value={newSelection}
+            onChange={(e) => {
+              setNewSelection(e.target.value);
+            }}
+            onBlur={() => {
+              if (!newSelection.replace(/\s/g, "")) {
+                setChangeSelection(false);
+                setNewSelection(selection);
+              } else {
+                sendSelection({ selection: newSelection, index: index });
+                setChangeSelection(false);
+              }
+            }}
+          />
+        )}
       </span>
 
       <span className={styles.selectionOptionContainer}>
