@@ -84,6 +84,18 @@ export function CreateForm() {
 
     setSelection(updatedArr);
   };
+
+  const addOption = (sentOption: { option: string; index: number }) => {
+    let proxySelection = selection;
+    proxySelection[sentOption.index].options.push(sentOption.option);
+
+    const updatedArr = proxySelection.map((value) => {
+      return value;
+    });
+
+    setSelection(updatedArr);
+  };
+
   return (
     <div className={styles.CreateFormContainer}>
       {/* -----------------------------
@@ -192,6 +204,7 @@ export function CreateForm() {
             options={option.options}
             index={index}
             sendSelection={sendSelection}
+            addNewOption={addOption}
           />
         ))}
 
@@ -307,15 +320,19 @@ function SelectionDisplay({
   options,
   index,
   sendSelection,
+  addNewOption,
 }: {
   selection: string;
   options: string[];
   index: number;
   sendSelection: (param: { selection: string; index: number }) => void;
+  addNewOption: (param: { option: string; index: number }) => void;
 }) {
   const [changeSelection, setChangeSelection] = useState(false);
   const [newSelection, setNewSelection] = useState(selection);
 
+  const [addOption, setAddOption] = useState(false);
+  const [newOption, setNewOption] = useState("");
   return (
     <span className={styles.selectionItemContainer}>
       <span className={styles.selectioMainContainer}>
@@ -357,6 +374,42 @@ function SelectionDisplay({
         {options.map((option, index) => (
           <OptionDisplay option={option} key={index} />
         ))}
+
+        {!addOption ? (
+          <button
+            id={styles.optionButton}
+            className={styles.selectionContainer}
+            onClick={() => {
+              setAddOption(true);
+            }}
+          >
+            add option
+          </button>
+        ) : (
+          <input
+            autoFocus
+            placeholder="add new selection"
+            id={styles.optionInput}
+            className={styles.selectionContainer}
+            value={newOption}
+            onChange={(e) => {
+              setNewOption(e.target.value);
+            }}
+            onBlur={() => {
+              if (!newOption.replace(/\s/g, "")) {
+                setAddOption(false);
+              } else {
+                // setSelection([
+                //   ...selection,
+                //   { selection: newSelection, options: [] },
+                // ]);
+                addNewOption({ option: newOption, index: index });
+                setAddOption(false);
+                setNewOption("");
+              }
+            }}
+          />
+        )}
       </span>
     </span>
   );

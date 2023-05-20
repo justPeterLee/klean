@@ -165,3 +165,7 @@ selection
   flex-direction: column;
   gap: 0.5rem;
 }
+
+#optionInput {
+  width: 18rem;
+}
