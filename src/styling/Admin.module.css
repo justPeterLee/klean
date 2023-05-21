@@ -1,7 +1,7 @@
 .main {
   display: flex;
   justify-content: center;
-  /* align-items: center; */
+  align-items: flex-start;
   gap: 4rem;
 
   min-height: 91vh;
@@ -168,4 +168,42 @@ selection
 
 #optionInput {
   width: 18rem;
+}
+
+/* ----------
+sku
+--------- */
+
+.genSkuContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: solid 1.5px rgb(200, 200, 200);
+  border-radius: 10px;
+  padding: 1.5rem;
+  min-width: 14rem;
+  height: 20rem;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.genSkuContainer::-webkit-scrollbar {
+  width: 0.5em;
+  background-color: transparent;
+  border-radius: 10px;
+}
+.genSkuContainer::-webkit-scrollbar-thumb {
+  background-color: rgb(200, 200, 200);
+  border-radius: 10px;
+}
+
+.genSkuContainer p {
+  color: rgb(120, 120, 120);
+  font-size: 15px;
+  margin: 0;
+}
+
+#generatedSkuTitle {
+  color: black;
+  /* margin-bottom: ; */
 }

@@ -78,21 +78,13 @@ export function GeneratedSKU(props: GeneratedSKUProps) {
     createSKU();
   }, []);
   return (
-    <div>
-      <p>generated SKU</p>
-      <p>{name}</p>
-      <p>{category}</p>
-      {generatedSKU.map((sku, index) => (
-        <p key={index}>{sku}</p>
-      ))}
+    <div className={styles.genSkuMainContainer}>
+      <p>Generated Sku ({generatedSKU.length})</p>
+      <div className={styles.genSkuContainer}>
+        {generatedSKU.map((sku, index) => (
+          <p key={index}>{sku}</p>
+        ))}
+      </div>
     </div>
   );
 }
-
-/*
-1) remove vowels
-2) remove white space 
-3) take first 4 letters (at most)
-
-
-*/
