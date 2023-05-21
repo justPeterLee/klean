@@ -22,7 +22,7 @@ export default function AdminCreate() {
             },
             {
               selection: "selection 3",
-              options: ["plast 1", "plast 2", "plast 3"],
+              options: ["opt1", "opt2", "opt3"],
             },
           ],
         }}

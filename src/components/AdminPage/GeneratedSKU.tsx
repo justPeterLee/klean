@@ -11,7 +11,7 @@ interface GeneratedSKUProps {
 }
 export function GeneratedSKU(props: GeneratedSKUProps) {
   const { name, category, selection } = props.data;
-  const [generatedSKU, setGeneratedSKU] = useState([]);
+  const [generatedSKU, setGeneratedSKU] = useState<string[]>([]);
 
   const templateSKU = (str: string) => {
     let string = str
@@ -23,39 +23,57 @@ export function GeneratedSKU(props: GeneratedSKUProps) {
     return string;
   };
 
+  function iterateArrays(
+    arrays: string[][],
+    currentIndex: number = 0,
+    currentCombination: string[] = [],
+    allCombinations: string[] = []
+  ) {
+    if (currentIndex === arrays.length) {
+      allCombinations.push(currentCombination.join("-"));
+      return;
+    }
+
+    const currentArray = arrays[currentIndex];
+
+    for (let i = 0; i < currentArray.length; i++) {
+      const currentElement = currentArray[i];
+      currentCombination.push(currentElement);
+      iterateArrays(
+        arrays,
+        currentIndex + 1,
+        currentCombination,
+        allCombinations
+      );
+      currentCombination.pop();
+    }
+
+    return allCombinations;
+  }
+
   const createSKU = () => {
     const nameSKU = templateSKU(name);
     const catSKU = templateSKU(category);
     const selectionNum = selection.length;
-    let selectionSKU = selection.map((select) => {
-      return templateSKU(select.selection);
-    });
-    let optionSKU: string[] = [];
 
-    const blockLimiter = selection.length;
-    for (let i = 0; i < selection[0].options.length; i++) {
-      // main option
-      console.log("main: ", selection[0].options[i]);
-      for (let k = 1; k < selection.length; k++) {
-        // selection block added
-        for (let l = 0; l < selection[k].options.length; l++) {
-          // sub option
-          console.log(selection[k].options[l]);
-        }
+    let optionArr: string[][] = [];
+    let currOptionArr: string[] = [];
+    for (let i = 0; i < selection.length; i++) {
+      for (let j = 0; j < selection[i].options.length; j++) {
+        currOptionArr.push(templateSKU(selection[i].options[j]));
       }
+      optionArr.push(currOptionArr);
+      currOptionArr = [];
     }
 
-    // selection.map((select) => {
-    //   console.log(select);
-    //   select.options.map((opt) => {
-    //     console.log(templateSKU(opt));
-    //     optionSKU.push(templateSKU(opt));
-    //   });
-    // });
+    let optionSKUValues = iterateArrays(optionArr);
 
-    // console.log(`${selectionNum}-${nameSKU}-${catSKU}`);
-    // console.log(optionSKU);
+    const skuValues: string[] = optionSKUValues!.map((sku) => {
+      return `${selectionNum}-${nameSKU}-${catSKU}-${sku}`;
+    });
+    setGeneratedSKU(skuValues);
   };
+
   useEffect(() => {
     createSKU();
   }, []);
@@ -64,7 +82,9 @@ export function GeneratedSKU(props: GeneratedSKUProps) {
       <p>generated SKU</p>
       <p>{name}</p>
       <p>{category}</p>
-      <p>{}</p>
+      {generatedSKU.map((sku, index) => (
+        <p key={index}>{sku}</p>
+      ))}
     </div>
   );
 }
