@@ -46,6 +46,38 @@ export default function AdminImage() {
     setImageFiles(data.images);
   };
 
+  useEffect(() => {
+    fetchImage();
+    // console.log(imageFiles);
+  }, []);
+  return (
+    <div className={styles.image}>
+      <form encType="multipart/form-data">
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          name="uploadedImages"
+          onChange={handleImage}
+        />
+      </form>
+      <div className={styles.imageContainer}>
+        {imageFiles.map((image: string, index: number) => (
+          <ImageItem key={index} image={image} fetchImage={fetchImage} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ImageItem({
+  image,
+  fetchImage,
+}: {
+  image: string;
+  fetchImage: () => void;
+}) {
+  const [isHover, setIsHover] = useState(false);
   const deleteImage = async (imageFile: string) => {
     const response = await fetch("/api/removeImage", {
       method: "POST",
@@ -62,37 +94,30 @@ export default function AdminImage() {
         console.error(error);
       });
   };
-  useEffect(() => {
-    fetchImage();
-    // console.log(imageFiles);
-  }, []);
   return (
-    <div className={styles.image}>
-      <form encType="multipart/form-data">
-        <input
-          type="file"
-          multiple
-          accept="image/*"
-          name="uploadedImages"
-          onChange={handleImage}
-        />
-      </form>
-
-      {imageFiles.map((image: string, index: number) => (
-        <button
-          key={index}
-          onClick={() => {
-            deleteImage(image);
-          }}
-        >
-          <Image
-            src={`/uploads/${image}`}
-            alt={image}
-            width={500}
-            height={300}
-          />
-        </button>
-      ))}
-    </div>
+    <button
+      onClick={() => {
+        deleteImage(image);
+      }}
+      className={styles.imageButton}
+      onMouseEnter={() => {
+        setIsHover(true);
+      }}
+      onMouseLeave={() => {
+        setIsHover(false);
+      }}
+    >
+      <p style={isHover ? { color: "rgba(255, 255, 255)" } : {}}>remove</p>
+      <div
+        style={isHover ? { backgroundColor: "rgb(0, 0, 0, 0.3)" } : {}}
+      ></div>
+      <Image
+        src={`/uploads/${image}`}
+        alt={image}
+        width={130}
+        height={100}
+        className={styles.image}
+      />
+    </button>
   );
 }
