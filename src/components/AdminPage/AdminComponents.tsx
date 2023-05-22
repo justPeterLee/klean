@@ -2,7 +2,7 @@
 import styles from "../../styling/Admin.module.css";
 import { useState, useEffect } from "react";
 import { InputValidation } from "../ContactPage/ContactForm";
-
+import AdminImage from "./AdminImage";
 /* ------------------------------
 create form
 ------------------------------ */
@@ -23,7 +23,6 @@ export function CreateForm() {
   const [category, setCategory] = useState("");
   const [description, setDescrption] = useState("");
   const [technical, setTechnical] = useState<string[]>([]);
-  const [testPoint, setTestPoint] = useState("");
   const [image, setImage] = useState([]);
   const [selection, setSelection] = useState<
     { selection: string; options: string[]; skuValue?: string }[]
@@ -157,6 +156,11 @@ export function CreateForm() {
         <textarea
           className={styles.description}
           style={descriptionStyle}
+          placeholder="enter description"
+          value={description}
+          onChange={(e) => {
+            setDescrption(e.target.value);
+          }}
           onFocus={() => {
             setDescriptionStyle({ minHeight: "5rem" });
           }}
@@ -212,7 +216,8 @@ export function CreateForm() {
       {/* -----------------------------
             image
         ----------------------------- */}
-      <div className={styles.image}></div>
+
+      <AdminImage />
 
       {/* -----------------------------
             selection
