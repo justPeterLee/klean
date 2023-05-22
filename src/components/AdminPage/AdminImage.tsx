@@ -46,6 +46,22 @@ export default function AdminImage() {
     setImageFiles(data.images);
   };
 
+  const deleteImage = async (imageFile: string) => {
+    const response = await fetch("/api/removeImage", {
+      method: "POST",
+      body: JSON.stringify(imageFile),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        fetchImage();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   useEffect(() => {
     fetchImage();
     // console.log(imageFiles);
@@ -63,13 +79,19 @@ export default function AdminImage() {
       </form>
 
       {imageFiles.map((image: string, index: number) => (
-        <Image
+        <button
           key={index}
-          src={`/uploads/${image}`}
-          alt={image}
-          width={500}
-          height={300}
-        />
+          onClick={() => {
+            deleteImage(image);
+          }}
+        >
+          <Image
+            src={`/uploads/${image}`}
+            alt={image}
+            width={500}
+            height={300}
+          />
+        </button>
       ))}
     </div>
   );
