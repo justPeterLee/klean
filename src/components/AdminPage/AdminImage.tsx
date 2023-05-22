@@ -1,13 +1,14 @@
 "use client";
 import styles from "../../styling/Admin.module.css";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function AdminImage() {
   const [imageFiles, setImageFiles] = useState<any>([]);
   const handleImage = async (event: any) => {
     console.log(event.target.files);
     console.log(typeof event.target.files);
-    setImageFiles(event.target.files);
+
     uploadImage(event.target.files);
   };
 
@@ -24,6 +25,9 @@ export default function AdminImage() {
       method: "POST",
       body: formData,
     });
+
+    const data = await request.json();
+    setImageFiles(data);
   };
 
   return (
@@ -37,6 +41,16 @@ export default function AdminImage() {
           onChange={handleImage}
         />
       </form>
+
+      {imageFiles.map((image: { image: any; alt: any }, index: number) => (
+        <Image
+          key={index}
+          src={`/uploads/${image.image}`}
+          alt={image.alt}
+          width={500}
+          height={300}
+        />
+      ))}
     </div>
   );
 }

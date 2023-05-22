@@ -17,7 +17,12 @@ const upload = multer({
 
 router.use(<any>upload.array("files")).post(async (req: any, res) => {
   console.log(req.files);
-  res.status(200);
+  const imageFiles = req.files.map(
+    (image: { filename: any; originalname: any }) => {
+      return { image: image.filename, alt: image.originalname };
+    }
+  );
+  res.status(200).json(imageFiles);
 });
 
 router.all((req, res) => {
