@@ -1,13 +1,19 @@
 import Image from "next/image";
 import styles from "../../styling/Admin.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function AdminImagePreview({ images }: { images: string[] }) {
-  const firstImage = images[0];
+  let firstImage = images[0];
   const [currentImage, setCurrentImage] = useState<string>("");
   const sendSubImage = (image: string) => {
     setCurrentImage(image);
   };
+
+  useEffect(() => {
+    if (images) {
+      firstImage = images[0];
+    }
+  }, [images]);
   return (
     <div className={styles.imagePreviewContainer}>
       <div className={styles.subImageContainer}>
@@ -61,8 +67,8 @@ function SubPreview({
       <Image
         src={`/uploads/${subImage}`}
         alt={subImage}
-        width={70}
-        height={70}
+        width={65}
+        height={65}
         className={styles.subImage}
       />
     </button>

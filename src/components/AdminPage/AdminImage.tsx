@@ -1,6 +1,6 @@
 "use client";
 import styles from "../../styling/Admin.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 
 export default function AdminImage({
@@ -9,13 +9,16 @@ export default function AdminImage({
   sendImage: (params: string[]) => void;
 }) {
   const [imageFiles, setImageFiles] = useState<any>([]);
-
+  const fileInputRef = useRef<HTMLInputElement>(null);
   // on photo change
   const handleImage = async (event: any) => {
-    console.log(event.target.files);
+    console.log(event.target.value);
     console.log(typeof event.target.files);
 
     uploadImage(event.target.files);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   // upload image to disk
@@ -24,7 +27,6 @@ export default function AdminImage({
     const formData = new FormData();
 
     for (let i = 0; i < files.length; i++) {
-      console.log(files[i]);
       formData.append(`files`, files[i]);
     }
 
@@ -51,8 +53,21 @@ export default function AdminImage({
     sendImage(data.images);
   };
 
+  // delete all images on disk
+  const deleteAllImages = async () => {
+    const response = await fetch("/api/deleteAllImages", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    setImageFiles([]);
+    sendImage([]);
+  };
+
   useEffect(() => {
-    fetchImage();
+    deleteAllImages();
+    // fetchImage();
     // console.log(imageFiles);
   }, []);
   return (
@@ -65,6 +80,7 @@ export default function AdminImage({
           multiple
           accept="image/*"
           name="uploadedImages"
+          ref={fileInputRef}
           onChange={handleImage}
         />
         <p>{imageFiles.length}</p>
