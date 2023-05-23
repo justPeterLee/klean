@@ -53,13 +53,16 @@ export default function AdminImage() {
   return (
     <div className={styles.image}>
       <form encType="multipart/form-data">
+        <label htmlFor="upload-image">upload image</label>
         <input
+          id="upload-image"
           type="file"
           multiple
           accept="image/*"
           name="uploadedImages"
           onChange={handleImage}
         />
+        <p>{imageFiles.length}</p>
       </form>
       <div className={styles.imageContainer}>
         {imageFiles.map((image: string, index: number) => (
