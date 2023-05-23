@@ -266,3 +266,28 @@ Image preview
 .mainImage {
   border-radius: 15px;
 }
+.subImage {
+  border-radius: 10px;
+}
+.imagePreviewContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.subImageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.1rem;
+}
+
+.subImageButton {
+  background-color: transparent;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.subImageButton:hover {
+  cursor: pointer;
+}
