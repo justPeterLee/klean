@@ -6,7 +6,11 @@ import AdminImage from "./AdminImage";
 /* ------------------------------
 create form
 ------------------------------ */
-export function CreateForm() {
+export function CreateForm({
+  sendImage,
+}: {
+  sendImage: (params: string[]) => void;
+}) {
   const [error, setError] = useState({
     name: true,
     price: true,
@@ -217,7 +221,7 @@ export function CreateForm() {
             image
         ----------------------------- */}
 
-      <AdminImage />
+      <AdminImage sendImage={sendImage} />
 
       {/* -----------------------------
             selection

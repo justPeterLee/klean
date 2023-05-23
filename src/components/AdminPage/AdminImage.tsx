@@ -3,7 +3,11 @@ import styles from "../../styling/Admin.module.css";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-export default function AdminImage() {
+export default function AdminImage({
+  sendImage,
+}: {
+  sendImage: (params: string[]) => void;
+}) {
   const [imageFiles, setImageFiles] = useState<any>([]);
 
   // on photo change
@@ -44,6 +48,7 @@ export default function AdminImage() {
 
     const data = await response.json();
     setImageFiles(data.images);
+    sendImage(data.images);
   };
 
   useEffect(() => {
