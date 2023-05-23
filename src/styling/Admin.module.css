@@ -291,3 +291,22 @@ Image preview
 .subImageButton:hover {
   cursor: pointer;
 }
+
+.noImagePreview {
+  height: 400px;
+  width: 420px;
+  border-radius: 15px;
+  /* border: solid 1px black; */
+  background-color: rgb(230, 230, 230);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(120, 120, 120);
+}
+
+.noImagePreviewSub {
+  height: 400px;
+  width: 65px;
+  border-radius: 15px;
+  background-color: rgb(230, 230, 230);
+}

@@ -14,6 +14,7 @@ export default function AdminImagePreview({ images }: { images: string[] }) {
       firstImage = images[0];
     }
   }, [images]);
+
   return (
     <div className={styles.imagePreviewContainer}>
       <div className={styles.subImageContainer}>
@@ -44,7 +45,10 @@ export default function AdminImagePreview({ images }: { images: string[] }) {
           />
         )
       ) : (
-        <></>
+        <div className={styles.imagePreviewContainer}>
+          <div className={styles.noImagePreviewSub} />
+          <div className={styles.noImagePreview}>no images</div>
+        </div>
       )}
     </div>
   );
