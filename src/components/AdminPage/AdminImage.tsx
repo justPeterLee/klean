@@ -21,7 +21,15 @@ export default function AdminImage({
     const files = event.target.files;
     const selectedImagesArray = Array.from(files);
 
-    setStagedImageFiles(selectedImagesArray);
+    if (stageImageFiles.length) {
+      let proxyArr = stageImageFiles;
+      selectedImagesArray.map((image: any) => {
+        proxyArr.push(image);
+      });
+      setStagedImageFiles(proxyArr);
+    } else {
+      setStagedImageFiles(selectedImagesArray);
+    }
 
     // uploadImage(event.target.files, isStaged);
     if (fileInputRef.current) {
