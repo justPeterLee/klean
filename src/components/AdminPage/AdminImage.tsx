@@ -8,9 +8,8 @@ export default function AdminImage({
 }: {
   sendImage: (params: string[]) => void;
 }) {
-  const [imageFiles, setImageFiles] = useState<any>([]);
+  const [imageFiles, setImageFiles] = useState<any>({});
   const [stageImageFiles, setStagedImageFiles] = useState<any>([]);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [addImageModal, setAddImageModal] = useState(false);
 
@@ -19,27 +18,60 @@ export default function AdminImage({
 
   // on photo change
   const handleImage = async (event: any, isStaged: boolean) => {
-    uploadImage(event.target.files, isStaged);
+    const files = event.target.files;
+    const selectedImagesArray = Array.from(files);
+
+    setStagedImageFiles(selectedImagesArray);
+
+    // uploadImage(event.target.files, isStaged);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   };
 
   // upload image to disk
-  const uploadImage = async (files: any, isStaged: boolean) => {
+  const uploadImage = async () => {
+    let proxyArr: string[] = [];
+
     const formData = new FormData();
 
-    for (let i = 0; i < files.length; i++) {
-      formData.append(`files`, files[i]);
+    for (let i = 0; i < stageImageFiles.length; i++) {
+      formData.append(`files`, stageImageFiles[i]);
+      proxyArr.push(stageImageFiles[i].name);
     }
+
+    console.log(proxyArr);
 
     const request = await fetch("/api/createImage", {
       method: "POST",
       body: formData,
+    }).then(() => {
+      commitImage(proxyArr);
     });
 
     // const data = await request.json();
-    fetchImage(isStaged);
+    // fetchImage(isStaged);
+  };
+
+  // commit images
+  const commitImage = (images: string[]) => {
+    let proxyArr: string[] = [];
+    if (!imageFiles[imageType]) {
+      proxyArr = images.map((image) => image);
+    } else {
+      proxyArr = imageFiles[imageType].images;
+      images.map((image) => {
+        proxyArr.push(image);
+      });
+    }
+
+    setImageFiles({
+      ...imageFiles,
+      [imageType]: {
+        images: proxyArr,
+        description: imageDescription,
+      },
+    });
   };
 
   // fetch image from disk
@@ -50,20 +82,8 @@ export default function AdminImage({
         "Content-Type": "application/json",
       },
     });
-
     const data = await response.json();
-
-    if (isStaged) {
-      setStagedImageFiles(data.images);
-    } else {
-      //   setImageFiles({
-      //     imageType: imageType,
-      //     imageDescription: imageDescription,
-      //     images: data.images,
-      //   });
-      setImageFiles(data.images);
-      sendImage(data.images);
-    }
+    sendImage(data.images);
   };
 
   // delete all images on disk
@@ -74,21 +94,21 @@ export default function AdminImage({
         "Content-Type": "application/json",
       },
     });
-    setImageFiles([]);
+    setImageFiles({});
     sendImage([]);
   };
 
-  const deleteSectionImage = async () => {
-    const response = await fetch("/api/removeSectionImages", {
-      method: "POST",
-      body: JSON.stringify(stageImageFiles),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  //   const deleteSectionImage = async () => {
+  //     const response = await fetch("/api/removeSectionImages", {
+  //       method: "POST",
+  //       body: JSON.stringify(stageImageFiles),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
 
-    setStagedImageFiles([]);
-  };
+  //     setStagedImageFiles([]);
+  //   };
 
   useEffect(() => {
     deleteAllImages();
@@ -119,23 +139,33 @@ export default function AdminImage({
                       : styles.imageModalImagesThree
                   }
                 >
-                  {stageImageFiles.map((image: string, index: number) => (
-                    <Image
+                  {stageImageFiles.map((image: Blob, index: number) => (
+                    <button
                       key={index}
-                      src={`/uploads/${image}`}
-                      alt={image}
-                      width={300}
-                      height={300}
-                      className={
-                        stageImageFiles.length === 1
-                          ? styles.imageOne
-                          : stageImageFiles.length === 2
-                          ? styles.imageTwo
-                          : stageImageFiles.length >= 3
-                          ? styles.imageThree
-                          : styles.imageThree
-                      }
-                    />
+                      onClick={() => {
+                        let proxyArr = stageImageFiles;
+                        proxyArr.splice(index, 1);
+                        console.log(proxyArr);
+                        const updatedArr = proxyArr.map((image: any) => image);
+                        setStagedImageFiles(updatedArr);
+                      }}
+                    >
+                      <Image
+                        src={URL.createObjectURL(image)}
+                        alt={`Selected Image ${index}`}
+                        width={300}
+                        height={300}
+                        className={
+                          stageImageFiles.length === 1
+                            ? styles.imageOne
+                            : stageImageFiles.length === 2
+                            ? styles.imageTwo
+                            : stageImageFiles.length >= 3
+                            ? styles.imageThree
+                            : styles.imageThree
+                        }
+                      />
+                    </button>
                   ))}
                 </span>
               </div>
@@ -201,7 +231,7 @@ export default function AdminImage({
                 <button
                   onClick={() => {
                     if (stageImageFiles.length) {
-                      deleteSectionImage();
+                      setStagedImageFiles([]);
                     }
                     setAddImageModal(false);
                     setStagedImageFiles([]);
@@ -212,7 +242,7 @@ export default function AdminImage({
                 <button
                   onClick={() => {
                     setAddImageModal(false);
-                    fetchImage(false);
+                    uploadImage();
                     setStagedImageFiles([]);
                   }}
                   disabled={!stageImageFiles.length}
@@ -232,27 +262,26 @@ export default function AdminImage({
         add image
       </button>
       <div className={styles.imageContainer}>
-        {imageFiles.map((image: string, index: number) => (
-          <ImageItem
-            key={index}
-            image={image}
-            fetchImage={() => {
-              fetchImage(false);
-            }}
-          />
-        ))}
+        {Object.keys(imageFiles).length ? (
+          Object.keys(imageFiles).map((imageType: string, index: number) => (
+            <div key={index}>
+              <p>{imageType}</p>
+              {imageFiles[imageType].images.map(
+                (image: string, index: number) => (
+                  <ImageItem key={index} image={image} />
+                )
+              )}
+            </div>
+          ))
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
 }
 
-function ImageItem({
-  image,
-  fetchImage,
-}: {
-  image: string;
-  fetchImage: () => void;
-}) {
+function ImageItem({ image }: { image: string }) {
   const [isHover, setIsHover] = useState(false);
   const deleteImage = async (imageFile: string) => {
     const response = await fetch("/api/removeImage", {
@@ -263,9 +292,7 @@ function ImageItem({
       },
     })
       .then((response) => response.json())
-      .then((data) => {
-        fetchImage();
-      })
+      .then((data) => {})
       .catch((error) => {
         console.error(error);
       });
@@ -283,7 +310,7 @@ function ImageItem({
         setIsHover(false);
       }}
     >
-      <p style={isHover ? { color: "rgba(255, 255, 255)" } : {}}>remove</p>
+      <p style={isHover ? { color: "rgba(255, 255, 255)" } : {}}>{image}</p>
       <div
         style={isHover ? { backgroundColor: "rgb(0, 0, 0, 0.3)" } : {}}
       ></div>
