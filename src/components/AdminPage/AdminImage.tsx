@@ -17,24 +17,24 @@ export default function AdminImage({
   const [imageDescription, setImageDescription] = useState<string>();
 
   // on photo change
-  const handleImage = async (event: any, isStaged: boolean) => {
+  const handleImage = async (event: any) => {
     const files = event.target.files;
     const selectedImagesArray = Array.from(files);
-
     if (stageImageFiles.length) {
       let proxyArr = stageImageFiles;
       selectedImagesArray.map((image: any) => {
         proxyArr.push(image);
       });
-      setStagedImageFiles(proxyArr);
+      const updatedArr = proxyArr.map((image: any) => image);
+      setStagedImageFiles(updatedArr);
     } else {
       setStagedImageFiles(selectedImagesArray);
     }
 
     // uploadImage(event.target.files, isStaged);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    // if (fileInputRef.current) {
+    //   fileInputRef.current.value = "";
+    // }
   };
 
   // upload image to disk
@@ -175,32 +175,11 @@ export default function AdminImage({
                       />
                     </button>
                   ))}
+                  <ImageInputForm handleImage={handleImage} isButton={true} />
                 </span>
               </div>
             ) : (
-              <form
-                encType="multipart/form-data"
-                className={styles.imageInputForm}
-              >
-                <label
-                  htmlFor="upload-image"
-                  className={styles.imageInputLabel}
-                >
-                  upload image
-                </label>
-                <input
-                  id="upload-image"
-                  className={styles.imageInput}
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  name="uploadedImages"
-                  ref={fileInputRef}
-                  onChange={(e) => {
-                    handleImage(e, true);
-                  }}
-                />
-              </form>
+              <ImageInputForm handleImage={handleImage} isButton={false} />
             )}
 
             <div className={styles.imageModalInfo}>
@@ -330,5 +309,41 @@ function ImageItem({ image }: { image: string }) {
         className={styles.image}
       />
     </button>
+  );
+}
+
+function ImageInputForm({
+  handleImage,
+  isButton,
+}: {
+  handleImage: (params: any) => void;
+  isButton: boolean;
+}) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const sendImageFiles = (e: any) => {
+    handleImage(e);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+  return (
+    <form encType="multipart/form-data" className={styles.imageInputForm}>
+      <label htmlFor="upload-image" className={styles.imageInputLabel}>
+        upload image
+      </label>
+      <input
+        id="upload-image"
+        className={styles.imageInput}
+        type="file"
+        multiple
+        accept="image/*"
+        name="uploadedImages"
+        ref={fileInputRef}
+        onChange={(e) => {
+          sendImageFiles(e);
+        }}
+      />
+    </form>
   );
 }
