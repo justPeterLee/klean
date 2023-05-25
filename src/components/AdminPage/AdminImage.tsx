@@ -142,23 +142,21 @@ export default function AdminImage({
             {stageImageFiles.length ? (
               <div className={styles.imageModalImagesContainer}>
                 <span
-                  className={
-                    stageImageFiles.length === 1
-                      ? styles.imageModalImages
-                      : stageImageFiles.length === 2
-                      ? styles.imageModalImagesTwo
-                      : stageImageFiles.length >= 3
-                      ? styles.imageModalImagesThree
-                      : styles.imageModalImagesThree
-                  }
+                  className={styles.imageModalImages}
+                  style={{
+                    gridTemplate: `repeat(${
+                      Math.floor(stageImageFiles.length / 3) + 1
+                    }, 100px) / repeat(3, 33%)`,
+                  }}
                 >
+                  <ImageInputForm handleImage={handleImage} isButton={true} />
                   {stageImageFiles.map((image: Blob, index: number) => (
                     <button
+                      className={styles.imageButton}
                       key={index}
                       onClick={() => {
                         let proxyArr = stageImageFiles;
                         proxyArr.splice(index, 1);
-                        console.log(proxyArr);
                         const updatedArr = proxyArr.map((image: any) => image);
                         setStagedImageFiles(updatedArr);
                       }}
@@ -166,21 +164,12 @@ export default function AdminImage({
                       <Image
                         src={URL.createObjectURL(image)}
                         alt={`Selected Image ${index}`}
-                        width={300}
-                        height={300}
-                        className={
-                          stageImageFiles.length === 1
-                            ? styles.imageOne
-                            : stageImageFiles.length === 2
-                            ? styles.imageTwo
-                            : stageImageFiles.length >= 3
-                            ? styles.imageThree
-                            : styles.imageThree
-                        }
+                        width={100}
+                        height={100}
+                        className={styles.imageOne}
                       />
                     </button>
                   ))}
-                  <ImageInputForm handleImage={handleImage} isButton={true} />
                 </span>
               </div>
             ) : (
@@ -248,39 +237,45 @@ export default function AdminImage({
         </>
       )}
       <button
+        className={styles.technicalAdd}
+        id={styles.technicalButton}
         onClick={() => {
           setAddImageModal(true);
         }}
       >
         add image
       </button>
-      <div className={styles.imageContainer}>
+      <div className={styles.imageContainerMain}>
         {Object.keys(imageFiles).length ? (
           Object.keys(imageFiles).map((imageType: string, index: number) => (
-            <div key={index}>
+            <>
               <p>{imageType}</p>
-              {imageFiles[imageType].images.map(
-                (image: string, index: number) => (
-                  <ImageItem
-                    key={index}
-                    image={image}
-                    index={index}
-                    refeshArr={(data) => {
-                      let proxyArr = imageFiles[imageType].images;
-                      proxyArr.splice(data, 1);
-                      const updatedArr = proxyArr.map((image: string) => image);
-                      setImageFiles({
-                        ...imageFiles,
-                        [imageType]: {
-                          images: updatedArr,
-                          description: imageFiles[imageType].description,
-                        },
-                      });
-                    }}
-                  />
-                )
-              )}
-            </div>
+              <div key={index} className={styles.imageContainer}>
+                {imageFiles[imageType].images.map(
+                  (image: string, index: number) => (
+                    <ImageItem
+                      key={index}
+                      image={image}
+                      index={index}
+                      refeshArr={(data) => {
+                        let proxyArr = imageFiles[imageType].images;
+                        proxyArr.splice(data, 1);
+                        const updatedArr = proxyArr.map(
+                          (image: string) => image
+                        );
+                        setImageFiles({
+                          ...imageFiles,
+                          [imageType]: {
+                            images: updatedArr,
+                            description: imageFiles[imageType].description,
+                          },
+                        });
+                      }}
+                    />
+                  )
+                )}
+              </div>
+            </>
           ))
         ) : (
           <></>
@@ -329,7 +324,7 @@ function ImageItem({
         setIsHover(false);
       }}
     >
-      <p style={isHover ? { color: "rgba(255, 255, 255)" } : {}}>{image}</p>
+      <p style={isHover ? { color: "rgba(255, 255, 255)" } : {}}>remove</p>
       <div
         style={isHover ? { backgroundColor: "rgb(0, 0, 0, 0.3)" } : {}}
       ></div>
@@ -360,8 +355,16 @@ function ImageInputForm({
     }
   };
   return (
-    <form encType="multipart/form-data" className={styles.imageInputForm}>
-      <label htmlFor="upload-image" className={styles.imageInputLabel}>
+    <form
+      encType="multipart/form-data"
+      className={styles.imageInputForm}
+      id={isButton ? styles.isButtonForm : ""}
+    >
+      <label
+        htmlFor="upload-image"
+        className={styles.imageInputLabel}
+        id={isButton ? styles.isButtonForm : ""}
+      >
         upload image
       </label>
       <input

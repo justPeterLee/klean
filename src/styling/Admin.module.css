@@ -219,6 +219,10 @@ sku
 Image Container 
 ---------------------------------------*/
 
+.imageContainerMain {
+  display: flex;
+  flex-direction: column;
+}
 .imageContainer {
   display: grid;
   grid-template-columns: repeat(3, 33%);
@@ -236,7 +240,7 @@ Image Container
   cursor: pointer;
 }
 .imageButton div {
-  height: 100px;
+  height: 130px;
   width: 130px;
   border-radius: 10px;
   position: absolute;
@@ -392,55 +396,46 @@ Image preview
 }
 
 .imageModalImages {
-  display: flex;
-  flex-direction: column;
+  height: 10rem;
+  width: 20rem;
+  display: grid;
+  grid-template-columns: repeat(3, 33%);
+  gap: 10px;
   justify-content: center;
   align-items: center;
+}
+.imageOne {
+  border-radius: 10px;
+}
+#isButtonForm {
+  height: 100px;
+  width: 100px;
+  border-radius: 10px;
+}
+.imageModalButtons {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 
 .imageModalImagesContainer {
   height: 20rem;
   width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding-top: 3rem;
-}
-.imageModalImagesTwo {
-  height: 18rem;
-  width: 100%;
-  display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 1rem;
+  overflow-y: scroll;
 }
 
-.imageModalImagesThree {
-  height: 10rem;
-  width: 20rem;
-  display: grid;
-  grid-template-columns: repeat(3, 33%);
-  gap: 10px;
+.imageModalImagesContainer::-webkit-scrollbar {
+  width: 0.5rem; /* Adjust as needed */
 }
-.imageOne,
-.imageTwo,
-.imageThree {
+
+.imageModalImagesContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.imageModalImagesContainer::-webkit-scrollbar-thumb {
+  background: rgb(0, 0, 0, 0.1); /* Adjust as needed */
   border-radius: 10px;
-}
-
-.imageTwo {
-  height: 200px;
-  width: 200px;
-}
-
-.imageThree {
-  height: 100px;
-  width: 100px;
-}
-
-.imageModalButtons {
-  margin-top: 1rem;
-  display: flex;
-  gap: 1rem;
 }
