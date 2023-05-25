@@ -48,8 +48,6 @@ export default function AdminImage({
       proxyArr.push(stageImageFiles[i].name);
     }
 
-    console.log(proxyArr);
-
     const request = await fetch("/api/createImage", {
       method: "POST",
       body: formData,
@@ -62,7 +60,8 @@ export default function AdminImage({
   };
 
   // commit images
-  const commitImage = (images: string[]) => {
+  const commitImage = async (images: string[]) => {
+    console.log(imageType);
     let proxyArr: string[] = [];
     if (!imageFiles[imageType]) {
       proxyArr = images.map((image) => image);
@@ -80,6 +79,12 @@ export default function AdminImage({
         description: imageDescription,
       },
     });
+
+    if (imageType === "product-image") {
+      sendImage(proxyArr);
+    }
+
+    setImageType("product-image");
   };
 
   // fetch image from disk
@@ -201,6 +206,7 @@ export default function AdminImage({
                   <select
                     className={styles.category}
                     name={"image-type"}
+                    value={imageType}
                     onChange={(e) => {
                       setImageType(e.target.value);
                     }}
@@ -255,7 +261,23 @@ export default function AdminImage({
               <p>{imageType}</p>
               {imageFiles[imageType].images.map(
                 (image: string, index: number) => (
-                  <ImageItem key={index} image={image} />
+                  <ImageItem
+                    key={index}
+                    image={image}
+                    index={index}
+                    refeshArr={(data) => {
+                      let proxyArr = imageFiles[imageType].images;
+                      proxyArr.splice(data, 1);
+                      const updatedArr = proxyArr.map((image: string) => image);
+                      setImageFiles({
+                        ...imageFiles,
+                        [imageType]: {
+                          images: updatedArr,
+                          description: imageFiles[imageType].description,
+                        },
+                      });
+                    }}
+                  />
                 )
               )}
             </div>
@@ -268,7 +290,15 @@ export default function AdminImage({
   );
 }
 
-function ImageItem({ image }: { image: string }) {
+function ImageItem({
+  image,
+  index,
+  refeshArr,
+}: {
+  image: string;
+  refeshArr: (param: number) => void;
+  index: number;
+}) {
   const [isHover, setIsHover] = useState(false);
   const deleteImage = async (imageFile: string) => {
     const response = await fetch("/api/removeImage", {
@@ -279,7 +309,9 @@ function ImageItem({ image }: { image: string }) {
       },
     })
       .then((response) => response.json())
-      .then((data) => {})
+      .then((data) => {
+        refeshArr(index);
+      })
       .catch((error) => {
         console.error(error);
       });

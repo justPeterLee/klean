@@ -5,20 +5,25 @@ import { useEffect, useState } from "react";
 export default function AdminImagePreview({ images }: { images: string[] }) {
   let firstImage = images[0];
   const [currentImage, setCurrentImage] = useState<string>("");
+  const [imageArr, setImageArr] = useState(images);
   const sendSubImage = (image: string) => {
     setCurrentImage(image);
   };
 
   useEffect(() => {
     if (images) {
+      console.log("new image: ", images);
       firstImage = images[0];
+      const updatedArr = images.map((image: string) => image);
+      console.log(updatedArr);
+      setImageArr(updatedArr);
     }
   }, [images]);
 
   return (
     <div className={styles.imagePreviewContainer}>
       <div className={styles.subImageContainer}>
-        {images.map((image, index) => (
+        {imageArr.map((image, index) => (
           <SubPreview
             key={index}
             subImage={image}
@@ -26,7 +31,7 @@ export default function AdminImagePreview({ images }: { images: string[] }) {
           />
         ))}
       </div>
-      {images.length ? (
+      {imageArr.length ? (
         !currentImage ? (
           <Image
             src={`/uploads/${images[0]}`}
