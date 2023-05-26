@@ -1,6 +1,6 @@
 "use client";
 import styles from "../../styling/Admin.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { InputValidation } from "../ContactPage/ContactForm";
 import AdminImage from "./AdminImage";
 
@@ -40,10 +40,12 @@ export function CreateForm({
     discount: true,
   });
 
+  const descriptionRef = useRef<HTMLInputElement | null>(null);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   //   const [category, setCategory] = useState("");
   const [description, setDescrption] = useState("");
+
   const [technical, setTechnical] = useState<string[]>([]);
   //   const [image, setImage] = useState([]);
   const [selection, setSelection] = useState<
@@ -54,6 +56,7 @@ export function CreateForm({
   const [descriptionStyle, setDescriptionStyle] = useState({
     minHeight: "2rem",
   });
+  const [descriptionLimit, setDescriptionLimit] = useState({});
 
   /* -------------------
   technical
@@ -185,22 +188,51 @@ export function CreateForm({
         ----------------------------- */}
 
       <div className={styles.info}>
-        <textarea
-          className={styles.description}
-          style={descriptionStyle}
-          placeholder="enter description"
-          value={description}
-          onChange={(e) => {
-            setDescrption(e.target.value);
-            readDescription(e.target.value);
-          }}
-          onFocus={() => {
-            setDescriptionStyle({ minHeight: "5rem" });
-          }}
-          onBlur={() => {
-            setDescriptionStyle({ minHeight: "2rem" });
-          }}
-        />
+        <span className={styles.descriptionContainer}>
+          <label htmlFor="description-input" style={descriptionLimit}>
+            {description.length}/255
+          </label>
+          <textarea
+            className={styles.description}
+            id="description-input"
+            style={{ ...descriptionStyle }}
+            placeholder="enter description"
+            value={description}
+            onChange={(e) => {
+              if (e.target.value.length <= 255) {
+                setDescrption(e.target.value);
+                readDescription(e.target.value);
+              }
+              console.log(descriptionRef.current?.offsetHeight);
+            }}
+            onFocus={() => {
+              setDescriptionStyle({ minHeight: "5rem" });
+              setDescriptionLimit({ color: "rgb(0,0,0,.5)" });
+            }}
+            onBlur={() => {
+              if (descriptionRef.current?.offsetHeight) {
+                if (descriptionRef.current?.offsetHeight >= 32) {
+                  setDescriptionStyle({
+                    minHeight: `${descriptionRef.current?.offsetHeight + 10}px`,
+                  });
+                }
+              } else {
+                setDescriptionStyle({ minHeight: "2rem" });
+              }
+              setDescriptionLimit({ color: "rgb(0,0,0,0)" });
+            }}
+          />
+          <div
+            style={{
+              width: "24rem",
+              wordWrap: "break-word",
+              visibility: "hidden",
+              position: "absolute",
+            }}
+          >
+            <p ref={descriptionRef}>{description}</p>
+          </div>
+        </span>
 
         <div className={styles.technicalContainer}>
           {technical.map((point, index) => (
