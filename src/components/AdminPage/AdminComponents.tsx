@@ -272,8 +272,11 @@ export function CreateForm({
             id={styles.technicalButton}
             className={styles.technicalAdd}
             onClick={() => {
-              setAddTechnical(true);
+              if (technical.length < 3) {
+                setAddTechnical(true);
+              }
             }}
+            disabled={technical.length >= 3}
           >
             add point
           </button>
@@ -343,6 +346,7 @@ export function CreateForm({
             onClick={() => {
               setAddSelection(true);
             }}
+            disabled={selection.length >= 3}
           >
             add selection
           </button>
@@ -521,6 +525,7 @@ function SelectionDisplay({
             onClick={() => {
               setAddOption(true);
             }}
+            disabled={options.length >= 3}
           >
             add option
           </button>
