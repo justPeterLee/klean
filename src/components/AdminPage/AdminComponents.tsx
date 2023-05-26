@@ -110,6 +110,7 @@ export function CreateForm({
     });
 
     setSelection(updatedArr);
+    readSelection(updatedArr);
   };
 
   const mutateOption = (sentOption: {
@@ -136,6 +137,7 @@ export function CreateForm({
     });
 
     setSelection(updatedArr);
+    readSelection(updatedArr);
   };
 
   return (
@@ -263,9 +265,6 @@ export function CreateForm({
             index={index}
             sendSelection={sendSelection}
             addNewOption={mutateOption}
-            readSelection={(selectionData: any) => {
-              readSelection(selectionData);
-            }}
           />
         ))}
 
@@ -387,7 +386,6 @@ function SelectionDisplay({
   index,
   sendSelection,
   addNewOption,
-  readSelection,
 }: {
   selection: string;
   options: string[];
@@ -402,9 +400,6 @@ function SelectionDisplay({
     index: number;
     mutation: string;
   }) => void;
-  readSelection: (
-    params: { selection: string; options: string[]; skuValue?: string }[]
-  ) => void;
 }) {
   const [changeSelection, setChangeSelection] = useState(false);
   const [newSelection, setNewSelection] = useState(selection);
