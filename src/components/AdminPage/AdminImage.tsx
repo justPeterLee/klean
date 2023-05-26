@@ -30,11 +30,6 @@ export default function AdminImage({
     } else {
       setStagedImageFiles(selectedImagesArray);
     }
-
-    // uploadImage(event.target.files, isStaged);
-    // if (fileInputRef.current) {
-    //   fileInputRef.current.value = "";
-    // }
   };
 
   // upload image to disk
@@ -54,9 +49,6 @@ export default function AdminImage({
     }).then(() => {
       commitImage(proxyArr);
     });
-
-    // const data = await request.json();
-    // fetchImage(isStaged);
   };
 
   // commit images

@@ -3,13 +3,31 @@ import styles from "../../styling/Admin.module.css";
 import { useState, useEffect } from "react";
 import { InputValidation } from "../ContactPage/ContactForm";
 import AdminImage from "./AdminImage";
+import {
+  sendString,
+  sendArr,
+  sendSelection,
+  sendImage,
+} from "./AdminDataFunctions";
 /* ------------------------------
 create form
 ------------------------------ */
 export function CreateForm({
   sendImage,
+  readName,
+  readPrice,
+  readCategory,
+  readDescription,
+  readPoints,
+  readSelection,
 }: {
   sendImage: (params: string[]) => void;
+  readName: (params: string) => void;
+  readPrice: (params: number) => void;
+  readCategory: (params: string) => void;
+  readDescription: (params: string) => void;
+  readPoints: (params: string[]) => void;
+  readSelection: (params: any) => void;
 }) {
   const [error, setError] = useState({
     name: true,
@@ -132,6 +150,7 @@ export function CreateForm({
           errorMessage="must include product name"
           sendValue={(value) => {
             setName(value);
+            readName(value);
           }}
         />
 
@@ -141,13 +160,20 @@ export function CreateForm({
           errorMessage="include price"
           sendValue={(value) => {
             setPrice(value);
+            readPrice(parseFloat(value));
           }}
           width={{ width: "6rem" }}
           isNumber={true}
         />
       </div>
 
-      <select className={styles.category} name={"category"}>
+      <select
+        className={styles.category}
+        name={"category"}
+        onChange={(e) => {
+          readCategory(e.target.value);
+        }}
+      >
         <option>Computer Mouse</option>
         <option>Mechanical Keyboard</option>
       </select>
@@ -164,6 +190,7 @@ export function CreateForm({
           value={description}
           onChange={(e) => {
             setDescrption(e.target.value);
+            readDescription(e.target.value);
           }}
           onFocus={() => {
             setDescriptionStyle({ minHeight: "5rem" });
@@ -250,9 +277,11 @@ export function CreateForm({
                 setNewSelection(e.target.value);
               }}
               onBlur={() => {
+                // check if selection name is valid
                 if (!newSelection.replace(/\s/g, "")) {
                   setAddSelection(false);
                 } else {
+                  // if valid, create a new instance of selection, with an empty options array
                   setSelection([
                     ...selection,
                     { selection: newSelection, options: [] },

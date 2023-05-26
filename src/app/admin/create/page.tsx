@@ -36,7 +36,27 @@ export default function AdminCreate() {
           }}
         />
       </div>
-      <CreateForm sendImage={sendImage} />
+      <CreateForm
+        sendImage={sendImage}
+        readName={(params: string) => {
+          console.log(params);
+        }}
+        readPrice={(params: number) => {
+          console.log(params);
+        }}
+        readCategory={(params: string) => {
+          console.log(params);
+        }}
+        readDescription={(params: string) => {
+          console.log(params);
+        }}
+        readPoints={(params: string[]) => {
+          console.log(params);
+        }}
+        readSelection={(params: any) => {
+          console.log(params);
+        }}
+      />
     </div>
   );
 }
