@@ -8,6 +8,17 @@ import AdminImagePreview from "@/components/AdminPage/AdminImagePreview";
 import { useState } from "react";
 export default function AdminCreate() {
   const [imageFiles, setImagesFiles] = useState<string[]>([]);
+  const [name, setName] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
+  const [selection, setSelection] = useState<
+    { selection: string; options: string[]; skuValue?: string }[]
+  >([]);
+
+  let price;
+  let description;
+  let point;
+  let image;
+
   const sendImage = (images: string[]) => {
     setImagesFiles(images);
   };
@@ -17,22 +28,9 @@ export default function AdminCreate() {
         <AdminImagePreview images={imageFiles} />
         <GeneratedSKU
           data={{
-            name: "Piano Tile",
-            category: "Computer Mouse",
-            selection: [
-              {
-                selection: "selection 1",
-                options: ["color 1", "color 2"],
-              },
-              {
-                selection: "selection 2",
-                options: ["dpi 1", "dpi 2", "dpi 3"],
-              },
-              {
-                selection: "selection 3",
-                options: ["opt1", "opt2", "opt3"],
-              },
-            ],
+            name: name,
+            category: category,
+            selection: selection,
           }}
         />
       </div>
@@ -40,12 +38,14 @@ export default function AdminCreate() {
         sendImage={sendImage}
         readName={(params: string) => {
           console.log(params);
+          setName(params);
         }}
         readPrice={(params: number) => {
           console.log(params);
         }}
         readCategory={(params: string) => {
           console.log(params);
+          setCategory(params);
         }}
         readDescription={(params: string) => {
           console.log(params);
@@ -57,6 +57,7 @@ export default function AdminCreate() {
           params: { selection: string; options: string[]; skuValue?: string }[]
         ) => {
           console.log(params);
+          setSelection(params);
         }}
         readImage={(params: any) => {
           console.log(params);

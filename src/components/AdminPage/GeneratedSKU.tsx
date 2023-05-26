@@ -58,25 +58,34 @@ export function GeneratedSKU(props: GeneratedSKUProps) {
 
     let optionArr: string[][] = [];
     let currOptionArr: string[] = [];
-    for (let i = 0; i < selection.length; i++) {
-      for (let j = 0; j < selection[i].options.length; j++) {
-        currOptionArr.push(templateSKU(selection[i].options[j]));
+
+    if (selection.length !== 0) {
+      for (let i = 0; i < selection.length; i++) {
+        for (let j = 0; j < selection[i].options.length; j++) {
+          currOptionArr.push(templateSKU(selection[i].options[j]));
+        }
+        optionArr.push(currOptionArr);
+        currOptionArr = [];
       }
-      optionArr.push(currOptionArr);
-      currOptionArr = [];
+
+      let optionSKUValues = iterateArrays(optionArr);
+
+      const skuValues: string[] = optionSKUValues!.map((sku) => {
+        return `${selectionNum}-${name ? nameSKU : "(no name)"}-${
+          category && catSKU
+        }-${sku}`;
+      });
+      setGeneratedSKU(skuValues);
+    } else if (name && category) {
+      setGeneratedSKU([
+        `${selectionNum}-${name && nameSKU}-${category && catSKU}`,
+      ]);
     }
-
-    let optionSKUValues = iterateArrays(optionArr);
-
-    const skuValues: string[] = optionSKUValues!.map((sku) => {
-      return `${selectionNum}-${nameSKU}-${catSKU}-${sku}`;
-    });
-    setGeneratedSKU(skuValues);
   };
 
   useEffect(() => {
     createSKU();
-  }, []);
+  }, [name, category, selection]);
   return (
     <div className={styles.genSkuMainContainer}>
       <p>Generated Sku ({generatedSKU.length})</p>
