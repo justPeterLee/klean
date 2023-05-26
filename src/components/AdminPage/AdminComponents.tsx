@@ -73,6 +73,7 @@ export function CreateForm({
     });
 
     setTechnical(updatedTechArr);
+    readPoints(updatedTechArr);
   };
 
   const removePoint = (pointIndex: number) => {
@@ -84,6 +85,7 @@ export function CreateForm({
     });
 
     setTechnical(updatedTechArr);
+    readPoints(updatedTechArr);
   };
 
   /* -------------------
@@ -226,7 +228,9 @@ export function CreateForm({
                 if (!newTechnical.replace(/\s/g, "")) {
                   setAddTechnical(false);
                 } else {
-                  setTechnical([...technical, newTechnical]);
+                  const proxyArr = [...technical, newTechnical];
+                  setTechnical(proxyArr);
+                  readPoints(proxyArr);
                   setAddTechnical(false);
                   setNewTechnial("");
                 }
