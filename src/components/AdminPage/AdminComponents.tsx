@@ -153,6 +153,7 @@ export function CreateForm({
             // setName(value);
             readName(value);
           }}
+          characterLimit={40}
         />
 
         <InputValidation

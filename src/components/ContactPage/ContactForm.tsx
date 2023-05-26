@@ -42,8 +42,15 @@ export function InputValidation({
           id={`${valueName}`}
           value={inputValue}
           onChange={(e) => {
-            setInputValue(e.target.value);
-            sendValue(e.target.value);
+            if (characterLimit) {
+              if (e.target.value.length <= characterLimit) {
+                setInputValue(e.target.value);
+                sendValue(e.target.value);
+              }
+            } else {
+              setInputValue(e.target.value);
+              sendValue(e.target.value);
+            }
           }}
           onBlur={() => {
             !inputValue.replace(/\s/g, "")
