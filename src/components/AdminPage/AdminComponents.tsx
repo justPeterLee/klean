@@ -253,6 +253,7 @@ export function CreateForm({
       {/* -----------------------------
             selection
         ----------------------------- */}
+      {/* display selection (able to edit selection and add options) */}
       <div className={styles.selection}>
         {selection.map((option, index) => (
           <SelectionDisplay
@@ -262,9 +263,13 @@ export function CreateForm({
             index={index}
             sendSelection={sendSelection}
             addNewOption={mutateOption}
+            readSelection={(selectionData: any) => {
+              readSelection(selectionData);
+            }}
           />
         ))}
 
+        {/* add selection button */}
         <span className={styles.addSelectionContainer}>
           {addSelection && (
             <input
@@ -282,10 +287,12 @@ export function CreateForm({
                   setAddSelection(false);
                 } else {
                   // if valid, create a new instance of selection, with an empty options array
-                  setSelection([
+                  const proxyArr = [
                     ...selection,
                     { selection: newSelection, options: [] },
-                  ]);
+                  ];
+                  setSelection(proxyArr);
+                  readSelection(proxyArr);
                   setAddSelection(false);
                   setNewSelection("");
                 }
@@ -380,6 +387,7 @@ function SelectionDisplay({
   index,
   sendSelection,
   addNewOption,
+  readSelection,
 }: {
   selection: string;
   options: string[];
@@ -394,6 +402,9 @@ function SelectionDisplay({
     index: number;
     mutation: string;
   }) => void;
+  readSelection: (
+    params: { selection: string; options: string[]; skuValue?: string }[]
+  ) => void;
 }) {
   const [changeSelection, setChangeSelection] = useState(false);
   const [newSelection, setNewSelection] = useState(selection);

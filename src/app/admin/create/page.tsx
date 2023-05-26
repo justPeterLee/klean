@@ -53,7 +53,9 @@ export default function AdminCreate() {
         readPoints={(params: string[]) => {
           console.log(params);
         }}
-        readSelection={(params: any) => {
+        readSelection={(
+          params: { selection: string; options: string[]; skuValue?: string }[]
+        ) => {
           console.log(params);
         }}
       />
