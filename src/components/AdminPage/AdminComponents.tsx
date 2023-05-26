@@ -48,10 +48,7 @@ export function CreateForm({
   //   const [image, setImage] = useState([]);
   const [selection, setSelection] = useState<
     { selection: string; options: string[]; skuValue?: string }[]
-  >([
-    { selection: "selection 1", options: ["option 1"] },
-    { selection: "selection 1", options: ["option 1", "option 2"] },
-  ]);
+  >([]);
   const [discount, setDiscount] = useState([]);
 
   const [descriptionStyle, setDescriptionStyle] = useState({

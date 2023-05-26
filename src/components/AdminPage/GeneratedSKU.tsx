@@ -76,9 +76,9 @@ export function GeneratedSKU(props: GeneratedSKUProps) {
         }-${sku}`;
       });
       setGeneratedSKU(skuValues);
-    } else if (name && category) {
+    } else {
       setGeneratedSKU([
-        `${selectionNum}-${name && nameSKU}-${category && catSKU}`,
+        `${selectionNum}-${name ? nameSKU : "(no name)"}-${category && catSKU}`,
       ]);
     }
   };
