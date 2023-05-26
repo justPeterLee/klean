@@ -16,9 +16,9 @@ export default function AdminCreate() {
 
   let price;
   let description;
-  let point;
-  let image;
-
+  let points;
+  let images;
+  let skuArr;
   const sendImage = (images: string[]) => {
     setImagesFiles(images);
   };
@@ -32,35 +32,36 @@ export default function AdminCreate() {
             category: category,
             selection: selection,
           }}
+          readSku={(sku: string[]) => {
+            console.log(sku);
+          }}
         />
       </div>
       <CreateForm
         sendImage={sendImage}
         readName={(params: string) => {
-          console.log(params);
           setName(params);
         }}
         readPrice={(params: number) => {
-          console.log(params);
+          price = params;
         }}
         readCategory={(params: string) => {
           console.log(params);
           setCategory(params);
         }}
         readDescription={(params: string) => {
-          console.log(params);
+          description = params;
         }}
         readPoints={(params: string[]) => {
-          console.log(params);
+          points = params;
         }}
         readSelection={(
           params: { selection: string; options: string[]; skuValue?: string }[]
         ) => {
-          console.log(params);
           setSelection(params);
         }}
         readImage={(params: any) => {
-          console.log(params);
+          images = params;
         }}
       />
     </div>

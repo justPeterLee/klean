@@ -8,9 +8,11 @@ interface GeneratedSKUProps {
     category: string;
     selection: { selection: string; options: string[]; skuValue?: string }[];
   };
+  readSku: (params: string[]) => void;
 }
 export function GeneratedSKU(props: GeneratedSKUProps) {
   const { name, category, selection } = props.data;
+  const { readSku } = props;
   const [generatedSKU, setGeneratedSKU] = useState<string[]>([]);
 
   const templateSKU = (str: string) => {
@@ -76,10 +78,13 @@ export function GeneratedSKU(props: GeneratedSKUProps) {
         }-${sku}`;
       });
       setGeneratedSKU(skuValues);
+      readSku(skuValues);
     } else {
-      setGeneratedSKU([
+      const proxySku = [
         `${selectionNum}-${name ? nameSKU : "(no name)"}-${category && catSKU}`,
-      ]);
+      ];
+      setGeneratedSKU(proxySku);
+      readSku(proxySku);
     }
   };
 
