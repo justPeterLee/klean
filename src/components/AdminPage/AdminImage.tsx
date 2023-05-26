@@ -1,16 +1,17 @@
 "use client";
 import styles from "../../styling/Admin.module.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Fragment } from "react";
 import Image from "next/image";
 
 export default function AdminImage({
   sendImage,
+  readImage,
 }: {
   sendImage: (params: string[]) => void;
+  readImage: (params: any) => void;
 }) {
   const [imageFiles, setImageFiles] = useState<any>({});
   const [stageImageFiles, setStagedImageFiles] = useState<any>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [addImageModal, setAddImageModal] = useState(false);
 
   const [imageType, setImageType] = useState("product-image");
@@ -53,7 +54,6 @@ export default function AdminImage({
 
   // commit images
   const commitImage = async (images: string[]) => {
-    console.log(imageType);
     let proxyArr: string[] = [];
     if (!imageFiles[imageType]) {
       proxyArr = images.map((image) => image);
@@ -64,13 +64,16 @@ export default function AdminImage({
       });
     }
 
-    setImageFiles({
+    const updatedImages = {
       ...imageFiles,
       [imageType]: {
         images: proxyArr,
         description: imageDescription,
       },
-    });
+    };
+
+    setImageFiles(updatedImages);
+    readImage(updatedImages);
 
     if (imageType === "product-image") {
       sendImage(proxyArr);
@@ -100,6 +103,7 @@ export default function AdminImage({
       },
     });
     setImageFiles({});
+    readImage({});
     sendImage([]);
   };
 
@@ -240,7 +244,7 @@ export default function AdminImage({
       <div className={styles.imageContainerMain}>
         {Object.keys(imageFiles).length ? (
           Object.keys(imageFiles).map((imageType: string, index: number) => (
-            <>
+            <Fragment key={index}>
               <p>{imageType}</p>
               <div key={index} className={styles.imageContainer}>
                 {imageFiles[imageType].images.map(
@@ -255,19 +259,22 @@ export default function AdminImage({
                         const updatedArr = proxyArr.map(
                           (image: string) => image
                         );
-                        setImageFiles({
+
+                        const updatedImages = {
                           ...imageFiles,
                           [imageType]: {
                             images: updatedArr,
                             description: imageFiles[imageType].description,
                           },
-                        });
+                        };
+                        setImageFiles(updatedImages);
+                        readImage(updatedImages);
                       }}
                     />
                   )
                 )}
               </div>
-            </>
+            </Fragment>
           ))
         ) : (
           <></>

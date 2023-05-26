@@ -3,12 +3,7 @@ import styles from "../../styling/Admin.module.css";
 import { useState, useEffect } from "react";
 import { InputValidation } from "../ContactPage/ContactForm";
 import AdminImage from "./AdminImage";
-import {
-  sendString,
-  sendArr,
-  sendSelection,
-  sendImage,
-} from "./AdminDataFunctions";
+
 /* ------------------------------
 create form
 ------------------------------ */
@@ -20,6 +15,7 @@ export function CreateForm({
   readDescription,
   readPoints,
   readSelection,
+  readImage,
 }: {
   sendImage: (params: string[]) => void;
   readName: (params: string) => void;
@@ -28,6 +24,7 @@ export function CreateForm({
   readDescription: (params: string) => void;
   readPoints: (params: string[]) => void;
   readSelection: (params: any) => void;
+  readImage: (params: any) => void;
 }) {
   const [error, setError] = useState({
     name: true,
@@ -42,10 +39,10 @@ export function CreateForm({
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("");
+  //   const [category, setCategory] = useState("");
   const [description, setDescrption] = useState("");
   const [technical, setTechnical] = useState<string[]>([]);
-  const [image, setImage] = useState([]);
+  //   const [image, setImage] = useState([]);
   const [selection, setSelection] = useState<
     { selection: string; options: string[]; skuValue?: string }[]
   >([
@@ -153,7 +150,7 @@ export function CreateForm({
           triggerError={error.name}
           errorMessage="must include product name"
           sendValue={(value) => {
-            setName(value);
+            // setName(value);
             readName(value);
           }}
         />
@@ -163,7 +160,7 @@ export function CreateForm({
           triggerError={error.name}
           errorMessage="include price"
           sendValue={(value) => {
-            setPrice(value);
+            // setPrice(value);
             readPrice(parseFloat(value));
           }}
           width={{ width: "6rem" }}
@@ -254,7 +251,12 @@ export function CreateForm({
             image
         ----------------------------- */}
 
-      <AdminImage sendImage={sendImage} />
+      <AdminImage
+        sendImage={sendImage}
+        readImage={(images: any) => {
+          readImage(images);
+        }}
+      />
 
       {/* -----------------------------
             selection

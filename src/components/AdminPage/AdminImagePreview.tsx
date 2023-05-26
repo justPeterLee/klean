@@ -12,10 +12,10 @@ export default function AdminImagePreview({ images }: { images: string[] }) {
 
   useEffect(() => {
     if (images) {
-      console.log("new image: ", images);
+      // console.log("new image: ", images);
       firstImage = images[0];
       const updatedArr = images.map((image: string) => image);
-      console.log(updatedArr);
+      // console.log(updatedArr);
       setImageArr(updatedArr);
     }
   }, [images]);

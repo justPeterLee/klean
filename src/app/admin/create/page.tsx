@@ -58,6 +58,9 @@ export default function AdminCreate() {
         ) => {
           console.log(params);
         }}
+        readImage={(params: any) => {
+          console.log(params);
+        }}
       />
     </div>
   );
