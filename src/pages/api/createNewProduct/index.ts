@@ -18,11 +18,16 @@ export default async function handler(
     await req.body;
 
   createProduct(name, description, price)
-    .then((ProductRes: productResponse | undefined) => {
+    .then(async (ProductRes: productResponse | undefined) => {
       console.log(ProductRes);
+      if (ProductRes) {
+        await attactPoint(points, ProductRes.id);
+      } else {
+        throw console.log("error");
+      }
     })
     .catch((err) => {
-      res.status(500).json("failed to create product instance");
+      res.status(500).json("failed to create product");
     });
 
   return res.status(200).json({ hello: "world" });
@@ -41,17 +46,22 @@ async function createProduct(name: string, description: string, price: number) {
 
     return newProduct;
   } catch (err) {
-    console.log("Error with creating inital product instance: ", err);
-    throw err;
+    throw console.log("Error with creating inital product instance: ", err);
   }
 }
 
 // attach points (if points exists)
-async function attactPoint(points: string[], productInstance: any) {
+async function attactPoint(points: string[], productId: number) {
   try {
+    const pointsArr = points.map((point: string) => {
+      return { point: point, product_id: productId };
+    });
+
+    await prisma.technical_point.createMany({
+      data: pointsArr,
+    });
   } catch (err) {
-    console.log("Error with attaching technical points: ", err);
-    throw err;
+    throw console.log("Error with attaching technical points: ", err);
   }
 }
 
@@ -59,8 +69,7 @@ async function attactPoint(points: string[], productInstance: any) {
 async function attactSelection(selection: any[], productInstance: any) {
   try {
   } catch (err) {
-    console.log("Error with attaching selections: ", err);
-    throw err;
+    throw console.log("Error with attaching selections: ", err);
   }
 }
 
@@ -68,7 +77,6 @@ async function attactSelection(selection: any[], productInstance: any) {
 async function attactOption(selectionInstance: any, option: string[]) {
   try {
   } catch (err) {
-    console.log("Error with attion options: ", err);
-    throw err;
+    throw console.log("Error with attion options: ", err);
   }
 }
