@@ -78,7 +78,19 @@ async function attactSelection(selection: any[], productId: number) {
         },
       });
 
-      console.log(selectionInstance);
+      const optionInstance = select.options.map(
+        (option: { option: string; skuValue: string }) => {
+          return {
+            option_name: option.option,
+            option_sku: option.skuValue,
+            selection_id: selectionInstance.id,
+          };
+        }
+      );
+
+      await prisma.product_option.createMany({
+        data: optionInstance,
+      });
     });
   } catch (err) {
     throw console.log("Error with attaching selections: ", err);
