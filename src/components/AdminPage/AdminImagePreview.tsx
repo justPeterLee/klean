@@ -34,7 +34,7 @@ export default function AdminImagePreview({ images }: { images: Blob[] }) {
       {imageArr.length ? (
         !currentImage ? (
           <img
-            src={URL.createObjectURL(images[0])}
+            src={URL.createObjectURL(imageArr[0])}
             alt={"image"}
             width={420}
             height={400}

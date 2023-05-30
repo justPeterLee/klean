@@ -270,9 +270,7 @@ export default function AdminImage({
                       refeshArr={(data) => {
                         let proxyArr = imageFiles[imageType].images;
                         proxyArr.splice(data, 1);
-                        const updatedArr = proxyArr.map(
-                          (image: string) => image
-                        );
+                        const updatedArr = proxyArr.map((image: Blob) => image);
 
                         const updatedImages = {
                           ...imageFiles,
@@ -282,7 +280,11 @@ export default function AdminImage({
                           },
                         };
                         setImageFiles(updatedImages);
-                        readImage(updatedImages);
+
+                        if (imageType === "product-image") {
+                          sendImage(updatedArr);
+                        }
+                        // readImage(updatedImages);
                       }}
                     />
                   )
@@ -308,26 +310,11 @@ function ImageItem({
   index: number;
 }) {
   const [isHover, setIsHover] = useState(false);
-  const deleteImage = async (imageFile: string) => {
-    const response = await fetch("/api/removeImage", {
-      method: "POST",
-      body: JSON.stringify(imageFile),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        refeshArr(index);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+
   return (
     <button
       onClick={() => {
-        deleteImage(image);
+        refeshArr(index);
       }}
       className={styles.imageButton}
       onMouseEnter={() => {
