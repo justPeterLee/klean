@@ -22,6 +22,7 @@ export default async function handler(
       console.log(ProductRes);
       if (ProductRes) {
         await attactPoint(points, ProductRes.id);
+        await attactSelection(selection, ProductRes.id);
       } else {
         throw console.log("error");
       }
@@ -66,8 +67,19 @@ async function attactPoint(points: string[], productId: number) {
 }
 
 // attact selection
-async function attactSelection(selection: any[], productInstance: any) {
+async function attactSelection(selection: any[], productId: number) {
   try {
+    selection.map(async (select) => {
+      const selectionInstance = await prisma.product_selection.create({
+        data: {
+          selection_name: select.selection,
+          selection_key: select.key,
+          product_id: productId,
+        },
+      });
+
+      console.log(selectionInstance);
+    });
   } catch (err) {
     throw console.log("Error with attaching selections: ", err);
   }

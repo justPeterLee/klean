@@ -54,13 +54,13 @@ export default function AdminCreate() {
         sku: skuArr,
       };
 
-      // const response = await fetch("/api/createNewProduct", {
-      //   method: "POST",
-      //   body: JSON.stringify(newProductData),
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // });
+      const response = await fetch("/api/createNewProduct", {
+        method: "POST",
+        body: JSON.stringify(newProductData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     } else {
       console.log("failed");
     }
