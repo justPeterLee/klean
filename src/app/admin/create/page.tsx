@@ -35,6 +35,10 @@ export default function AdminCreate() {
       images["thumbnail"].images.length &&
       skuArr.length
     ) {
+      const selectionKey = selection.map((select, index) => {
+        return { ...select, key: index };
+      });
+      console.log(selectionKey);
       let newProductData = {
         name: name,
         price: price,
@@ -46,13 +50,13 @@ export default function AdminCreate() {
         sku: skuArr,
       };
 
-      const response = await fetch("/api/createNewProduct", {
-        method: "POST",
-        body: JSON.stringify(newProductData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      // const response = await fetch("/api/createNewProduct", {
+      //   method: "POST",
+      //   body: JSON.stringify(newProductData),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // });
     } else {
       console.log("failed");
     }
