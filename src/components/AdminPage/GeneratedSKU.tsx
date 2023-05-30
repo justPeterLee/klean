@@ -6,7 +6,11 @@ interface GeneratedSKUProps {
   data: {
     name: string;
     category: string;
-    selection: { selection: string; options: string[]; skuValue?: string }[];
+    selection: {
+      selection: string;
+      options: { option: string; skuValue: string }[];
+      skuValue?: string;
+    }[];
   };
   readSku: (params: string[]) => void;
 }
@@ -64,7 +68,7 @@ export function GeneratedSKU(props: GeneratedSKUProps) {
     if (selection.length !== 0) {
       for (let i = 0; i < selection.length; i++) {
         for (let j = 0; j < selection[i].options.length; j++) {
-          currOptionArr.push(templateSKU(selection[i].options[j]));
+          currOptionArr.push(templateSKU(selection[i].options[j].option));
         }
         optionArr.push(currOptionArr);
         currOptionArr = [];

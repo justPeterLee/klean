@@ -11,7 +11,11 @@ export default function AdminCreate() {
   const [name, setName] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [selection, setSelection] = useState<
-    { selection: string; options: string[]; skuValue?: string }[]
+    {
+      selection: string;
+      options: { option: string; skuValue: string }[];
+      skuValue?: string;
+    }[]
   >([]);
 
   const [price, setPrice] = useState<number>();
@@ -46,7 +50,7 @@ export default function AdminCreate() {
         description: description,
         points: points,
         images: images,
-        selection: selection,
+        selection: selectionKey,
         sku: skuArr,
       };
 
@@ -98,7 +102,7 @@ export default function AdminCreate() {
           readSelection={(
             params: {
               selection: string;
-              options: string[];
+              options: { option: string; skuValue: string }[];
               skuValue?: string;
             }[]
           ) => {

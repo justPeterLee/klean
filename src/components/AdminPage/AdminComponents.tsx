@@ -49,7 +49,11 @@ export function CreateForm({
   const [technical, setTechnical] = useState<string[]>([]);
   //   const [image, setImage] = useState([]);
   const [selection, setSelection] = useState<
-    { selection: string; options: string[]; skuValue?: string }[]
+    {
+      selection: string;
+      options: { option: string; skuValue: string }[];
+      skuValue?: string;
+    }[]
   >([]);
   const [discount, setDiscount] = useState([]);
 
@@ -123,11 +127,25 @@ export function CreateForm({
   }) => {
     let proxySelection = selection;
 
+    const templateSKU = (str: string) => {
+      let string = str
+        .replace(/\s/g, "")
+        .replace(/[aeiou]/gi, "")
+        .toUpperCase()
+        .substring(0, 4);
+
+      return string;
+    };
+
+    const optionValue = {
+      option: sentOption.option,
+      skuValue: templateSKU(sentOption.option),
+    };
     if (sentOption.mutation === "add") {
-      proxySelection[sentOption.index].options.push(sentOption.option);
+      proxySelection[sentOption.index].options.push(optionValue);
     } else if (sentOption.mutation === "change") {
       proxySelection[sentOption.index].options[sentOption.optionIndex!] =
-        sentOption.option;
+        optionValue;
     } else if (sentOption.mutation === "remove") {
       proxySelection[sentOption.index].options.splice(
         sentOption.optionIndex!,
@@ -432,7 +450,7 @@ function SelectionDisplay({
   addNewOption,
 }: {
   selection: string;
-  options: string[];
+  options: { option: string; skuValue: string }[];
   index: number;
   sendSelection: (param: {
     selection: string;
@@ -512,7 +530,8 @@ function SelectionDisplay({
         {options.map((option, index) => (
           <OptionDisplay
             selection={newSelection}
-            option={option}
+            option={option.option}
+            optionSKU={option.skuValue}
             index={index}
             key={index}
             selectionIndex={selectionIndex}
@@ -563,12 +582,14 @@ function SelectionDisplay({
 
 function OptionDisplay({
   option,
+  optionSKU,
   selection,
   index,
   selectionIndex,
   sendChangeOption,
 }: {
   option: string;
+  optionSKU: string;
   selection: string;
   index: number;
   selectionIndex: number;
@@ -629,7 +650,7 @@ function OptionDisplay({
             setChangeOption(true);
           }}
         >
-          {selection} : {option}
+          {selection} : {option} : {optionSKU}
         </button>
       )}
     </span>
