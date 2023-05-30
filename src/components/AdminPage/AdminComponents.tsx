@@ -279,6 +279,7 @@ export function CreateForm({
             disabled={technical.length >= 3}
           >
             add point
+            <p className={styles.limitTitle}>{technical.length}/3</p>
           </button>
         </div>
       </div>
@@ -349,6 +350,7 @@ export function CreateForm({
             disabled={selection.length >= 3}
           >
             add selection
+            <p className={styles.limitTitle}>{selection.length}/3</p>
           </button>
         </span>
       </div>

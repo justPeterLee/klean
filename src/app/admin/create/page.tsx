@@ -14,13 +14,48 @@ export default function AdminCreate() {
     { selection: string; options: string[]; skuValue?: string }[]
   >([]);
 
-  let price;
-  let description;
-  let points;
-  let images;
-  let skuArr;
+  const [price, setPrice] = useState<number>();
+  const [description, setDescription] = useState<string>();
+  const [points, setPoints] = useState<string[]>([]);
+  const [images, setImage] = useState<any>();
+  const [skuArr, setSkuArr] = useState<string[]>([]);
+
   const sendImage = (images: string[]) => {
     setImagesFiles(images);
+  };
+
+  const createProduct = async () => {
+    if (
+      name &&
+      price &&
+      description &&
+      category &&
+      selection.length &&
+      images["product-image"].images.length &&
+      images["thumbnail"].images.length &&
+      skuArr.length
+    ) {
+      let newProductData = {
+        name: name,
+        price: price,
+        category: category,
+        description: description,
+        points: points,
+        images: images,
+        selection: selection,
+        sku: skuArr,
+      };
+
+      const response = await fetch("/api/createNewProduct", {
+        method: "POST",
+        body: JSON.stringify(newProductData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } else {
+      console.log("failed");
+    }
   };
   return (
     <div className={styles.main}>
@@ -33,37 +68,45 @@ export default function AdminCreate() {
             selection: selection,
           }}
           readSku={(sku: string[]) => {
-            console.log(sku);
+            setSkuArr(sku);
           }}
         />
       </div>
-      <CreateForm
-        sendImage={sendImage}
-        readName={(params: string) => {
-          setName(params);
-        }}
-        readPrice={(params: number) => {
-          price = params;
-        }}
-        readCategory={(params: string) => {
-          console.log(params);
-          setCategory(params);
-        }}
-        readDescription={(params: string) => {
-          description = params;
-        }}
-        readPoints={(params: string[]) => {
-          points = params;
-        }}
-        readSelection={(
-          params: { selection: string; options: string[]; skuValue?: string }[]
-        ) => {
-          setSelection(params);
-        }}
-        readImage={(params: any) => {
-          images = params;
-        }}
-      />
+      <div>
+        <CreateForm
+          sendImage={sendImage}
+          readName={(params: string) => {
+            setName(params);
+          }}
+          readPrice={(params: number) => {
+            setPrice(params);
+          }}
+          readCategory={(params: string) => {
+            console.log(params);
+            setCategory(params);
+          }}
+          readDescription={(params: string) => {
+            setDescription(params);
+          }}
+          readPoints={(params: string[]) => {
+            setPoints(params);
+          }}
+          readSelection={(
+            params: {
+              selection: string;
+              options: string[];
+              skuValue?: string;
+            }[]
+          ) => {
+            setSelection(params);
+          }}
+          readImage={(params: any) => {
+            setImage(params);
+          }}
+        />
+
+        <button onClick={createProduct}>submit</button>
+      </div>
     </div>
   );
 }

@@ -456,3 +456,15 @@ Image preview
   background: rgb(0, 0, 0, 0.1); /* Adjust as needed */
   border-radius: 10px;
 }
+
+.limitTitle {
+  margin: 0;
+  position: absolute;
+  right: 1rem;
+  top: 33%;
+  color: rgb(0, 0, 0, 0.2.5);
+}
+
+.technicalAdd {
+  position: relative;
+}
