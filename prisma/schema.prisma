@@ -246,7 +246,7 @@ model product_selection {
 
   selection_name        String?
   selection_description String?
-  selection_sku         String?
+  selection_key         Int?
 
   product_id     Int
   product_ref    product          @relation(fields: [product_id], references: [id])
