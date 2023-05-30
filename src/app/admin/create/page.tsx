@@ -35,8 +35,8 @@ export default function AdminCreate() {
       description &&
       category &&
       selection.length &&
-      images["product-image"].images.length &&
-      images["thumbnail"].images.length &&
+      images["product-image"] &&
+      images["thumbnail"] &&
       skuArr.length
     ) {
       const selectionKey = selection.map((select, index) => {
