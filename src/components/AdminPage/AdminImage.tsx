@@ -2,12 +2,13 @@
 import styles from "../../styling/Admin.module.css";
 import { useEffect, useState, useRef, Fragment } from "react";
 import Image from "next/image";
+import { blob } from "stream/consumers";
 
 export default function AdminImage({
   sendImage,
   readImage,
 }: {
-  sendImage: (params: string[]) => void;
+  sendImage: (params: any[]) => void;
   readImage: (params: any) => void;
 }) {
   const [imageFiles, setImageFiles] = useState<any>({});
@@ -44,12 +45,25 @@ export default function AdminImage({
       proxyArr.push(stageImageFiles[i].name);
     }
 
-    const request = await fetch("/api/createImage", {
-      method: "POST",
-      body: formData,
-    }).then(() => {
-      commitImage(proxyArr);
-    });
+    // const request = await fetch("/api/createImage", {
+    //   method: "POST",
+    //   body: formData,
+    // }).then(() => {
+    //   commitImage(proxyArr);
+    // });
+
+    const updatedImages = {
+      ...imageFiles,
+      [imageType]: {
+        images: stageImageFiles,
+        description: imageDescription,
+      },
+    };
+
+    setImageFiles(updatedImages);
+    if (imageType === "product-image" && stageImageFiles.length > 0) {
+      sendImage(stageImageFiles);
+    }
   };
 
   // commit images
@@ -75,24 +89,24 @@ export default function AdminImage({
     setImageFiles(updatedImages);
     readImage(updatedImages);
 
-    if (imageType === "product-image") {
-      sendImage(proxyArr);
-    }
+    // if (imageType === "product-image") {
+    //   sendImage(proxyArr);
+    // }
 
     setImageType("product-image");
   };
 
   // fetch image from disk
-  const fetchImage = async (isStaged: boolean) => {
-    const response = await fetch("/api/fetchImage", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
-    sendImage(data.images);
-  };
+  // const fetchImage = async (isStaged: boolean) => {
+  //   const response = await fetch("/api/fetchImage", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   const data = await response.json();
+  //   sendImage(data.images);
+  // };
 
   // delete all images on disk
   const deleteAllImages = async () => {
@@ -248,7 +262,7 @@ export default function AdminImage({
               <p>{imageType}</p>
               <div key={index} className={styles.imageContainer}>
                 {imageFiles[imageType].images.map(
-                  (image: string, index: number) => (
+                  (image: Blob, index: number) => (
                     <ImageItem
                       key={index}
                       image={image}
@@ -289,7 +303,7 @@ function ImageItem({
   index,
   refeshArr,
 }: {
-  image: string;
+  image: any;
   refeshArr: (param: number) => void;
   index: number;
 }) {
@@ -327,8 +341,8 @@ function ImageItem({
       <div
         style={isHover ? { backgroundColor: "rgb(0, 0, 0, 0.3)" } : {}}
       ></div>
-      <Image
-        src={`/uploads/${image}`}
+      <img
+        src={URL.createObjectURL(image)}
         alt={image}
         width={130}
         height={130}

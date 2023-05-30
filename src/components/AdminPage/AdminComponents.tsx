@@ -221,7 +221,6 @@ export function CreateForm({
                 setDescrption(e.target.value);
                 readDescription(e.target.value);
               }
-              console.log(descriptionRef.current?.offsetHeight);
             }}
             onFocus={() => {
               setDescriptionStyle({ minHeight: "5rem" });

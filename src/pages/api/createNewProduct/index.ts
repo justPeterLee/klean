@@ -34,6 +34,10 @@ export default async function handler(
   return res.status(200).json({ hello: "world" });
 }
 
+/*------------------------------------------------------
+attach function
+------------------------------------------------------ */
+
 // create product
 async function createProduct(name: string, description: string, price: number) {
   try {
@@ -94,13 +98,5 @@ async function attactSelection(selection: any[], productId: number) {
     });
   } catch (err) {
     throw console.log("Error with attaching selections: ", err);
-  }
-}
-
-// attach options
-async function attactOption(selectionInstance: any, option: string[]) {
-  try {
-  } catch (err) {
-    throw console.log("Error with attion options: ", err);
   }
 }

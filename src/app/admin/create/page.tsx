@@ -7,7 +7,7 @@ import AdminImagePreview from "@/components/AdminPage/AdminImagePreview";
 
 import { useState } from "react";
 export default function AdminCreate() {
-  const [imageFiles, setImagesFiles] = useState<string[]>([]);
+  const [imageFiles, setImagesFiles] = useState<Blob[]>([]);
   const [name, setName] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [selection, setSelection] = useState<
@@ -24,7 +24,7 @@ export default function AdminCreate() {
   const [images, setImage] = useState<any>();
   const [skuArr, setSkuArr] = useState<string[]>([]);
 
-  const sendImage = (images: string[]) => {
+  const sendImage = (images: any[]) => {
     setImagesFiles(images);
   };
 

@@ -2,11 +2,11 @@ import Image from "next/image";
 import styles from "../../styling/Admin.module.css";
 import { useEffect, useState } from "react";
 
-export default function AdminImagePreview({ images }: { images: string[] }) {
+export default function AdminImagePreview({ images }: { images: Blob[] }) {
   let firstImage = images[0];
-  const [currentImage, setCurrentImage] = useState<string>("");
-  const [imageArr, setImageArr] = useState(images);
-  const sendSubImage = (image: string) => {
+  const [currentImage, setCurrentImage] = useState<Blob>();
+  const [imageArr, setImageArr] = useState<Blob[]>(images);
+  const sendSubImage = (image: Blob) => {
     setCurrentImage(image);
   };
 
@@ -14,7 +14,7 @@ export default function AdminImagePreview({ images }: { images: string[] }) {
     if (images) {
       // console.log("new image: ", images);
       firstImage = images[0];
-      const updatedArr = images.map((image: string) => image);
+      const updatedArr = images.map((image: Blob) => image);
       // console.log(updatedArr);
       setImageArr(updatedArr);
     }
@@ -33,17 +33,17 @@ export default function AdminImagePreview({ images }: { images: string[] }) {
       </div>
       {imageArr.length ? (
         !currentImage ? (
-          <Image
-            src={`/uploads/${images[0]}`}
-            alt={images[0]}
+          <img
+            src={URL.createObjectURL(images[0])}
+            alt={"image"}
             width={420}
             height={400}
             className={styles.mainImage}
           />
         ) : (
-          <Image
-            src={`/uploads/${currentImage}`}
-            alt={currentImage}
+          <img
+            src={URL.createObjectURL(currentImage)}
+            alt={"currentImage"}
             width={420}
             height={400}
             className={styles.mainImage}
@@ -63,8 +63,8 @@ function SubPreview({
   subImage,
   sendSubImage,
 }: {
-  subImage: string;
-  sendSubImage: (params: string) => void;
+  subImage: any;
+  sendSubImage: (params: Blob) => void;
 }) {
   return (
     <button
@@ -73,8 +73,8 @@ function SubPreview({
         sendSubImage(subImage);
       }}
     >
-      <Image
-        src={`/uploads/${subImage}`}
+      <img
+        src={URL.createObjectURL(subImage)}
         alt={subImage}
         width={65}
         height={65}
