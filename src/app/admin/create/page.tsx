@@ -67,6 +67,17 @@ export default function AdminCreate() {
 
         const productId = await productResponse.json();
 
+        const imageForm = new FormData();
+        images["product-image"].images.map((image: any) => {
+          imageForm.append("files", image);
+        });
+        imageForm.append("productId", productId.product_id);
+
+        const imageRes = await fetch("/api/createProductImage", {
+          method: "POST",
+          body: imageForm,
+        });
+
         console.log(productId);
       }
     } else {

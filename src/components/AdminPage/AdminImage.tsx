@@ -1,6 +1,6 @@
 "use client";
 import styles from "../../styling/Admin.module.css";
-import { useEffect, useState, useRef, Fragment } from "react";
+import { useState, useRef, Fragment } from "react";
 import Image from "next/image";
 
 export default function AdminImage({
@@ -44,13 +44,6 @@ export default function AdminImage({
       proxyArr.push(stageImageFiles[i].name);
     }
 
-    // const request = await fetch("/api/createImage", {
-    //   method: "POST",
-    //   body: formData,
-    // }).then(() => {
-    //   commitImage(proxyArr);
-    // });
-
     const updatedImages = {
       ...imageFiles,
       [imageType]: {
@@ -68,75 +61,31 @@ export default function AdminImage({
   };
 
   // commit images
-  const commitImage = async (images: string[]) => {
-    let proxyArr: string[] = [];
-    if (!imageFiles[imageType]) {
-      proxyArr = images.map((image) => image);
-    } else {
-      proxyArr = imageFiles[imageType].images;
-      images.map((image) => {
-        proxyArr.push(image);
-      });
-    }
-
-    const updatedImages = {
-      ...imageFiles,
-      [imageType]: {
-        images: proxyArr,
-        description: imageDescription,
-      },
-    };
-
-    setImageFiles(updatedImages);
-    readImage(updatedImages);
-
-    // if (imageType === "product-image") {
-    //   sendImage(proxyArr);
-    // }
-
-    setImageType("product-image");
-  };
-
-  // fetch image from disk
-  // const fetchImage = async (isStaged: boolean) => {
-  //   const response = await fetch("/api/fetchImage", {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   const data = await response.json();
-  //   sendImage(data.images);
-  // };
-
-  // delete all images on disk
-  const deleteAllImages = async () => {
-    const response = await fetch("/api/deleteAllImages", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    setImageFiles({});
-    readImage({});
-    sendImage([]);
-  };
-
-  //   const deleteSectionImage = async () => {
-  //     const response = await fetch("/api/removeSectionImages", {
-  //       method: "POST",
-  //       body: JSON.stringify(stageImageFiles),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
+  // const commitImage = async (images: string[]) => {
+  //   let proxyArr: string[] = [];
+  //   if (!imageFiles[imageType]) {
+  //     proxyArr = images.map((image) => image);
+  //   } else {
+  //     proxyArr = imageFiles[imageType].images;
+  //     images.map((image) => {
+  //       proxyArr.push(image);
   //     });
+  //   }
 
-  //     setStagedImageFiles([]);
+  //   const updatedImages = {
+  //     ...imageFiles,
+  //     [imageType]: {
+  //       images: proxyArr,
+  //       description: imageDescription,
+  //     },
   //   };
 
-  useEffect(() => {
-    deleteAllImages();
-  }, []);
+  //   setImageFiles(updatedImages);
+  //   readImage(updatedImages);
+
+  //   setImageType("product-image");
+  // };
+
   return (
     <div className={styles.image}>
       {addImageModal && (
