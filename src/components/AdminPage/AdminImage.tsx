@@ -2,7 +2,6 @@
 import styles from "../../styling/Admin.module.css";
 import { useEffect, useState, useRef, Fragment } from "react";
 import Image from "next/image";
-import { blob } from "stream/consumers";
 
 export default function AdminImage({
   sendImage,
@@ -64,6 +63,8 @@ export default function AdminImage({
     if (imageType === "product-image" && stageImageFiles.length > 0) {
       sendImage(stageImageFiles);
     }
+
+    readImage(updatedImages);
   };
 
   // commit images
@@ -280,6 +281,7 @@ export default function AdminImage({
                           },
                         };
                         setImageFiles(updatedImages);
+                        readImage(updatedImages);
 
                         if (imageType === "product-image") {
                           sendImage(updatedArr);

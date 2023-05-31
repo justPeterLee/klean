@@ -39,28 +39,36 @@ export default function AdminCreate() {
       images["thumbnail"] &&
       skuArr.length
     ) {
-      const selectionKey = selection.map((select, index) => {
-        return { ...select, key: index };
-      });
-      console.log(selectionKey);
-      let newProductData = {
-        name: name,
-        price: price,
-        category: category,
-        description: description,
-        points: points,
-        images: images,
-        selection: selectionKey,
-        sku: skuArr,
-      };
+      if (
+        images["product-image"].images.length &
+        images["thumbnail"].images.length
+      ) {
+        const selectionKey = selection.map((select, index) => {
+          return { ...select, key: index };
+        });
 
-      const response = await fetch("/api/createNewProduct", {
-        method: "POST",
-        body: JSON.stringify(newProductData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+        let newProductData = {
+          name: name,
+          price: price,
+          category: category,
+          description: description,
+          points: points,
+          selection: selectionKey,
+          sku: skuArr,
+        };
+
+        const productResponse = await fetch("/api/createNewProduct", {
+          method: "POST",
+          body: JSON.stringify(newProductData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const productId = await productResponse.json();
+
+        console.log(productId);
+      }
     } else {
       console.log("failed");
     }
@@ -109,6 +117,7 @@ export default function AdminCreate() {
             setSelection(params);
           }}
           readImage={(params: any) => {
+            console.log(params);
             setImage(params);
           }}
         />

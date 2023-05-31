@@ -17,10 +17,13 @@ export default async function handler(
   const { name, price, category, description, points, selection, images } =
     await req.body;
 
-  createProduct(name, description, price)
+  let product_id;
+
+  await createProduct(name, description, price)
     .then(async (ProductRes: productResponse | undefined) => {
       console.log(ProductRes);
       if (ProductRes) {
+        product_id = ProductRes.id;
         await attactPoint(points, ProductRes.id);
         await attactSelection(selection, ProductRes.id);
       } else {
@@ -31,7 +34,7 @@ export default async function handler(
       res.status(500).json("failed to create product");
     });
 
-  return res.status(200).json({ hello: "world" });
+  return res.status(200).json({ product_id });
 }
 
 /*------------------------------------------------------
