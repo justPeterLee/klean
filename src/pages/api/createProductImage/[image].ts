@@ -1,3 +1,5 @@
+import prisma from "../../../../lib/db";
+
 import {
   S3Client,
   PutObjectCommand,
@@ -34,8 +36,8 @@ const router = createRouter();
 router
   .use(<any>upload.array("files"))
   .post(async (req: any, res: any) => {
-    console.log(req);
     const { productId } = req.body; // Access the productId
+    const { productImageType } = req.body; // Access the productId
     const image = req.files; // Access the uploaded image
 
     image.map(async (buffer: any) => {
@@ -51,9 +53,19 @@ router
       const command = new PutObjectCommand(params);
 
       await s3.send(command);
+
+      await prisma.image.create({
+        data: {
+          image_file: fileName,
+          image_name: productImageType,
+          image_description: "",
+          product_id: parseInt(productId),
+        },
+      });
     });
 
     console.log(productId);
+    console.log(productImageType);
     console.log(image);
     return res.status(200).json({ message: "Files uploaded successfully." });
   })
