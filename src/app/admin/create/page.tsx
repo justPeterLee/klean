@@ -7,28 +7,32 @@ import AdminImagePreview from "@/components/AdminPage/AdminImagePreview";
 
 import { useState } from "react";
 export default function AdminCreate() {
-  const [imageFiles, setImagesFiles] = useState<Blob[]>([]);
-  const [name, setName] = useState<string>("");
-  const [category, setCategory] = useState<string>("");
+  // useState - product data instances
+  const [imageFiles, setImagesFiles] = useState<Blob[]>([]); // preview image
+  const [name, setName] = useState<string>(""); // product name
+  const [category, setCategory] = useState<string>(""); // product category
   const [selection, setSelection] = useState<
     {
       selection: string;
       options: { option: string; skuValue: string }[];
       skuValue?: string;
     }[]
-  >([]);
+  >([]); // selection
 
-  const [price, setPrice] = useState<number>();
-  const [description, setDescription] = useState<string>();
-  const [points, setPoints] = useState<string[]>([]);
-  const [images, setImage] = useState<any>();
-  const [skuArr, setSkuArr] = useState<string[]>([]);
+  const [price, setPrice] = useState<number>(); // product price
+  const [description, setDescription] = useState<string>(); // product description
+  const [points, setPoints] = useState<string[]>([]); // technical points
+  const [images, setImage] = useState<any>(); // product images
+  const [skuArr, setSkuArr] = useState<string[]>([]); // product sku array
 
+  // chain props - product preview
   const sendImage = (images: any[]) => {
     setImagesFiles(images);
   };
 
+  // function - create product instance ( add values to database )
   const createProduct = async () => {
+    // input validation
     if (
       name &&
       price &&
@@ -39,14 +43,21 @@ export default function AdminCreate() {
       images["thumbnail"] &&
       skuArr.length
     ) {
+      console.log(images["thumbnail"].images.length);
+      // image validation (not empty)
       if (
-        images["product-image"].images.length &
+        images["product-image"].images.length &&
         images["thumbnail"].images.length
       ) {
+        console.log("worssking");
+        // ----- product insertion -----
+
+        // selection order (for sku encryption)
         const selectionKey = selection.map((select, index) => {
           return { ...select, key: index };
         });
 
+        // product data (inserted into database)
         let newProductData = {
           name: name,
           price: price,
@@ -57,41 +68,56 @@ export default function AdminCreate() {
           sku: skuArr,
         };
 
+        // request to insert data into database
         const productResponse = await fetch("/api/createNewProduct", {
           method: "POST",
           body: JSON.stringify(newProductData),
           headers: {
             "Content-Type": "application/json",
           },
+        }).then(async (response: any) => {
+          const responseData = await response.json();
+          imageInsertion(images, responseData.product_id);
         });
 
-        const productId = await productResponse.json();
+        // ----- image insertion -----
 
-        const imageForm = new FormData();
-        images["product-image"].images.map((image: any) => {
-          imageForm.append("files", image);
-        });
-        imageForm.append("productId", productId.product_id);
+        // retrieve Product ID (that was just created (for images))
+        // const productId = await productResponse.json();
 
-        const imageRes = await fetch("/api/createProductImage/image", {
-          method: "POST",
-          body: imageForm,
-        });
+        // const imageForm = new FormData();
+        // images["product-image"].images.map((image: any) => {
+        //   imageForm.append("files", image);
+        // });
+        // imageForm.append("productId", productId.product_id);
 
-        console.log(productId);
+        // const imageRes = await fetch("/api/createProductImage/image", {
+        //   method: "POST",
+        //   body: imageForm,
+        // });
+
+        // await imageInsertion(images, productId.product_id);
       }
     } else {
       console.log("failed");
     }
 
-    const imageFetch = await fetch(`/api/createProductImage/${"word"}`, {
-      method: "GET",
-    });
+    // const imageFetch = await fetch(`/api/createProductImage/${"word"}`, {
+    //   method: "GET",
+    // });
 
-    // console.log(imageFetch.text);
-    const fetchedImage = await imageFetch.json();
+    // const fetchedImage = await imageFetch.json();
   };
 
+  const imageInsertion = async (images: any, productId: number) => {
+    console.log("asdfd");
+    const imageKeys = Object.keys(images);
+    const imageFileArray = imageKeys.map((key) => {
+      return { imageType: key, files: images[key].images };
+    });
+
+    console.log(imageFileArray);
+  };
   return (
     <div className={styles.main}>
       <div className={styles.itemPreview}>
@@ -136,7 +162,6 @@ export default function AdminCreate() {
             setSelection(params);
           }}
           readImage={(params: any) => {
-            console.log(params);
             setImage(params);
           }}
         />
