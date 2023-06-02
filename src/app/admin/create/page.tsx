@@ -116,8 +116,22 @@ export default function AdminCreate() {
       return { imageType: key, files: images[key].images };
     });
 
-    console.log(imageFileArray);
+    for (let i = 0; i < imageFileArray.length; i++) {
+      const imageForm = new FormData();
+      imageFileArray[i].files.map((image: any) => {
+        imageForm.append("files", image);
+      });
+      imageForm.append("productId", productId.toString());
+      imageForm.append("productImageType", imageFileArray[i].imageType);
+
+      const imageRes = await fetch("/api/createProductImage/image", {
+        method: "POST",
+        body: imageForm,
+      });
+    }
+    console.log("posted images");
   };
+
   return (
     <div className={styles.main}>
       <div className={styles.itemPreview}>
