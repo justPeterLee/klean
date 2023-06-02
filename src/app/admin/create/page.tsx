@@ -73,7 +73,7 @@ export default function AdminCreate() {
         });
         imageForm.append("productId", productId.product_id);
 
-        const imageRes = await fetch("/api/createProductImage", {
+        const imageRes = await fetch("/api/createProductImage/image", {
           method: "POST",
           body: imageForm,
         });
@@ -83,7 +83,15 @@ export default function AdminCreate() {
     } else {
       console.log("failed");
     }
+
+    const imageFetch = await fetch(`/api/createProductImage/${"word"}`, {
+      method: "GET",
+    });
+
+    // console.log(imageFetch.text);
+    const fetchedImage = await imageFetch.json();
   };
+
   return (
     <div className={styles.main}>
       <div className={styles.itemPreview}>
