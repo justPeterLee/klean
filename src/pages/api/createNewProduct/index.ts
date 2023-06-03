@@ -25,6 +25,7 @@ export default async function handler(
       console.log(ProductRes);
       if (ProductRes) {
         product_id = ProductRes.id;
+        await attachCategory(category, ProductRes.id);
         await attactPoint(points, ProductRes.id);
         await attactSelection(selection, ProductRes.id);
       } else {
@@ -102,5 +103,19 @@ async function attactSelection(selection: any[], productId: number) {
     });
   } catch (err) {
     throw console.log("Error with attaching selections: ", err);
+  }
+}
+
+// attacth category
+async function attachCategory(categoryId: any, productId: number) {
+  try {
+    await prisma.product_category.create({
+      data: {
+        product_id: productId,
+        category_id: parseInt(categoryId),
+      },
+    });
+  } catch (err) {
+    throw console.log("Error with attaching category: ", err);
   }
 }
