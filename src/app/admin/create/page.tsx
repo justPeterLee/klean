@@ -5,7 +5,7 @@ import { CreateForm } from "@/components/AdminPage/AdminComponents";
 import { GeneratedSKU } from "@/components/AdminPage/GeneratedSKU";
 import AdminImagePreview from "@/components/AdminPage/AdminImagePreview";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 export default function AdminCreate() {
   // useState - product data instances
   const [imageFiles, setImagesFiles] = useState<Blob[]>([]); // preview image
@@ -79,38 +79,13 @@ export default function AdminCreate() {
           const responseData = await response.json();
           imageInsertion(images, responseData.product_id);
         });
-
-        // ----- image insertion -----
-
-        // retrieve Product ID (that was just created (for images))
-        // const productId = await productResponse.json();
-
-        // const imageForm = new FormData();
-        // images["product-image"].images.map((image: any) => {
-        //   imageForm.append("files", image);
-        // });
-        // imageForm.append("productId", productId.product_id);
-
-        // const imageRes = await fetch("/api/createProductImage/image", {
-        //   method: "POST",
-        //   body: imageForm,
-        // });
-
-        // await imageInsertion(images, productId.product_id);
       }
     } else {
       console.log("failed");
     }
-
-    // const imageFetch = await fetch(`/api/createProductImage/${"word"}`, {
-    //   method: "GET",
-    // });
-
-    // const fetchedImage = await imageFetch.json();
   };
 
   const imageInsertion = async (images: any, productId: number) => {
-    console.log("asdfd");
     const imageKeys = Object.keys(images);
     const imageFileArray = imageKeys.map((key) => {
       return { imageType: key, files: images[key].images };
@@ -129,7 +104,6 @@ export default function AdminCreate() {
         body: imageForm,
       });
     }
-    console.log("posted images");
   };
 
   return (
@@ -157,7 +131,6 @@ export default function AdminCreate() {
             setPrice(params);
           }}
           readCategory={(params: string) => {
-            console.log(params);
             setCategory(params);
           }}
           readDescription={(params: string) => {

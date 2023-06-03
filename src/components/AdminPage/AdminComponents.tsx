@@ -62,6 +62,25 @@ export function CreateForm({
   });
   const [descriptionLimit, setDescriptionLimit] = useState({});
 
+  // ----- fetch categories -----
+  const [dbCategories, setDbCategories] = useState<any>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const response = await fetch("/api/admin/categories", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const categories = await response.json();
+      setDbCategories(categories);
+    };
+
+    fetchCategories();
+  }, []);
+
   /* -------------------
   technical
   -------------------*/
@@ -190,15 +209,24 @@ export function CreateForm({
         />
       </div>
 
+      {/* categories */}
       <select
         className={styles.category}
         name={"category"}
         onChange={(e) => {
+          console.log(e.target.value);
           readCategory(e.target.value);
         }}
       >
-        <option>Computer Mouse</option>
-        <option>Mechanical Keyboard</option>
+        {dbCategories.length ? (
+          dbCategories.map((category: any) => (
+            <option key={category.id} value={category.id}>
+              {category.category_description}
+            </option>
+          ))
+        ) : (
+          <option>loading...</option>
+        )}
       </select>
 
       {/* -----------------------------
