@@ -18,6 +18,7 @@ export default async function handler(
     await req.body;
 
   let product_id;
+  console.log(category);
 
   await createProduct(name, description, price)
     .then(async (ProductRes: productResponse | undefined) => {

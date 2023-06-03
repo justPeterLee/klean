@@ -10,7 +10,7 @@ export default function AdminCreate() {
   // useState - product data instances
   const [imageFiles, setImagesFiles] = useState<Blob[]>([]); // preview image
   const [name, setName] = useState<string>(""); // product name
-  const [category, setCategory] = useState<string>(""); // product category
+  const [category, setCategory] = useState<any>(); // product category
   const [selection, setSelection] = useState<
     {
       selection: string;
@@ -67,6 +67,7 @@ export default function AdminCreate() {
           selection: selectionKey,
           sku: skuArr,
         };
+        console.log("asdf", category);
 
         // request to insert data into database
         const productResponse = await fetch("/api/createNewProduct", {
@@ -110,6 +111,7 @@ export default function AdminCreate() {
     <div className={styles.main}>
       <div className={styles.itemPreview}>
         <AdminImagePreview images={imageFiles} />
+
         <GeneratedSKU
           data={{
             name: name,
@@ -131,6 +133,7 @@ export default function AdminCreate() {
             setPrice(params);
           }}
           readCategory={(params: string) => {
+            console.log(params);
             setCategory(params);
           }}
           readDescription={(params: string) => {

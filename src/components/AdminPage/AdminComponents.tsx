@@ -26,9 +26,6 @@ export function CreateForm({
   readSelection: (params: any) => void;
   readImage: (params: any) => void;
 }) {
-  useEffect(() => {
-    readCategory("Computer Mouse");
-  }, []);
   const [error, setError] = useState({
     name: true,
     price: true,
@@ -76,6 +73,7 @@ export function CreateForm({
 
       const categories = await response.json();
       setDbCategories(categories);
+      readCategory(categories[0].id);
     };
 
     fetchCategories();

@@ -59,7 +59,7 @@ export function GeneratedSKU(props: GeneratedSKUProps) {
 
   const createSKU = () => {
     const nameSKU = templateSKU(name);
-    const catSKU = templateSKU(category);
+    const catSKU = category;
     const selectionNum = selection.length;
 
     let optionArr: string[][] = [];
