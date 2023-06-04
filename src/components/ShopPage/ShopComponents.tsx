@@ -50,10 +50,10 @@ export function ShopItem({ id, image, name, price }: ShopItemProps) {
         router.push(`/product/${id}`);
       }}
     >
-      <div className={styles.Image}>{image}</div>
+      <div className={styles.Image}>image</div>
       <div className={styles.ItemInfo}>
         <p className={styles.Name}>{name}</p>
-        <p className={styles.Price}>{price}</p>
+        <p className={styles.Price}>${price}</p>
       </div>
     </button>
   );
