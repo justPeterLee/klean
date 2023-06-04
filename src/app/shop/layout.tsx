@@ -34,10 +34,13 @@ export default async function ShopLayout({
   children: React.ReactNode;
 }) {
   const dbCategories = await fetchCategories();
-
+  let all = 0;
+  dbCategories.map((category: any) => {
+    all += category.amount;
+  });
   return (
     <main className={styles.main}>
-      <ShopMenu categories={dbCategories} />
+      <ShopMenu categories={dbCategories} all={all} />
       {children}
     </main>
   );

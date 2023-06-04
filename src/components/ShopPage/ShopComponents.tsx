@@ -3,10 +3,11 @@ import styles from "../../styling/Shop.module.css";
 import { useRouter } from "next/navigation";
 interface ShopMenuProps {
   categories: { category: string; link: string; amount: number }[];
+  all: number;
 }
 
 export function ShopMenu(props: ShopMenuProps) {
-  const { categories } = props;
+  const { categories, all } = props;
   const router = useRouter();
 
   return (
@@ -16,7 +17,7 @@ export function ShopMenu(props: ShopMenuProps) {
           router.push(`/shop/`);
         }}
       >
-        All Products (6)
+        All Products ({all})
       </button>
       {categories.map((category, index) => (
         <button
