@@ -1,9 +1,12 @@
 import styles from "../../../styling/Product.module.css";
 
-export default async function ProductDetail() {
+interface Props {
+  params: { productId: number };
+}
+export default async function ProductDetail({ params }: Props) {
   return (
     <div className={styles.main}>
-      <p>product detail</p>
+      <p>params: {params.productId}</p>
     </div>
   );
 }
