@@ -1,5 +1,6 @@
 import styles from "../../../styling/Shop.module.css";
 import { ShopItemDisplay } from "@/components/ShopPage/ShopComponents";
+import prisma from "../../../../lib/db";
 
 interface Props {
   params: {
@@ -16,7 +17,35 @@ const items = [
   { id: "6", name: "mouse 1", price: "$200", image: "image" },
 ];
 
+async function getItems(params: string) {
+  const categoryId = await prisma.category.findFirst({
+    where: {
+      category_name: params,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  console.log(categoryId);
+
+  const products = await prisma.product_category.findMany({
+    where: {
+      category_id: categoryId?.id,
+    },
+    include: {
+      product_ref: {
+        include: {
+          image: true,
+        },
+      },
+    },
+  });
+
+  console.log(products);
+}
 export default async function ShopCategory({ params }: Props) {
-  const category = params;
+  getItems(params.category);
+  const { category } = params;
   return <ShopItemDisplay items={items} />;
 }

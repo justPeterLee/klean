@@ -35,7 +35,7 @@ export function ShopMenu(props: ShopMenuProps) {
 
 interface ShopItemProps {
   id: string;
-  image: string;
+  image?: string;
   name: string;
   price: string;
 }
