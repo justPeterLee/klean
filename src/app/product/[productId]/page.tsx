@@ -2,6 +2,7 @@ import styles from "../../../styling/Product.module.css";
 import prisma from "../../../../lib/db";
 
 import ProductImage from "@/components/ProductPage/ProductImage";
+import ProductInfo from "@/components/ProductPage/ProductInfo";
 interface Props {
   params: { productId: string };
 }
@@ -28,6 +29,7 @@ export default async function ProductDetail({ params }: Props) {
     <div className={styles.main}>
       <div className={styles.ProductInfo}>
         <ProductImage />
+        <ProductInfo />
       </div>
     </div>
   );
