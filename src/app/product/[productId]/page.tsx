@@ -1,6 +1,7 @@
 import styles from "../../../styling/Product.module.css";
 import prisma from "../../../../lib/db";
 
+import ProductImage from "@/components/ProductPage/ProductImage";
 interface Props {
   params: { productId: string };
 }
@@ -25,7 +26,7 @@ export default async function ProductDetail({ params }: Props) {
   const productData = await getProductDetail(params.productId);
   return (
     <div className={styles.main}>
-      <p>params: {params.productId}</p>
+      <ProductImage />
     </div>
   );
 }
