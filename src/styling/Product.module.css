@@ -5,4 +5,33 @@
   gap: 2rem;
 
   min-height: 91vh;
+
+  position: relative;
+}
+
+/* --------------------------------
+image
+---------------------------------*/
+
+/* image container (main)*/
+.ImageContainer {
+  display: flex;
+  gap: 0.5rem;
+  position: sticky;
+  top: 10rem;
+}
+
+/* Main Image Container (big image)*/
+.MainImageContainer {
+  background-color: rgb(0, 0, 0, 0.2);
+  border-radius: 10px;
+  height: 35rem;
+  width: 30rem;
+}
+
+.SubImageContainer {
+  background-color: rgb(0, 0, 0, 0.2);
+  border-radius: 10px;
+  height: 35rem;
+  width: 5rem;
 }
