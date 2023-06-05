@@ -18,8 +18,27 @@ interface ProductInfoProps {
 }
 export default function ProductInfo(props: ProductInfoProps) {
   return (
-    <div>
-      <p>product info</p>
+    <div className={styles.ProductInfoContainer}>
+      {/* general information (name, price, category, favoirte(button)) */}
+      <div className={styles.ProductGeneralContainer}>
+        <span className={styles.NamePrice}></span>
+        <span className={styles.Category}></span>
+        <button className={styles.Favorite}>{"<3"}</button>
+      </div>
+
+      {/* selection (selection, options) */}
+
+      {/* description (description, technical points) */}
+      <div className={styles.ProductDescriptionContainer}>
+        <span className={styles.Description}>
+          <p></p>
+        </span>
+        <span className={styles.Technical}>
+          <ul className={styles.TechnicalUl}></ul>
+        </span>
+      </div>
+
+      {/* review */}
     </div>
   );
 }
