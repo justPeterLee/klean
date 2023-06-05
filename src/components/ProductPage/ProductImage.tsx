@@ -19,6 +19,7 @@ export default function ProductImage(images: ProductImageProps) {
   const thumbnail = imagesArr.filter((image) => {
     return image.name === "thumbnail";
   })[0].file;
+
   const [mainImage, setMainImage] = useState(thumbnail);
   const readImage = (image: string) => {
     setMainImage(image);
@@ -26,26 +27,37 @@ export default function ProductImage(images: ProductImageProps) {
 
   return (
     <div className={styles.ImageContainer}>
-      {JSON.stringify(thumbnail)}
       <div className={styles.SubImageContainer}>
-        <SubImage sendImage={readImage} />
+        {imagesArr.length ? (
+          imagesArr.map((image, index) => (
+            <SubImage key={index} image={image.file} sendImage={readImage} />
+          ))
+        ) : (
+          <></>
+        )}
       </div>
       <div className={styles.MainImageContainer}>
-        <span>{mainImage}</span>
+        <span className={styles.MainImage}>{mainImage}</span>
       </div>
     </div>
   );
 }
 
 interface SubImageProps {
-  image?: string;
+  image: string;
   sendImage: (params: string) => void;
 }
 
 function SubImage(props: SubImageProps) {
+  const { image, sendImage } = props;
   return (
-    <button className={styles.SubImageButton}>
-      <span className={styles.SubImageImg}></span>
+    <button
+      className={styles.SubImageButton}
+      onClick={() => {
+        sendImage(image);
+      }}
+    >
+      <span className={styles.SubImageImg}>{image}</span>
     </button>
   );
 }
