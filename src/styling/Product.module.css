@@ -9,6 +9,10 @@
   position: relative;
 }
 
+.ProductInfo {
+  display: flex;
+  gap: 1rem;
+}
 /* --------------------------------
 image
 ---------------------------------*/

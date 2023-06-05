@@ -26,7 +26,9 @@ export default async function ProductDetail({ params }: Props) {
   const productData = await getProductDetail(params.productId);
   return (
     <div className={styles.main}>
-      <ProductImage />
+      <div className={styles.ProductInfo}>
+        <ProductImage />
+      </div>
     </div>
   );
 }
