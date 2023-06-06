@@ -86,8 +86,6 @@ function Selection(props: SelectionProps) {
   const [selectionKey, setSelectionKey] = useState<any>({});
   return (
     <div className={styles.SelectionContainer}>
-      {/* {JSON.stringify(selection)} */}
-      {JSON.stringify(selectionKey)}
       {selection.map((select: any) => (
         <Option
           key={select.id}
@@ -109,12 +107,10 @@ interface OptionProp {
 }
 function Option(props: OptionProp) {
   const { selection, selected, readOption } = props;
-  const [selectionKey, setSelectionKey] = useState({});
 
   return (
-    <div>
+    <div className={styles.OptionMainContainer}>
       {selection.selection_name}
-      {selected}
 
       {/* option */}
       <div className={styles.OptionContiner}>
@@ -122,16 +118,12 @@ function Option(props: OptionProp) {
           <button
             style={
               selected === option.option_sku
-                ? { border: "solid 2px black" }
+                ? { border: "solid 2px rgb(125,125,125)" }
                 : {}
             }
             key={option.id}
             className={styles.OptionButton}
             onClick={() => {
-              setSelectionKey({
-                key: selection.selection_key,
-                value: option.option_sku,
-              });
               readOption({
                 key: selection.selection_key,
                 value: option.option_sku,

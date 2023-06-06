@@ -98,6 +98,7 @@ Product Info
   color: rgb(120, 120, 120);
 }
 
+/* favorite */
 .Favorite {
   position: absolute;
   top: 10px;
@@ -130,4 +131,39 @@ Product Info
   display: flex;
   flex-direction: column;
   color: rgb(110, 110, 110);
+}
+
+/* Selection */
+.SelectionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+/* Selection Option */
+.OptionContiner {
+  display: flex;
+  gap: 0.5rem;
+}
+.OptionButton {
+  width: 7rem;
+  height: 3rem;
+  text-align: center;
+  background-color: transparent;
+  border: solid 1.5px rgb(200, 200, 200);
+  border-radius: 5px;
+}
+
+.OptionButton p {
+  margin: 0;
+}
+
+.OptionButton:hover {
+  cursor: pointer;
+  background-color: rgb(250, 250, 250);
+}
+
+.OptionMainContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
