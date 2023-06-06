@@ -24,7 +24,7 @@ async function getProductDetail(productId: string) {
   console.log(productData);
 }
 export default async function ProductDetail({ params }: Props) {
-  const productData = await getProductDetail(params.productId);
+  // const productData = await getProductDetail(params.productId);
   return (
     <div className={styles.main}>
       <div className={styles.ProductInfo}>

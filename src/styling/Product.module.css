@@ -5,13 +5,11 @@
   gap: 2rem;
 
   min-height: 91vh;
-
-  position: relative;
 }
 
 .ProductInfo {
   display: flex;
-  gap: 1rem;
+  gap: 3rem;
 }
 /* --------------------------------
 image
@@ -21,8 +19,9 @@ image
 .ImageContainer {
   display: flex;
   gap: 0.5rem;
+  position: relative;
+  position: -webkit-sticky;
   position: sticky;
-  top: 10rem;
 }
 
 /* Main Image Container (big image)*/
@@ -60,4 +59,68 @@ image
 
 .SubImageButton:hover {
   cursor: pointer;
+}
+
+/* --------------------------------
+Product Info
+---------------------------------*/
+.ProductInfoContainer {
+  width: 25rem;
+}
+
+/* product general */
+.ProductGeneralContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  position: relative;
+}
+
+.ProductGeneralContainer p {
+  margin: 0;
+}
+
+.NamePrice {
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+}
+
+#name {
+  font-size: 25px;
+}
+#price {
+  font-size: 25px;
+  /* margin-right: 5rem; */
+}
+
+.Category {
+  color: rgb(120, 120, 120);
+}
+
+.Favorite {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  border: none;
+  font-size: 20px;
+  transform: rotate(270deg);
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+}
+
+.Favorite p {
+  margin: 0;
+}
+
+.line {
+  width: 100%;
+  height: 1.5px;
+  background-color: rgb(200, 200, 200);
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
 }

@@ -31,13 +31,16 @@ export default function ProductInfo(props: ProductInfoProps) {
       {/* general information (name, price, category, favoirte(button)) */}
       <div className={styles.ProductGeneralContainer}>
         <span className={styles.NamePrice}>
-          <p>{dummyData.name}</p>
-          <p>${dummyData.price}</p>
+          <p id={styles.name}>{dummyData.name}</p>
+          <p id={styles.price}>${dummyData.price}</p>
         </span>
+
         <span className={styles.Category}>{dummyData.category}</span>
+
         <button className={styles.Favorite}>{"<3"}</button>
       </div>
 
+      <LINEBREAK />
       {/* selection (selection, options) */}
 
       {/* description (description, technical points) */}
@@ -57,4 +60,8 @@ export default function ProductInfo(props: ProductInfoProps) {
       {/* review */}
     </div>
   );
+}
+
+function LINEBREAK() {
+  return <div className={styles.line}></div>;
 }
