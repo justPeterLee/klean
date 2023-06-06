@@ -352,8 +352,8 @@ model product_sku {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  product_sku String @db.VarChar(10000)
-
+  product_sku String  @db.VarChar(10000)
+  quanity     Int     @default(10)
   product_id  Int
   product_ref product @relation(fields: [product_id], references: [id])
 
