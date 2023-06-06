@@ -124,3 +124,10 @@ Product Info
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
 }
+
+/* Product Descroption */
+.ProductDescriptionContainer {
+  display: flex;
+  flex-direction: column;
+  color: rgb(110, 110, 110);
+}
