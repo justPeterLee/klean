@@ -1,20 +1,23 @@
+"use client";
+import { useState } from "react";
 import styles from "../../styling/Product.module.css";
 
 interface ProductInfoProps {
-  data?: {
-    name: string;
-    price: number | string;
-    category: string;
-    description: string;
-    technical: string[];
-    review: {
-      rate: string | number;
-      date: string | Date;
-      message: string;
-      user?: string;
-    };
-    selection: any[];
-  };
+  //   data?: {
+  //     name: string;
+  //     price: number | string;
+  //     category: string;
+  //     description: string;
+  //     technical: string[];
+  //     review: {
+  //       rate: string | number;
+  //       date: string | Date;
+  //       message: string;
+  //       user?: string;
+  //     };
+  //     selection: any[];
+  //   };
+  data: any;
 }
 
 const dummyData = {
@@ -26,6 +29,8 @@ const dummyData = {
   technical: ["1200/1600 dpi", "white, tan, grey", "wireless/wired", "PET"],
 };
 export default function ProductInfo(props: ProductInfoProps) {
+  const { data } = props;
+
   return (
     <div className={styles.ProductInfoContainer}>
       {/* general information (name, price, category, favoirte(button)) */}
@@ -43,6 +48,10 @@ export default function ProductInfo(props: ProductInfoProps) {
       <LINEBREAK />
       {/* selection (selection, options) */}
 
+      <Selection selection={data.product_selection} />
+
+      <LINEBREAK />
+
       {/* description (description, technical points) */}
       <div className={styles.ProductDescriptionContainer}>
         <span className={styles.Description}>
@@ -57,6 +66,8 @@ export default function ProductInfo(props: ProductInfoProps) {
         </span>
       </div>
 
+      <LINEBREAK />
+
       {/* review */}
     </div>
   );
@@ -64,4 +75,73 @@ export default function ProductInfo(props: ProductInfoProps) {
 
 function LINEBREAK() {
   return <div className={styles.line}></div>;
+}
+
+interface SelectionProps {
+  //   selection?: {}[];
+  selection: any;
+}
+function Selection(props: SelectionProps) {
+  const { selection } = props;
+  const [selectionKey, setSelectionKey] = useState<any>({});
+  return (
+    <div className={styles.SelectionContainer}>
+      {/* {JSON.stringify(selection)} */}
+      {JSON.stringify(selectionKey)}
+      {selection.map((select: any) => (
+        <Option
+          key={select.id}
+          selection={select}
+          selected={selectionKey[select.selection_key]}
+          readOption={(option: any) => {
+            setSelectionKey({ ...selectionKey, [option.key]: option.value });
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+interface OptionProp {
+  selection: any;
+  selected: any;
+  readOption: (params: { key: string | number; value: string }) => void;
+}
+function Option(props: OptionProp) {
+  const { selection, selected, readOption } = props;
+  const [selectionKey, setSelectionKey] = useState({});
+
+  return (
+    <div>
+      {selection.selection_name}
+      {selected}
+
+      {/* option */}
+      <div className={styles.OptionContiner}>
+        {selection.product_option.map((option: any) => (
+          <button
+            style={
+              selected === option.option_sku
+                ? { border: "solid 2px black" }
+                : {}
+            }
+            key={option.id}
+            className={styles.OptionButton}
+            onClick={() => {
+              setSelectionKey({
+                key: selection.selection_key,
+                value: option.option_sku,
+              });
+              readOption({
+                key: selection.selection_key,
+                value: option.option_sku,
+              });
+            }}
+          >
+            <p key={option.id}>{option.option_name}</p>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 }
