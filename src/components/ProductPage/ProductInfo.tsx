@@ -33,6 +33,8 @@ export default function ProductInfo(props: ProductInfoProps) {
 
   return (
     <div className={styles.ProductInfoContainer}>
+      {/* {data.product_sku.map((sku: any) => JSON.stringify(sku))} */}
+
       {/* general information (name, price, category, favoirte(button)) */}
       <div className={styles.ProductGeneralContainer}>
         <span className={styles.NamePrice}>
@@ -48,7 +50,11 @@ export default function ProductInfo(props: ProductInfoProps) {
       <LINEBREAK />
       {/* selection (selection, options) */}
 
-      <Selection selection={data.product_selection} />
+      <Selection
+        selection={data.product_selection}
+        sku={data.product_sku}
+        available={data.product_sku}
+      />
 
       <LINEBREAK />
 
@@ -80,33 +86,49 @@ function LINEBREAK() {
 interface SelectionProps {
   //   selection?: {}[];
   selection: any;
+  sku: any;
+  available: any;
 }
 function Selection(props: SelectionProps) {
-  const { selection } = props;
-  const [selectionKey, setSelectionKey] = useState<any>({});
+  const { selection, sku, available } = props;
+  const [selectionKey, setSelectionKey] = useState<any>(Object.create(null));
   return (
     <div className={styles.SelectionContainer}>
-      {selection.map((select: any) => (
-        <Option
-          key={select.id}
-          selection={select}
-          selected={selectionKey[select.selection_key]}
-          readOption={(option: any) => {
-            setSelectionKey({ ...selectionKey, [option.key]: option.value });
-          }}
-        />
-      ))}
+      {selection.map((select: any) => {
+        // console.log(select);
+        return (
+          <Option
+            key={select.id}
+            selection={select}
+            selected={selectionKey[select.selection_key]}
+            selectedSku={selectionKey}
+            sku={sku}
+            readOption={(option: any) => {
+              setSelectionKey({ ...selectionKey, [option.key]: option.value });
+            }}
+          />
+        );
+      })}
     </div>
   );
 }
 
 interface OptionProp {
   selection: any;
-  selected: any;
+  selected: string;
+  selectedSku: any;
+  sku: any[];
   readOption: (params: { key: string | number; value: string }) => void;
 }
 function Option(props: OptionProp) {
-  const { selection, selected, readOption } = props;
+  const { selection, selected, selectedSku, sku, readOption } = props;
+  const skuStructure = sku.map((skuData: any) => {
+    const skuValues = skuData.product_sku.split("-");
+    skuValues.splice(0, 3);
+    // console.log(skuValues);
+    return { sku: skuValues, quanity: skuData.quanity };
+  });
+  // console.log(skuStructure);
 
   return (
     <div className={styles.OptionMainContainer}>
@@ -114,25 +136,68 @@ function Option(props: OptionProp) {
 
       {/* option */}
       <div className={styles.OptionContiner}>
-        {selection.product_option.map((option: any) => (
-          <button
-            style={
-              selected === option.option_sku
-                ? { border: "solid 2px rgb(125,125,125)" }
-                : {}
+        {selection.product_option.map((option: any) => {
+          let assignSku: any[] = [];
+
+          skuStructure.map((skuStructureArr: any) => {
+            if (skuStructureArr.sku.includes(option.option_sku)) {
+              assignSku.push(skuStructureArr);
             }
-            key={option.id}
-            className={styles.OptionButton}
-            onClick={() => {
-              readOption({
-                key: selection.selection_key,
-                value: option.option_sku,
-              });
-            }}
-          >
-            <p key={option.id}>{option.option_name}</p>
-          </button>
-        ))}
+          });
+
+          let assSelectedSku: any[] = [];
+          let isInStock = true;
+          let proxySelectedSku = { ...selectedSku };
+          proxySelectedSku[selection.selection_key] = option.option_sku;
+
+          if (Object.keys(proxySelectedSku).length) {
+            assignSku.map((skuArr: any) => {
+              let belongs = true;
+              for (let key in proxySelectedSku) {
+                if (skuArr.sku[key] === proxySelectedSku[key]) {
+                  belongs = true;
+                } else {
+                  belongs = false;
+                  break;
+                }
+              }
+
+              if (belongs) {
+                assSelectedSku.push(skuArr);
+              }
+            });
+
+            for (let obj in assSelectedSku) {
+              if (assSelectedSku[obj].quanity) {
+                isInStock = true;
+                break;
+              } else {
+                isInStock = false;
+              }
+            }
+          }
+
+          return (
+            <button
+              style={
+                selected === option.option_sku
+                  ? { border: "solid 2px rgb(125,125,125)" }
+                  : {}
+              }
+              key={option.id}
+              className={styles.OptionButton}
+              onClick={() => {
+                readOption({
+                  key: selection.selection_key,
+                  value: option.option_sku,
+                });
+              }}
+              disabled={!isInStock}
+            >
+              <p key={option.id}>{option.option_name}</p>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
