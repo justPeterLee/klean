@@ -14,7 +14,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { name, price, category, description, points, selection, images } =
+  const { name, price, category, description, points, selection, images, sku } =
     await req.body;
 
   let product_id;
@@ -28,6 +28,7 @@ export default async function handler(
         await attachCategory(category, ProductRes.id);
         await attactPoint(points, ProductRes.id);
         await attactSelection(selection, ProductRes.id);
+        await attachSku(sku, ProductRes.id);
       } else {
         throw console.log("error");
       }
@@ -117,5 +118,20 @@ async function attachCategory(categoryId: any, productId: number) {
     });
   } catch (err) {
     throw console.log("Error with attaching category: ", err);
+  }
+}
+
+// attact sku values
+async function attachSku(sku: string[], productId: number) {
+  try {
+    const skuArr = sku.map((skuValue: string) => {
+      return { product_sku: skuValue, product_id: productId };
+    });
+
+    await prisma.product_sku.createMany({
+      data: skuArr,
+    });
+  } catch (err) {
+    throw console.log("Error with attaching sku value: ", err);
   }
 }
