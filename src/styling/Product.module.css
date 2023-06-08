@@ -167,3 +167,17 @@ Product Info
   flex-direction: column;
   gap: 0.5rem;
 }
+
+/* add to cart */
+.AddToCartButton {
+  height: 3rem;
+  width: 10rem;
+  border-radius: 10px;
+  border: none;
+  margin-top: 1.5rem;
+}
+
+.AddToCartButton:hover {
+  cursor: pointer;
+  background-color: rgb(230, 230, 230);
+}

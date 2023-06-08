@@ -56,6 +56,8 @@ export default function ProductInfo(props: ProductInfoProps) {
         available={data.product_sku}
       />
 
+      <button className={styles.AddToCartButton}>add to cart</button>
+
       <LINEBREAK />
 
       {/* description (description, technical points) */}
