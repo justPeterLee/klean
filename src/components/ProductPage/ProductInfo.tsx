@@ -30,7 +30,18 @@ const dummyData = {
 };
 export default function ProductInfo(props: ProductInfoProps) {
   const { data } = props;
-
+  const [productSku, setProductSku] = useState<any>();
+  const decryptSku = (sku: any) => {
+    const proxySku: string[] = data.product_sku[0].product_sku
+      .split("-")
+      .splice(0, 3);
+    if (Object.keys(sku).length) {
+      for (let key in sku) {
+        proxySku.push(sku[key]);
+      }
+    }
+    setProductSku(proxySku.join("-"));
+  };
   return (
     <div className={styles.ProductInfoContainer}>
       {/* {data.product_sku.map((sku: any) => JSON.stringify(sku))} */}
@@ -50,13 +61,24 @@ export default function ProductInfo(props: ProductInfoProps) {
       <LINEBREAK />
       {/* selection (selection, options) */}
 
+      {JSON.stringify(productSku)}
       <Selection
         selection={data.product_selection}
         sku={data.product_sku}
         available={data.product_sku}
+        readOption={(params) => {
+          decryptSku(params);
+        }}
       />
 
-      <button className={styles.AddToCartButton}>add to cart</button>
+      <button
+        className={styles.AddToCartButton}
+        onClick={() => {
+          console.log(productSku);
+        }}
+      >
+        add to cart
+      </button>
 
       <LINEBREAK />
 
@@ -90,9 +112,10 @@ interface SelectionProps {
   selection: any;
   sku: any;
   available: any;
+  readOption: (params: any) => void;
 }
 function Selection(props: SelectionProps) {
-  const { selection, sku, available } = props;
+  const { selection, sku, available, readOption } = props;
   const [selectionKey, setSelectionKey] = useState<any>(Object.create(null));
   return (
     <div className={styles.SelectionContainer}>
@@ -107,6 +130,7 @@ function Selection(props: SelectionProps) {
             sku={sku}
             readOption={(option: any) => {
               setSelectionKey({ ...selectionKey, [option.key]: option.value });
+              readOption({ ...selectionKey, [option.key]: option.value });
             }}
           />
         );
