@@ -1,8 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import styles from "./Navbar.module.css";
 import Link from "next/link";
+import { MyContext } from "../ClientContext";
 export default function Navbar() {
+  const context = useContext(MyContext);
   let lastScroll = 0;
   const [topStyle, setTopStyle] = useState<string>();
 
@@ -35,7 +37,16 @@ export default function Navbar() {
         </div>
         <div className={styles.iconContainer}>
           <Link href={"/user"}>user</Link>
-          <button className={styles.cartButton}> cart </button>
+          <button
+            className={styles.cartButton}
+            onClick={() => {
+              context?.setCartState(true);
+            }}
+          >
+            {" "}
+            cart{" "}
+          </button>
+          {JSON.stringify(context?.cartActive)}
         </div>
       </div>
     </div>

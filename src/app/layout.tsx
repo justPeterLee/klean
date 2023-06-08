@@ -4,7 +4,10 @@ import { Inter } from "next/font/google";
 import AuthProvider from "./AuthProvider";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
-import Client from "@/components/ClientComponet";
+
+import { BackDrop } from "@/components/ClientContext";
+
+import ClientContextProvider from "@/components/ClientContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -20,13 +23,12 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <html lang="en">
-        <body className={inter.className}>
-          <Client>
-            <Navbar />
-            {children}
-            <Footer />
-          </Client>
-        </body>
+        <ClientContextProvider>
+          <BackDrop />
+          <Navbar />
+          {children}
+          <Footer />
+        </ClientContextProvider>
       </html>
     </AuthProvider>
   );
