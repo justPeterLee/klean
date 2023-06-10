@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styles from "../../styling/Product.module.css";
-
+import { MyContext } from "../ClientContext";
 interface ProductInfoProps {
   //   data?: {
   //     name: string;
@@ -30,6 +30,10 @@ const dummyData = {
 };
 export default function ProductInfo(props: ProductInfoProps) {
   const { data } = props;
+  const context = useContext(MyContext);
+  const thumbnail = data.image.filter((images: any) => {
+    return images.image_name === "thumbnail";
+  })[0];
   const [productSku, setProductSku] = useState<any>();
   const decryptSku = (sku: any) => {
     const proxySku: string[] = data.product_sku[0].product_sku
@@ -41,6 +45,69 @@ export default function ProductInfo(props: ProductInfoProps) {
       }
     }
     setProductSku(proxySku.join("-"));
+  };
+
+  const addToCart = () => {
+    console.log("sku: ", productSku);
+    // console.log(data);
+    console.log("local storage: ", window.localStorage.getItem("cart"));
+
+    // sku condition check
+
+    const selectedSKU = data.product_sku.filter((sku: any) => {
+      return sku.product_sku === productSku;
+    });
+
+    if (selectedSKU.length) {
+      if (selectedSKU[0].quanity) {
+        const productData = {
+          id: data.id,
+          name: data.product_name,
+          price: data.product_price,
+          image: thumbnail.image_file,
+          skuId: selectedSKU[0].id,
+        };
+
+        const currentCart: string | null = window.localStorage.getItem("cart");
+
+        const newCart = currentCart && JSON.parse(currentCart);
+
+        if (newCart) {
+          const cartFilter = newCart.filter(
+            (item: any) => item.skuId === productData.skuId
+          );
+          if (cartFilter.length) {
+            const updatedCart = newCart.map((item: any) => {
+              if (item === cartFilter[0]) {
+                return { ...item, quantity: item.quantity + 1 };
+              } else {
+                return item;
+              }
+            });
+
+            window.localStorage.setItem("cart", JSON.stringify(updatedCart));
+          } else {
+            window.localStorage.setItem(
+              "cart",
+              JSON.stringify([...newCart, { ...productData, quantity: 1 }])
+            );
+          }
+        } else {
+          window.localStorage.setItem(
+            "cart",
+            JSON.stringify([{ ...productData, quantity: 1 }])
+          );
+        }
+
+        console.log("new local storage: ", window.localStorage.getItem("cart"));
+      } else {
+        console.log("out of stock");
+      }
+    } else {
+      console.log("failed");
+    }
+
+    // console.log(selectedSKU);
   };
   return (
     <div className={styles.ProductInfoContainer}>
@@ -71,12 +138,7 @@ export default function ProductInfo(props: ProductInfoProps) {
         }}
       />
 
-      <button
-        className={styles.AddToCartButton}
-        onClick={() => {
-          console.log(productSku);
-        }}
-      >
+      <button className={styles.AddToCartButton} onClick={addToCart}>
         add to cart
       </button>
 

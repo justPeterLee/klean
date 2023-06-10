@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import AuthProvider from "./AuthProvider";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
-
+import Cart from "@/components/Cart/Cart";
 import { BackDrop } from "@/components/ClientContext";
 
 import ClientContextProvider from "@/components/ClientContext";
@@ -24,6 +24,7 @@ export default function RootLayout({
     <AuthProvider>
       <html lang="en">
         <ClientContextProvider>
+          <Cart />
           <BackDrop />
           <Navbar />
           {children}
