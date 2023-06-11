@@ -51,6 +51,13 @@ export default function Cart() {
     // window.localStorage.setItem("cart", JSON.stringify(null));
     setCart(JSON.parse(window.localStorage.getItem("cart")!));
   }, [window.localStorage.getItem("cart")]);
+
+  const [newCartItem, setNewCartItem] = useState(
+    JSON.parse(window.localStorage.getItem("newCartItem")!)
+  );
+  useEffect(() => {
+    setNewCartItem(JSON.parse(window.localStorage.getItem("newCartItem")!));
+  }, [window.localStorage.getItem("newCartItem")]);
   return (
     <div
       className={`${styles.CartContainer} ${
