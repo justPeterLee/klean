@@ -116,6 +116,7 @@ interface CartItemProps {
     image: string;
     skuId: number;
     quantity: number;
+    remove?: boolean;
   };
   changeQuantity: (newCart: any) => void;
 }
@@ -133,6 +134,8 @@ function CartItem(props: CartItemProps) {
           } else {
             if (item.quantity - 1 > 0) {
               return { ...item, quantity: item.quantity - 1 };
+            } else {
+              return { ...item, quantity: 1, remove: true };
             }
           }
         } else {
@@ -151,23 +154,27 @@ function CartItem(props: CartItemProps) {
   const removeItem = () => {
     const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
 
-    const updatedCart = cartItems
-      .map((item: any) => {
-        if (data.skuId !== item.skuId) {
-          return item;
-        }
-      })
-      .filter((item: any) => {
-        if (item) {
-          return item;
-        }
-      });
-
+    const updatedCart = cartItems.map((item: any) => {
+      if (data.skuId === item.skuId) {
+        return { ...item, remove: true };
+      } else {
+        return item;
+      }
+    });
     changeQuantity(updatedCart);
   };
 
   return (
     <div className={styles.CartItemContainer}>
+      {data.remove && (
+        <div className={styles.remove}>
+          <p>remove</p>
+          <div className={styles.RemoveButtonContainer}>
+            <button className={styles.CancelRemove}>x</button>
+            <button className={styles.OfficalRemove}>+</button>
+          </div>
+        </div>
+      )}
       <span className={styles.ItemImage}>image</span>
       <div className={styles.ItemInfoContainer}>
         <div className={styles.Iteminfo}>

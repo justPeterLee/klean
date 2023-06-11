@@ -56,7 +56,6 @@ Cart
   justify-content: space-between;
   padding-left: 1rem;
   padding-right: 1rem;
-  margin-bottom: 1rem;
 }
 .CartTitle p {
   margin: 0;
@@ -93,18 +92,21 @@ Cart
   display: flex;
   gap: 1rem;
   flex-direction: column;
+  padding-top: 1rem;
 }
 
 /* Cart Item */
 
 .CartItemContainer {
-  width: 100%;
+  width: 95%;
   height: 8.5rem;
 
   display: flex;
   justify-content: space-between;
 
   align-items: center;
+
+  position: relative;
 }
 
 .ItemImage {
@@ -218,4 +220,43 @@ Cart
   width: 3rem;
   border-radius: 100%;
   margin-left: 4rem;
+}
+
+.remove {
+  position: absolute;
+  height: 100%;
+  width: 105%;
+  background-color: rgb(240, 240, 240, 0.7);
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.remove p {
+  margin: 0;
+  font-size: 30px;
+  color: rgb(232, 79, 79);
+}
+
+.RemoveButtonContainer {
+  display: flex;
+  gap: 1rem;
+}
+
+.CancelRemove,
+.OfficalRemove {
+  border: none;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 5px;
+  background-color: rgb(200, 200, 200);
+}
+
+.CancelRemove:hover,
+.OfficalRemove:hover {
+  cursor: pointer;
 }
