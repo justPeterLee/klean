@@ -58,6 +58,12 @@ export default function Cart() {
   useEffect(() => {
     setNewCartItem(JSON.parse(window.localStorage.getItem("newCartItem")!));
   }, [window.localStorage.getItem("newCartItem")]);
+
+  useEffect(() => {
+    setNewCartItem(null);
+
+    window.localStorage.removeItem("newCartItem");
+  }, []);
   return (
     <div
       className={`${styles.CartContainer} ${
@@ -77,6 +83,7 @@ export default function Cart() {
       </div>
 
       <div className={styles.CartItemDisplay}>
+        {newCartItem && <NewCartItem data={newCartItem} />}
         {cart && cart.length ? (
           cart.map((item: any, index: number) => (
             <CartItem
@@ -195,7 +202,54 @@ function CartItem(props: CartItemProps) {
           {"[]"}
         </button>
         <button className={styles.Heart}>{"<3"}</button>
-      </div>{" "}
+      </div>
+    </div>
+  );
+}
+
+interface NewCartItemProps {
+  data: {
+    id: number;
+    name: string;
+    price: number;
+    image: string;
+    skuId: number;
+  };
+}
+function NewCartItem(props: NewCartItemProps) {
+  const { data } = props;
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        margin: ".5rem",
+      }}
+    >
+      <div
+        className={styles.CartItemContainer}
+        id={styles.NewInfoContainer}
+        style={{ justifyContent: "left", gap: "1.9rem", height: "6rem" }}
+      >
+        <span
+          className={styles.ItemImage}
+          style={{ height: "6rem", width: "6rem" }}
+        >
+          image
+        </span>
+        <div className={styles.ItemInfoContainer} style={{ marginLeft: "0" }}>
+          <div className={styles.Iteminfo}>
+            <span className={styles.name}>{data.name}</span>
+            <span className={styles.category}>Computer Mouse</span>
+          </div>
+
+          <span className={styles.price}>${data.price}</span>
+        </div>
+
+        <div className={styles.CheckMark}></div>
+      </div>
     </div>
   );
 }
