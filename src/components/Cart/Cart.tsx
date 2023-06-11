@@ -62,7 +62,7 @@ export default function Cart() {
         <button
           className={styles.Xbutton}
           onClick={() => {
-            context?.setCartState(false);
+            context?.toggleOff();
           }}
         >
           X

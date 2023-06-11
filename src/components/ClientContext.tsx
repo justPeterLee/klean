@@ -7,6 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 interface MyContextProps {
   cartActive: boolean;
   setCartState: any;
+  toggleOff: () => void;
 }
 
 export const MyContext = createContext<MyContextProps | undefined>(undefined);
@@ -17,9 +18,21 @@ export default function ClientContextProvider({
   children: React.ReactNode;
 }) {
   const [cartState, setCartState] = useState(false);
+
+  const toggleOff = () => {
+    setCartState(false);
+
+    if (JSON.parse(window.localStorage.getItem("newCartItem")!)) {
+      window.localStorage.removeItem("newCartItem");
+    }
+  };
   return (
     <MyContext.Provider
-      value={{ cartActive: cartState, setCartState: setCartState }}
+      value={{
+        cartActive: cartState,
+        setCartState: setCartState,
+        toggleOff: toggleOff,
+      }}
     >
       <body
         className={inter.className}
@@ -39,7 +52,7 @@ export function BackDrop() {
         context?.cartActive && styles.ActiveBackDrop
       }`}
       onClick={() => {
-        context?.setCartState(false);
+        context?.toggleOff();
       }}
     ></div>
   );
