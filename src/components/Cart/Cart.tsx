@@ -48,6 +48,7 @@ export default function Cart() {
     JSON.parse(window.localStorage.getItem("cart")!)
   );
   useEffect(() => {
+    // window.localStorage.setItem("cart", JSON.stringify(null));
     setCart(JSON.parse(window.localStorage.getItem("cart")!));
   }, [window.localStorage.getItem("cart")]);
   return (
@@ -69,9 +70,17 @@ export default function Cart() {
       </div>
 
       <div className={styles.CartItemDisplay}>
-        {cart ? (
+        {cart && cart.length ? (
           cart.map((item: any, index: number) => (
-            <CartItem key={index} data={item} />
+            <CartItem
+              key={index}
+              data={item}
+              changeQuantity={(newCart: any) => {
+                window.localStorage.setItem("cart", JSON.stringify(newCart));
+                const updatedCart: any = window.localStorage.getItem("cart");
+                setCart(JSON.parse(updatedCart));
+              }}
+            />
           ))
         ) : (
           <>no items</>
@@ -94,9 +103,55 @@ interface CartItemProps {
     skuId: number;
     quantity: number;
   };
+  changeQuantity: (newCart: any) => void;
 }
 function CartItem(props: CartItemProps) {
-  const { data } = props;
+  const { data, changeQuantity } = props;
+
+  const quanityChange = (add: boolean) => {
+    const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
+
+    const updatedCart = cartItems
+      .map((item: any) => {
+        if (data.skuId === item.skuId) {
+          if (add) {
+            return { ...item, quantity: item.quantity + 1 };
+          } else {
+            if (item.quantity - 1 > 0) {
+              return { ...item, quantity: item.quantity - 1 };
+            }
+          }
+        } else {
+          return item;
+        }
+      })
+      .filter((item: any) => {
+        if (item) {
+          return item;
+        }
+      });
+
+    changeQuantity(updatedCart);
+  };
+
+  const removeItem = () => {
+    const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
+
+    const updatedCart = cartItems
+      .map((item: any) => {
+        if (data.skuId !== item.skuId) {
+          return item;
+        }
+      })
+      .filter((item: any) => {
+        if (item) {
+          return item;
+        }
+      });
+
+    changeQuantity(updatedCart);
+  };
+
   return (
     <div className={styles.CartItemContainer}>
       <span className={styles.ItemImage}>image</span>
@@ -107,18 +162,34 @@ function CartItem(props: CartItemProps) {
         </div>
 
         <div className={styles.ItemQuantity}>
-          <button className={styles.ItemMinus}>-</button>
+          <button
+            className={styles.ItemMinus}
+            onClick={() => {
+              quanityChange(false);
+            }}
+          >
+            -
+          </button>
           <span className={styles.Quanity}>{data.quantity}</span>
-          <button className={styles.ItemMinus}>+</button>
+          <button
+            className={styles.ItemMinus}
+            onClick={() => {
+              quanityChange(true);
+            }}
+          >
+            +
+          </button>
         </div>
 
         <div className={styles.MisButton}>
-          <button className={styles.Remove}>{"[]"}</button>
+          <button className={styles.Remove} onClick={removeItem}>
+            {"[]"}
+          </button>
           <button className={styles.Heart}>{"<3"}</button>
         </div>
       </div>
 
-      <span className={styles.price}>$120.00</span>
+      <span className={styles.price}>${data.quantity * data.price}</span>
     </div>
   );
 }

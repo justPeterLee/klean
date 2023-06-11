@@ -108,6 +108,7 @@ export default function ProductInfo(props: ProductInfoProps) {
     }
 
     // console.log(selectedSKU);
+    context?.setCartState(true);
   };
   return (
     <div className={styles.ProductInfoContainer}>
