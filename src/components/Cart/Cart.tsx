@@ -161,6 +161,8 @@ function CartItem(props: CartItemProps) {
           <span className={styles.category}>Computer Mouse</span>
         </div>
 
+        <span className={styles.price}>${data.quantity * data.price}</span>
+
         <div className={styles.ItemQuantity}>
           <button
             className={styles.ItemMinus}
@@ -180,16 +182,13 @@ function CartItem(props: CartItemProps) {
             +
           </button>
         </div>
-
-        <div className={styles.MisButton}>
-          <button className={styles.Remove} onClick={removeItem}>
-            {"[]"}
-          </button>
-          <button className={styles.Heart}>{"<3"}</button>
-        </div>
       </div>
-
-      <span className={styles.price}>${data.quantity * data.price}</span>
+      <div className={styles.MisButton}>
+        <button className={styles.Remove} onClick={removeItem}>
+          {"[]"}
+        </button>
+        <button className={styles.Heart}>{"<3"}</button>
+      </div>{" "}
     </div>
   );
 }
