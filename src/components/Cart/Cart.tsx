@@ -94,6 +94,11 @@ export default function Cart() {
                 const updatedCart: any = window.localStorage.getItem("cart");
                 setCart(JSON.parse(updatedCart));
               }}
+              removeItem={(params) => {
+                window.localStorage.setItem("cart", JSON.stringify(params));
+                const updatedCart: any = window.localStorage.getItem("cart");
+                setCart(JSON.parse(updatedCart));
+              }}
             />
           ))
         ) : (
@@ -119,6 +124,7 @@ interface CartItemProps {
     remove?: boolean;
   };
   changeQuantity: (newCart: any) => void;
+  removeItem: (params: any) => void;
 }
 function CartItem(props: CartItemProps) {
   const { data, changeQuantity } = props;
@@ -126,27 +132,21 @@ function CartItem(props: CartItemProps) {
   const quanityChange = (add: boolean) => {
     const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
 
-    const updatedCart = cartItems
-      .map((item: any) => {
-        if (data.skuId === item.skuId) {
-          if (add) {
-            return { ...item, quantity: item.quantity + 1 };
-          } else {
-            if (item.quantity - 1 > 0) {
-              return { ...item, quantity: item.quantity - 1 };
-            } else {
-              return { ...item, quantity: 1, remove: true };
-            }
-          }
+    const updatedCart = cartItems.map((item: any) => {
+      if (data.skuId === item.skuId) {
+        if (add) {
+          return { ...item, quantity: item.quantity + 1 };
         } else {
-          return item;
+          if (item.quantity - 1 > 0) {
+            return { ...item, quantity: item.quantity - 1 };
+          } else {
+            return { ...item, quantity: 1, remove: true };
+          }
         }
-      })
-      .filter((item: any) => {
-        if (item) {
-          return item;
-        }
-      });
+      } else {
+        return item;
+      }
+    });
 
     changeQuantity(updatedCart);
   };
@@ -164,14 +164,50 @@ function CartItem(props: CartItemProps) {
     changeQuantity(updatedCart);
   };
 
+  const offRemoveItem = () => {
+    const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
+
+    const updatedCart = cartItems
+      .map((item: any) => {
+        if (data.skuId !== item.skuId) {
+          return item;
+        }
+      })
+      .filter((item: any) => {
+        if (item) {
+          return item;
+        }
+      });
+
+    changeQuantity(updatedCart);
+  };
+
+  const addBackItem = () => {
+    const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
+
+    const updatedCart = cartItems.map((item: any) => {
+      if (data.skuId === item.skuId) {
+        return { ...item, remove: false };
+      } else {
+        return item;
+      }
+    });
+
+    changeQuantity(updatedCart);
+  };
+
   return (
     <div className={styles.CartItemContainer}>
       {data.remove && (
         <div className={styles.remove}>
           <p>remove</p>
           <div className={styles.RemoveButtonContainer}>
-            <button className={styles.CancelRemove}>x</button>
-            <button className={styles.OfficalRemove}>+</button>
+            <button className={styles.CancelRemove} onClick={addBackItem}>
+              x
+            </button>
+            <button className={styles.OfficalRemove} onClick={offRemoveItem}>
+              +
+            </button>
           </div>
         </div>
       )}
