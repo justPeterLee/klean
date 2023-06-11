@@ -20,7 +20,6 @@ export default function Navbar() {
     lastScroll = currentScroll;
   };
   useEffect(() => {
-    // setPrevScrollpos(window.pageYOffset);
     window.addEventListener("scroll", pageScroll, { passive: true });
   }, []);
 
@@ -43,10 +42,8 @@ export default function Navbar() {
               context?.setCartState(true);
             }}
           >
-            {" "}
-            cart{" "}
+            cart
           </button>
-          {JSON.stringify(context?.cartActive)}
         </div>
       </div>
     </div>

@@ -1,44 +1,85 @@
 "use client";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import styles from "../../styling/Product.module.css";
 import { MyContext } from "../ClientContext";
 interface ProductInfoProps {
-  //   data?: {
-  //     name: string;
-  //     price: number | string;
-  //     category: string;
-  //     description: string;
-  //     technical: string[];
-  //     review: {
-  //       rate: string | number;
-  //       date: string | Date;
-  //       message: string;
-  //       user?: string;
-  //     };
-  //     selection: any[];
-  //   };
-  data: any;
+  data: {
+    id: number;
+    name: string;
+    price: number;
+    category: any;
+    description: string;
+    technical: TechnicalType[];
+    selection: SelectionType[];
+    SKUs: SkuType[];
+    images: ImageType[];
+    review: any[];
+  };
 }
 
-const dummyData = {
-  name: "Product One",
-  price: 120,
-  category: "Computer Mouse",
-  description:
-    "A sleek computer mouse intended to match the sensation of a mechanical keyboard. Instead of the traditional mouse click, we used keyboard switches and caps to replace the traditional mouse click instead for a more familiar and unique experience.",
-  technical: ["1200/1600 dpi", "white, tan, grey", "wireless/wired", "PET"],
-};
+interface SelectionType {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  product_id: number;
+  selection_description: string | null;
+  selection_key: number | null;
+  selection_name: string | null;
+  product_option: OptionType[] | null;
+}
+
+interface OptionType {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  selection_id: number;
+  option_description: null | string;
+  option_name: string | null;
+  option_sku: string | null;
+}
+
+interface ImageType {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  image_description: string | null;
+  image_file: string | null;
+  image_name: string | null;
+  product_id: number;
+}
+
+interface TechnicalType {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  product_id: number;
+  point: string;
+}
+
+interface SkuType {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  product_id: number;
+  product_sku: string;
+  quanity: number;
+}
+
+interface ReviewType {}
 export default function ProductInfo(props: ProductInfoProps) {
   const { data } = props;
   const context = useContext(MyContext);
-  const thumbnail = data.image.filter((images: any) => {
+
+  // get thumbnail
+  const thumbnail = data.images.filter((images: any) => {
     return images.image_name === "thumbnail";
   })[0];
+
   const [productSku, setProductSku] = useState<any>();
+
+  //turn selection into sku
   const decryptSku = (sku: any) => {
-    const proxySku: string[] = data.product_sku[0].product_sku
-      .split("-")
-      .splice(0, 3);
+    const proxySku: string[] = data.SKUs[0].product_sku.split("-").splice(0, 3);
     if (Object.keys(sku).length) {
       for (let key in sku) {
         proxySku.push(sku[key]);
@@ -47,8 +88,9 @@ export default function ProductInfo(props: ProductInfoProps) {
     setProductSku(proxySku.join("-"));
   };
 
+  // add item to selection
   const addToCart = () => {
-    const selectedSKU = data.product_sku.filter((sku: any) => {
+    const selectedSKU = data.SKUs.filter((sku: any) => {
       return sku.product_sku === productSku;
     });
 
@@ -59,8 +101,8 @@ export default function ProductInfo(props: ProductInfoProps) {
         // create instance of cart data (will be passed to cart component )
         const productData = {
           id: data.id,
-          name: data.product_name,
-          price: data.product_price,
+          name: data.name,
+          price: data.price,
           image: thumbnail.image_file,
           skuId: selectedSKU[0].id,
         };
@@ -99,28 +141,28 @@ export default function ProductInfo(props: ProductInfoProps) {
             JSON.stringify([{ ...productData, quantity: 1 }])
           );
         }
+        context?.setCartState(true);
       } else {
         console.log("out of stock");
       }
     } else {
       console.log("failed");
     }
-
-    // console.log(selectedSKU);
-    context?.setCartState(true);
   };
+
+  useEffect(() => {
+    console.log(data);
+  }, []);
   return (
     <div className={styles.ProductInfoContainer}>
-      {/* {data.product_sku.map((sku: any) => JSON.stringify(sku))} */}
-
       {/* general information (name, price, category, favoirte(button)) */}
       <div className={styles.ProductGeneralContainer}>
         <span className={styles.NamePrice}>
-          <p id={styles.name}>{dummyData.name}</p>
-          <p id={styles.price}>${dummyData.price}</p>
+          <p id={styles.name}>{data.name}</p>
+          <p id={styles.price}>${data.price}</p>
         </span>
 
-        <span className={styles.Category}>{dummyData.category}</span>
+        <span className={styles.Category}>{data.category}</span>
 
         <button className={styles.Favorite}>{"<3"}</button>
       </div>
@@ -130,9 +172,9 @@ export default function ProductInfo(props: ProductInfoProps) {
 
       {JSON.stringify(productSku)}
       <Selection
-        selection={data.product_selection}
-        sku={data.product_sku}
-        available={data.product_sku}
+        selection={data.selection}
+        sku={data.SKUs}
+        available={data.SKUs}
         readOption={(params) => {
           decryptSku(params);
         }}
@@ -147,12 +189,12 @@ export default function ProductInfo(props: ProductInfoProps) {
       {/* description (description, technical points) */}
       <div className={styles.ProductDescriptionContainer}>
         <span className={styles.Description}>
-          <p>{dummyData.description}</p>
+          <p>{data.description}</p>
         </span>
         <span className={styles.Technical}>
           <ul className={styles.TechnicalUl}>
-            {dummyData.technical.map((point, index) => (
-              <li key={index}>{point}</li>
+            {data.technical.map((point, index) => (
+              <li key={index}>{point.point}</li>
             ))}
           </ul>
         </span>
