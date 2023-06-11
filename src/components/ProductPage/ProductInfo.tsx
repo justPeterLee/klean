@@ -48,18 +48,15 @@ export default function ProductInfo(props: ProductInfoProps) {
   };
 
   const addToCart = () => {
-    console.log("sku: ", productSku);
-    // console.log(data);
-    console.log("local storage: ", window.localStorage.getItem("cart"));
-
-    // sku condition check
-
     const selectedSKU = data.product_sku.filter((sku: any) => {
       return sku.product_sku === productSku;
     });
 
+    // sku condition check ( make sure sku exists)
     if (selectedSKU.length) {
+      // quantity check ( make sure specific sku is "in-stock")
       if (selectedSKU[0].quanity) {
+        // create instance of cart data (will be passed to cart component )
         const productData = {
           id: data.id,
           name: data.product_name,
@@ -68,10 +65,14 @@ export default function ProductInfo(props: ProductInfoProps) {
           skuId: selectedSKU[0].id,
         };
 
+        // show the newly added item (newest item added)
+        window.localStorage.setItem("newCartItem", JSON.stringify(productData));
+        // get the current cart (stored in local storage)
         const currentCart: string | null = window.localStorage.getItem("cart");
-
+        // parse current cart
         const newCart = currentCart && JSON.parse(currentCart);
 
+        // check if you already have this specific item in your cart
         if (newCart) {
           const cartFilter = newCart.filter(
             (item: any) => item.skuId === productData.skuId
@@ -98,8 +99,6 @@ export default function ProductInfo(props: ProductInfoProps) {
             JSON.stringify([{ ...productData, quantity: 1 }])
           );
         }
-
-        console.log("new local storage: ", window.localStorage.getItem("cart"));
       } else {
         console.log("out of stock");
       }
