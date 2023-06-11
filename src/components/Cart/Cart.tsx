@@ -83,7 +83,7 @@ export default function Cart() {
             />
           ))
         ) : (
-          <>no items</>
+          <div className={styles.NoItems}>( No Items )</div>
         )}
       </div>
 

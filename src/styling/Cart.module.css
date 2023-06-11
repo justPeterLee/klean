@@ -195,3 +195,11 @@ Cart
   height: 2rem;
   width: 2rem;
 }
+
+.NoItems {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
