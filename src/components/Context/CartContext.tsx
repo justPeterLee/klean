@@ -3,8 +3,11 @@ import { useContext, createContext, useState, useEffect } from "react";
 
 interface CartContext {
   cart: CartItem[] | null;
+  total: number;
   getCart: () => void;
   changeCart: (newCart: CartItem[]) => void;
+  changeQuantity: (item: CartItem, add: boolean) => void;
+  removeItem: (item: CartItem) => void;
 }
 
 interface CartItem {
@@ -33,8 +36,12 @@ export default function CartContextProvider({
     JSON.parse(window.localStorage.getItem("cart")!)
   );
 
+  const [total, setTotal] = useState<number>(0);
+
   const getCart = () => {
-    setCart(JSON.parse(window.localStorage.getItem("cart")!));
+    const cart = JSON.parse(window.localStorage.getItem("cart")!);
+    setCart(cart);
+    console.log("asdf");
   };
 
   const changeCart = (newCart: CartItem[]) => {
@@ -42,13 +49,61 @@ export default function CartContextProvider({
     setCart(JSON.parse(window.localStorage.getItem("cart")!));
   };
 
+  const changeQuantity = (curItem: CartItem, add: boolean) => {
+    const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
+
+    const updatedCart = cartItems.map((item: any) => {
+      if (curItem.skuId === item.skuId) {
+        if (add) {
+          return { ...item, quantity: item.quantity + 1 };
+        } else {
+          if (item.quantity - 1 > 0) {
+            return { ...item, quantity: item.quantity - 1 };
+          } else {
+            return { ...item, quantity: 1, remove: true };
+          }
+        }
+      } else {
+        return item;
+      }
+    });
+
+    changeCart(updatedCart);
+  };
+
+  const removeItem = (curItem: CartItem) => {
+    const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
+
+    const updatedCart = cartItems.map((item: any) => {
+      if (curItem.skuId === item.skuId) {
+        return { ...item, remove: true };
+      } else {
+        return item;
+      }
+    });
+    changeCart(updatedCart);
+  };
+
   useEffect(() => {
     setCart(JSON.parse(window.localStorage.getItem("cart")!));
+    const cart = JSON.parse(window.localStorage.getItem("cart")!);
+    let total = 0;
+    cart.map((item: any) => {
+      total += item.quantity * item.price;
+    });
+    setTotal(total);
   }, [window.localStorage.getItem("cart")]);
 
   return (
     <CartContext.Provider
-      value={{ cart: cart, getCart: getCart, changeCart: changeCart }}
+      value={{
+        cart: cart,
+        total: total,
+        getCart: getCart,
+        changeCart: changeCart,
+        changeQuantity: changeQuantity,
+        removeItem: removeItem,
+      }}
     >
       {children}
     </CartContext.Provider>

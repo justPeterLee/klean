@@ -1,6 +1,7 @@
 "use client";
 import { useState, useContext, createContext, FC } from "react";
 import styles from "../styling/Cart.module.css";
+import CartContextProvider from "./Context/CartContext";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,7 +39,7 @@ export default function ClientContextProvider({
         className={inter.className}
         style={cartState ? { overflow: "hidden" } : {}}
       >
-        {children}
+        <CartContextProvider>{children}</CartContextProvider>
       </body>
     </MyContext.Provider>
   );

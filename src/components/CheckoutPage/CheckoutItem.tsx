@@ -1,19 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { CartContext } from "../Context/CartContext";
 import styles from "../../styling/Checkout.module.css";
 
 export default function CheckoutItem() {
-  const [checkoutItems, setCheckoutItems] = useState<CartItem[] | null>(
-    JSON.parse(window.localStorage.getItem("cart")!)
-  );
+  const cartContext = useContext(CartContext);
 
-  useEffect(() => {
-    setCheckoutItems(JSON.parse(window.localStorage.getItem("cart")!));
-  }, [window.localStorage.getItem("cart")]);
   return (
     <div className={styles.ItemDisplay}>
-      {checkoutItems ? (
-        checkoutItems.map((item: CartItem) => (
+      {cartContext?.cart ? (
+        cartContext.cart.map((item: CartItem) => (
           <Item data={item} key={item.skuId} />
         ))
       ) : (

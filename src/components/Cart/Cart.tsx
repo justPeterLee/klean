@@ -2,63 +2,12 @@
 import styles from "../../styling/Cart.module.css";
 import { useContext, useState, useEffect } from "react";
 import { MyContext } from "../ClientContext";
-
-/*
-cart item data
-- product id (parent)
-  - price 
-  - name 
-  - product page naviagtion
-  - image
-
-- sku id 
-  - quanity
-  -specific id
-*/
-
-/*
-cart logic 
-
-- will cart move to server when user is logged in 
-  - save cart token 
-  - store cart in cookie 
-  - when user is logged in add cart item to user page 
-
-- delete item
-  - remove item from cart
-  - update price
-
-- favorite item 
-  - must be logged in 
-  - item sent to user favorite list 
-
-- increase quanity
-  - increase price 
-  - check if quanity is in stock
-
-- decrease quanity
-  - decrease price 
-
-- navigate to checkout page
-*/
+import { CartContext } from "../Context/CartContext";
+import CartItem from "./CartItem";
 
 export default function Cart() {
   const context = useContext(MyContext);
-  const [cart, setCart] = useState<any[] | null>(
-    JSON.parse(window.localStorage.getItem("cart")!)
-  );
-  const [total, setTotal] = useState(0);
-
-  useEffect(() => {
-    // window.localStorage.setItem("cart", JSON.stringify(null));
-    setCart(JSON.parse(window.localStorage.getItem("cart")!));
-    const cart = JSON.parse(window.localStorage.getItem("cart")!);
-    let total = 0;
-    cart.map((item: any) => {
-      total += item.quantity * item.price;
-    });
-    setTotal(total);
-  }, [window.localStorage.getItem("cart")]);
+  const cartContext = useContext(CartContext);
 
   const [newCartItem, setNewCartItem] = useState(
     JSON.parse(window.localStorage.getItem("newCartItem")!)
@@ -69,9 +18,9 @@ export default function Cart() {
 
   useEffect(() => {
     setNewCartItem(null);
-
     window.localStorage.removeItem("newCartItem");
   }, []);
+
   return (
     <div
       className={`${styles.CartContainer} ${
@@ -92,20 +41,13 @@ export default function Cart() {
 
       <div className={styles.CartItemDisplay}>
         {newCartItem && <NewCartItem data={newCartItem} />}
-        {cart && cart.length ? (
-          cart.map((item: any, index: number) => (
+        {cartContext?.cart && cartContext.cart.length ? (
+          cartContext.cart.map((item: any, index: number) => (
             <CartItem
               key={item.skuId}
               data={item}
-              changeQuantity={(newCart: any) => {
-                window.localStorage.setItem("cart", JSON.stringify(newCart));
-                const updatedCart: any = window.localStorage.getItem("cart");
-                setCart(JSON.parse(updatedCart));
-              }}
-              removeItem={(params) => {
-                window.localStorage.setItem("cart", JSON.stringify(params));
-                const updatedCart: any = window.localStorage.getItem("cart");
-                setCart(JSON.parse(updatedCart));
+              changeCart={(newCart) => {
+                cartContext?.changeCart(newCart);
               }}
             />
           ))
@@ -117,154 +59,9 @@ export default function Cart() {
       <div className={styles.CartCheckout}>
         <div className={styles.TotalContainer}>
           <p>Total:</p>
-          <p>${total}</p>
+          <p>${cartContext?.total}</p>
         </div>
         <button className={styles.CheckoutButton}>checkout</button>
-      </div>
-    </div>
-  );
-}
-
-interface CartItemProps {
-  data: {
-    id: number;
-    name: string;
-    price: number;
-    image: string;
-    skuId: number;
-    quantity: number;
-    remove?: boolean;
-  };
-  changeQuantity: (newCart: any) => void;
-  removeItem: (params: any) => void;
-}
-function CartItem(props: CartItemProps) {
-  const { data, changeQuantity } = props;
-
-  const quanityChange = (add: boolean) => {
-    const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
-
-    const updatedCart = cartItems.map((item: any) => {
-      if (data.skuId === item.skuId) {
-        if (add) {
-          return { ...item, quantity: item.quantity + 1 };
-        } else {
-          if (item.quantity - 1 > 0) {
-            return { ...item, quantity: item.quantity - 1 };
-          } else {
-            return { ...item, quantity: 1, remove: true };
-          }
-        }
-      } else {
-        return item;
-      }
-    });
-
-    changeQuantity(updatedCart);
-  };
-
-  const removeItem = () => {
-    const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
-
-    const updatedCart = cartItems.map((item: any) => {
-      if (data.skuId === item.skuId) {
-        return { ...item, remove: true };
-      } else {
-        return item;
-      }
-    });
-    changeQuantity(updatedCart);
-  };
-
-  const [removeAni, setRemoveAni] = useState(false);
-  const offRemoveItem = () => {
-    setRemoveAni(true);
-    setTimeout(() => {
-      const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
-
-      const updatedCart = cartItems
-        .map((item: any) => {
-          if (data.skuId !== item.skuId) {
-            return item;
-          }
-        })
-        .filter((item: any) => {
-          if (item) {
-            return item;
-          }
-        });
-
-      changeQuantity(updatedCart);
-    }, 300);
-  };
-
-  const addBackItem = () => {
-    const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
-
-    const updatedCart = cartItems.map((item: any) => {
-      if (data.skuId === item.skuId) {
-        return { ...item, remove: false };
-      } else {
-        return item;
-      }
-    });
-
-    changeQuantity(updatedCart);
-  };
-
-  return (
-    <div
-      className={`${styles.CartItemContainer} ${
-        removeAni && styles.RemoveCartItem
-      }`}
-    >
-      {data.remove && (
-        <div className={styles.remove}>
-          <p>remove</p>
-          <div className={styles.RemoveButtonContainer}>
-            <button className={styles.CancelRemove} onClick={addBackItem}>
-              x
-            </button>
-            <button className={styles.OfficalRemove} onClick={offRemoveItem}>
-              +
-            </button>
-          </div>
-        </div>
-      )}
-      <span className={styles.ItemImage}>image</span>
-      <div className={styles.ItemInfoContainer}>
-        <div className={styles.Iteminfo}>
-          <span className={styles.name}>{data.name}</span>
-          <span className={styles.category}>Computer Mouse</span>
-        </div>
-
-        <span className={styles.price}>${data.quantity * data.price}</span>
-
-        <div className={styles.ItemQuantity}>
-          <button
-            className={styles.ItemMinus}
-            onClick={() => {
-              quanityChange(false);
-            }}
-          >
-            -
-          </button>
-          <span className={styles.Quanity}>{data.quantity}</span>
-          <button
-            className={styles.ItemMinus}
-            onClick={() => {
-              quanityChange(true);
-            }}
-          >
-            +
-          </button>
-        </div>
-      </div>
-      <div className={styles.MisButton}>
-        <button className={styles.Remove} onClick={removeItem}>
-          {"[]"}
-        </button>
-        <button className={styles.Heart}>{"<3"}</button>
       </div>
     </div>
   );
