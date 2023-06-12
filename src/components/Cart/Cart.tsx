@@ -47,9 +47,17 @@ export default function Cart() {
   const [cart, setCart] = useState<any[] | null>(
     JSON.parse(window.localStorage.getItem("cart")!)
   );
+  const [total, setTotal] = useState(0);
+
   useEffect(() => {
     // window.localStorage.setItem("cart", JSON.stringify(null));
     setCart(JSON.parse(window.localStorage.getItem("cart")!));
+    const cart = JSON.parse(window.localStorage.getItem("cart")!);
+    let total = 0;
+    cart.map((item: any) => {
+      total += item.quantity * item.price;
+    });
+    setTotal(total);
   }, [window.localStorage.getItem("cart")]);
 
   const [newCartItem, setNewCartItem] = useState(
@@ -107,6 +115,10 @@ export default function Cart() {
       </div>
 
       <div className={styles.CartCheckout}>
+        <div className={styles.TotalContainer}>
+          <p>Total:</p>
+          <p>${total}</p>
+        </div>
         <button className={styles.CheckoutButton}>checkout</button>
       </div>
     </div>

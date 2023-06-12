@@ -71,6 +71,8 @@ Cart
   display: flex;
   justify-content: center;
   align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 .CheckoutButton {
   border: none;
@@ -269,4 +271,9 @@ Cart
 
 .RemoveCartItem {
   transform: translateX(30rem);
+}
+
+.TotalContainer {
+  display: flex;
+  gap: 0.5rem;
 }
