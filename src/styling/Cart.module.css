@@ -33,7 +33,6 @@ Cart
   right: -33rem;
   height: 100vh;
   width: 30rem;
-  padding: 1rem;
   background-color: white;
 
   z-index: 2000;
@@ -56,6 +55,7 @@ Cart
   justify-content: space-between;
   padding-left: 1rem;
   padding-right: 1rem;
+  margin-top: 2rem;
 }
 .CartTitle p {
   margin: 0;
@@ -74,9 +74,9 @@ Cart
 }
 .CheckoutButton {
   border: none;
-  width: 38rem;
+  width: 25rem;
   height: 3.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   border-radius: 10px;
 }
 
@@ -90,7 +90,7 @@ Cart
   flex-grow: 1;
   overflow-x: scroll;
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   flex-direction: column;
   padding-top: 1rem;
 }
@@ -98,7 +98,7 @@ Cart
 /* Cart Item */
 
 .CartItemContainer {
-  width: 95%;
+  width: 93%;
   height: 8.5rem;
 
   display: flex;
@@ -107,6 +107,11 @@ Cart
   align-items: center;
 
   position: relative;
+
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  transition: all ease 0.3s;
 }
 
 .ItemImage {
@@ -129,7 +134,7 @@ Cart
   height: 100%;
   display: flex;
   flex-direction: column;
-  margin-left: -10rem;
+  margin-left: -8rem;
   gap: 0.7rem;
   justify-content: center;
 }
@@ -224,8 +229,8 @@ Cart
 
 .remove {
   position: absolute;
-  height: 100%;
-  width: 105%;
+  height: 117%;
+  width: 30rem;
   background-color: rgb(240, 240, 240, 0.7);
   border-radius: 10px;
 
@@ -234,6 +239,7 @@ Cart
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  margin-left: -1rem;
 }
 
 .remove p {
@@ -259,4 +265,8 @@ Cart
 .CancelRemove:hover,
 .OfficalRemove:hover {
   cursor: pointer;
+}
+
+.RemoveCartItem {
+  transform: translateX(30rem);
 }

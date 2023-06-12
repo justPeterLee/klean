@@ -87,7 +87,7 @@ export default function Cart() {
         {cart && cart.length ? (
           cart.map((item: any, index: number) => (
             <CartItem
-              key={index}
+              key={item.skuId}
               data={item}
               changeQuantity={(newCart: any) => {
                 window.localStorage.setItem("cart", JSON.stringify(newCart));
@@ -164,22 +164,26 @@ function CartItem(props: CartItemProps) {
     changeQuantity(updatedCart);
   };
 
+  const [removeAni, setRemoveAni] = useState(false);
   const offRemoveItem = () => {
-    const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
+    setRemoveAni(true);
+    setTimeout(() => {
+      const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
 
-    const updatedCart = cartItems
-      .map((item: any) => {
-        if (data.skuId !== item.skuId) {
-          return item;
-        }
-      })
-      .filter((item: any) => {
-        if (item) {
-          return item;
-        }
-      });
+      const updatedCart = cartItems
+        .map((item: any) => {
+          if (data.skuId !== item.skuId) {
+            return item;
+          }
+        })
+        .filter((item: any) => {
+          if (item) {
+            return item;
+          }
+        });
 
-    changeQuantity(updatedCart);
+      changeQuantity(updatedCart);
+    }, 300);
   };
 
   const addBackItem = () => {
@@ -197,7 +201,11 @@ function CartItem(props: CartItemProps) {
   };
 
   return (
-    <div className={styles.CartItemContainer}>
+    <div
+      className={`${styles.CartItemContainer} ${
+        removeAni && styles.RemoveCartItem
+      }`}
+    >
       {data.remove && (
         <div className={styles.remove}>
           <p>remove</p>
