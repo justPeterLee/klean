@@ -4,8 +4,9 @@ import { useContext, useState, useEffect } from "react";
 import { MyContext } from "../ClientContext";
 import { CartContext } from "../Context/CartContext";
 import CartItem from "./CartItem";
-
+import { useRouter } from "next/navigation";
 export default function Cart() {
+  const router = useRouter();
   const context = useContext(MyContext);
   const cartContext = useContext(CartContext);
 
@@ -61,7 +62,15 @@ export default function Cart() {
           <p>Total:</p>
           <p>${cartContext?.total}</p>
         </div>
-        <button className={styles.CheckoutButton}>checkout</button>
+        <button
+          className={styles.CheckoutButton}
+          onClick={() => {
+            router.push("/checkout");
+            context?.toggleOff();
+          }}
+        >
+          checkout
+        </button>
       </div>
     </div>
   );
