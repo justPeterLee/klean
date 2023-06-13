@@ -53,7 +53,9 @@ function Item(props: ItemProps) {
           <p className={styles.name}>{data.name}</p>
           <p className={styles.category}>{data.category}</p>
         </span>
-        <span className={styles.PriceContainer}>${data.price}</span>
+        <span className={styles.PriceContainer}>
+          ${data.price * data.quantity}
+        </span>
         <span className={styles.QuantityContainer}>
           <button
             className={styles.quantityButton}
