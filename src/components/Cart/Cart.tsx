@@ -71,6 +71,7 @@ interface NewCartItemProps {
   data: {
     id: number;
     name: string;
+    category: string;
     price: number;
     image: string;
     skuId: number;
@@ -102,7 +103,7 @@ function NewCartItem(props: NewCartItemProps) {
         <div className={styles.ItemInfoContainer} style={{ marginLeft: "0" }}>
           <div className={styles.Iteminfo}>
             <span className={styles.name}>{data.name}</span>
-            <span className={styles.category}>Computer Mouse</span>
+            <span className={styles.category}>{data.category}</span>
           </div>
 
           <span className={styles.price}>${data.price}</span>

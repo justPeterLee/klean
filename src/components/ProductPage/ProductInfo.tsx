@@ -102,6 +102,7 @@ export default function ProductInfo(props: ProductInfoProps) {
         const productData = {
           id: data.id,
           name: data.name,
+          category: data.category,
           price: data.price,
           image: thumbnail.image_file,
           skuId: selectedSKU[0].id,
