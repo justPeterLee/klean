@@ -41,6 +41,7 @@ interface ItemProps {
 }
 function Item(props: ItemProps) {
   const { data } = props;
+  const cartContext = useContext(CartContext);
 
   return (
     <div className={styles.ItemContainer}>
@@ -54,9 +55,21 @@ function Item(props: ItemProps) {
         </span>
         <span className={styles.PriceContainer}>{data.price}</span>
         <span className={styles.QuantityContainer}>
-          <button>-</button>
+          <button
+            onClick={() => {
+              cartContext?.changeQuantity(data, false);
+            }}
+          >
+            -
+          </button>
           <span>{data.quantity}</span>
-          <button>+</button>
+          <button
+            onClick={() => {
+              cartContext?.changeQuantity(data, true);
+            }}
+          >
+            +
+          </button>
         </span>
       </div>
       <div className={styles.MisButtonContainer}>
