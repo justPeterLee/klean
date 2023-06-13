@@ -79,7 +79,7 @@ function Item(props: ItemProps) {
       <div className={styles.MisButtonContainer}>
         <button
           className={styles.MisButton}
-          onClick={() => cartContext?.removeItem(data)}
+          onClick={() => cartContext?.instantRemove(data)}
         >
           []
         </button>

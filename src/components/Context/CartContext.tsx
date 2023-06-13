@@ -8,6 +8,7 @@ interface CartContext {
   changeCart: (newCart: CartItem[]) => void;
   changeQuantity: (item: CartItem, add: boolean) => void;
   removeItem: (item: CartItem) => void;
+  instantRemove: (curItem: CartItem) => void;
 }
 
 interface CartItem {
@@ -84,6 +85,22 @@ export default function CartContextProvider({
     changeCart(updatedCart);
   };
 
+  const instantRemove = (curItem: CartItem) => {
+    const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
+
+    const updatedCart = cartItems
+      .map((item: CartItem) => {
+        if (curItem.skuId !== item.skuId) {
+          return item;
+        }
+      })
+      .filter((item: CartItem | undefined) => {
+        if (item) {
+          return item;
+        }
+      });
+    changeCart(updatedCart);
+  };
   useEffect(() => {
     setCart(JSON.parse(window.localStorage.getItem("cart")!));
     const cart = JSON.parse(window.localStorage.getItem("cart")!);
@@ -103,6 +120,7 @@ export default function CartContextProvider({
         changeCart: changeCart,
         changeQuantity: changeQuantity,
         removeItem: removeItem,
+        instantRemove: instantRemove,
       }}
     >
       {children}
