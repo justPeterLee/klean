@@ -73,7 +73,12 @@ function Item(props: ItemProps) {
         </span>
       </div>
       <div className={styles.MisButtonContainer}>
-        <button className={styles.MisButton}>[]</button>
+        <button
+          className={styles.MisButton}
+          onClick={() => cartContext?.removeItem(data)}
+        >
+          []
+        </button>
         <button className={styles.MisButton}>{"<3"}</button>
       </div>
     </div>
