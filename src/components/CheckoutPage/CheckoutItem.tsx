@@ -50,12 +50,13 @@ function Item(props: ItemProps) {
       </div>
       <div className={styles.InfoContainer}>
         <span className={styles.NameCategory}>
-          <p>{data.name}</p>
-          <p>{data.category}</p>
+          <p className={styles.name}>{data.name}</p>
+          <p className={styles.category}>{data.category}</p>
         </span>
-        <span className={styles.PriceContainer}>{data.price}</span>
+        <span className={styles.PriceContainer}>${data.price}</span>
         <span className={styles.QuantityContainer}>
           <button
+            className={styles.quantityButton}
             onClick={() => {
               cartContext?.changeQuantity(data, false);
             }}
@@ -64,6 +65,7 @@ function Item(props: ItemProps) {
           </button>
           <span>{data.quantity}</span>
           <button
+            className={styles.quantityButton}
             onClick={() => {
               cartContext?.changeQuantity(data, true);
             }}
