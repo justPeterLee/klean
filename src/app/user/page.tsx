@@ -1,5 +1,7 @@
 "use client";
 import Register from "@/components/User/Register/Register";
+import User from "@/components/User/UserPage/User";
+import styles from "../../styling/User.module.css";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -20,5 +22,9 @@ export default function user() {
     return <p>Loading...</p>;
   }
 
-  return <p>user page</p>;
+  return (
+    <div className={styles.main}>
+      <User />
+    </div>
+  );
 }

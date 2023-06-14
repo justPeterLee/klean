@@ -29,7 +29,8 @@ Login page
   transition: background-color ease 0.1s;
 }
 
-.SignInButton:hover {
+.SignInButton:hover,
+.UserSignoutButton:hover {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.2);
 }
@@ -41,4 +42,36 @@ Login page
 .Title {
   margin: 0;
   margin-bottom: -0.5rem;
+}
+
+/* -------------------------------------
+User page
+------------------------------------- */
+.UserContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+.UsernamePlate {
+  width: 50rem;
+  height: 15rem;
+  background-color: rgb(230, 230, 230);
+  border-radius: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 20px;
+}
+
+.UserSignoutButton {
+  height: 3rem;
+  width: 12rem;
+  border-radius: 10px;
+  border: none;
+  transition: all ease 0.2s;
 }
