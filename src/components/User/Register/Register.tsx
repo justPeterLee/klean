@@ -1,7 +1,20 @@
 "use client";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { InputValidation } from "@/components/ContactPage/ContactForm";
+import styles from "../../../styling/User.module.css";
+import Link from "next/link";
 export default function Register() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [error, setError] = useState({
+    first: true,
+    last: true,
+    email: true,
+    password: true,
+  });
+
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
   const [email, setEmail] = useState("");
@@ -25,45 +38,67 @@ export default function Register() {
     //   throw new Error(data.message || "Something went wrong!");
     // }
   };
+  useEffect(() => {
+    if (session && status === "authenticated") {
+      router.push("/user");
+    }
+  }, [status, router]);
   return (
-    <form onSubmit={handleRegister}>
-      <input
-        type="text"
-        value={first}
-        onChange={(e) => {
-          setFirst(e.target.value);
+    <form onSubmit={handleRegister} className={styles.LoginContainer}>
+      <p className={styles.Title}>Register</p>
+      <InputValidation
+        valueName="First"
+        triggerError={error.first}
+        errorMessage="must include first name"
+        sendValue={(value) => {
+          // setName(value);
+          setFirst(value);
         }}
-        placeholder="first name"
+        characterLimit={40}
+        width={{ width: "20rem" }}
       />
 
-      <input
-        type="text"
-        value={last}
-        onChange={(e) => {
-          setLast(e.target.value);
+      <InputValidation
+        valueName="Last"
+        triggerError={error.first}
+        errorMessage="must include last name"
+        sendValue={(value) => {
+          // setName(value);
+          setLast(value);
         }}
-        placeholder="last name"
+        characterLimit={40}
+        width={{ width: "20rem" }}
       />
 
-      <input
-        type="text"
-        value={email}
-        onChange={(e) => {
-          setEmail(e.target.value);
+      <InputValidation
+        valueName="Email"
+        triggerError={error.first}
+        errorMessage="must include email"
+        sendValue={(value) => {
+          // setName(value);
+          setEmail(value);
         }}
-        placeholder="email"
+        characterLimit={40}
+        width={{ width: "20rem" }}
       />
 
-      <input
-        type="text"
-        value={password}
-        onChange={(e) => {
-          setPassword(e.target.value);
+      <InputValidation
+        valueName="Password"
+        triggerError={error.first}
+        errorMessage="must include password"
+        sendValue={(value) => {
+          // setName(value);
+          setPassword(value);
         }}
-        placeholder="password"
+        characterLimit={40}
+        width={{ width: "20rem" }}
       />
 
-      <button type="submit">submit</button>
+      <button type="submit" className={styles.SignInButton}>
+        submit
+      </button>
+
+      <Link href={"/user/login"}>already have an account</Link>
     </form>
   );
 }

@@ -1,9 +1,18 @@
 "use client";
+import styles from "../../../styling/User.module.css";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { InputValidation } from "@/components/ContactPage/ContactForm";
+import Link from "next/link";
 export default function Login() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [error, setError] = useState({
+    email: true,
+    password: true,
+  });
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,37 +29,52 @@ export default function Login() {
     }
   };
 
+  useEffect(() => {
+    if (session && status === "authenticated") {
+      router.push("/user");
+    }
+  }, [status, router]);
   return (
-    <div>
-      {JSON.stringify(session)}
-      <input
-        className="login-forum"
-        type="text"
-        value={email}
-        onChange={(e) => {
-          setEmail(e.target.value);
+    <div className={styles.LoginContainer}>
+      <p className={styles.Title}>Login</p>
+      <InputValidation
+        valueName="Email"
+        triggerError={error.email}
+        errorMessage="must include email"
+        sendValue={(value) => {
+          // setName(value);
+          setEmail(value);
         }}
-        placeholder="email"
+        characterLimit={40}
+        width={{ width: "20rem" }}
       />
 
-      <input
-        className="login-forum"
-        type="text"
-        value={password}
-        onChange={(e) => {
-          setPassword(e.target.value);
+      <InputValidation
+        valueName="Password"
+        triggerError={error.password}
+        errorMessage="must include password"
+        sendValue={(value) => {
+          // setName(value);
+          setPassword(value);
         }}
-        placeholder="password"
+        characterLimit={40}
+        width={{ width: "20rem" }}
       />
 
-      <button onClick={handleSignIn}>sign in</button>
-      <button
+      <button onClick={handleSignIn} className={styles.SignInButton}>
+        sign in
+      </button>
+
+      <Link href={"/user/register"} className={styles.Link}>
+        create account
+      </Link>
+      {/* <button
         onClick={() => {
           signOut({ redirect: true, callbackUrl: "/user/login" });
         }}
       >
         sign out
-      </button>
+      </button> */}
     </div>
   );
 }

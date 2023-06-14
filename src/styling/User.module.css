@@ -1,0 +1,44 @@
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+
+  min-height: 75vh;
+}
+
+/* -------------------------------------
+Login page
+------------------------------------- */
+
+.LoginContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.SignInButton {
+  margin-top: -0.5rem;
+  height: 2.5rem;
+  width: 20rem;
+  border-radius: 5px;
+  border: none;
+
+  transition: background-color ease 0.1s;
+}
+
+.SignInButton:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.Link {
+  font-size: 15px;
+}
+
+.Title {
+  margin: 0;
+  margin-bottom: -0.5rem;
+}
