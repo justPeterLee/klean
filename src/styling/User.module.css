@@ -75,3 +75,24 @@ User page
   border: none;
   transition: all ease 0.2s;
 }
+
+.MenuRelative {
+  position: relative;
+}
+
+.UserInfo {
+  height: 23rem;
+  width: 50rem;
+  display: flex;
+}
+
+.MenuRelative {
+  width: 10rem;
+  height: 100%;
+}
+.InfoDisplay {
+  height: 100%;
+  width: 40rem;
+  background-color: rgba(240, 240, 240);
+  border-radius: 10px;
+}
