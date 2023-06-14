@@ -3,6 +3,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 
 export default function Login() {
+  const { data: session } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,6 +22,7 @@ export default function Login() {
 
   return (
     <div>
+      {JSON.stringify(session)}
       <input
         className="login-forum"
         type="text"
@@ -44,7 +46,7 @@ export default function Login() {
       <button onClick={handleSignIn}>sign in</button>
       <button
         onClick={() => {
-          signOut();
+          signOut({ redirect: true, callbackUrl: "/user/login" });
         }}
       >
         sign out
