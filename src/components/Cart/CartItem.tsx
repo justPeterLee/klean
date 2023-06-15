@@ -3,6 +3,8 @@
 import { useState, useContext } from "react";
 import styles from "../../styling/Cart.module.css";
 import { CartContext } from "../Context/CartContext";
+import { useSession } from "next-auth/react";
+import { error } from "console";
 interface CartItemProps {
   data: {
     id: number;
@@ -18,6 +20,8 @@ interface CartItemProps {
 }
 export default function CartItem(props: CartItemProps) {
   const { data, changeCart } = props;
+  const { data: session } = useSession();
+
   const cartContext = useContext(CartContext);
 
   const [removeAni, setRemoveAni] = useState(false);
@@ -56,6 +60,26 @@ export default function CartItem(props: CartItemProps) {
     changeCart(updatedCart);
   };
 
+  async function postFavorite() {
+    try {
+      if (session) {
+        const res = await fetch("/api/postFavorite", {
+          method: "POST",
+          body: JSON.stringify({
+            userId: session?.user.id,
+            productId: data.id,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      } else {
+        console.log("must be logged in");
+      }
+    } catch (err) {
+      console.log("Error with favoriting item, ", err);
+    }
+  }
   return (
     <div
       className={`${styles.CartItemContainer} ${
@@ -111,7 +135,9 @@ export default function CartItem(props: CartItemProps) {
         >
           {"[]"}
         </button>
-        <button className={styles.Heart}>{"<3"}</button>
+        <button className={styles.Heart} onClick={postFavorite}>
+          {"<3"}
+        </button>
       </div>
     </div>
   );
