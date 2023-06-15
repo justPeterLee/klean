@@ -96,3 +96,53 @@ User page
   background-color: rgba(240, 240, 240);
   border-radius: 10px;
 }
+
+/* Info Display */
+
+.UserInfoContainer {
+  height: 23rem;
+  width: 100%;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  gap: 2rem;
+}
+
+.UserInfoContainer p {
+  margin: 0;
+}
+
+.InfoName,
+.InfoEmail,
+.InfoShipping {
+  width: 100%;
+  display: flex;
+  gap: 5rem;
+  justify-content: center;
+}
+
+.InfoName span,
+.InfoEmail span,
+.InfoShipping span {
+  width: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.InfoTitle {
+  font-size: 12px;
+}
+.InfoValue {
+  font-size: 17px;
+}
+
+.InfoTitleContainer {
+  width: 100%;
+  margin-left: 4rem;
+  margin-top: 2rem;
+  font-size: 20px;
+}

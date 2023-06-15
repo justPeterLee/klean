@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function User() {
   const { data: session, status } = useSession();
 
-  const [optionState, setOptionState] = useState("color1");
+  const [optionState, setOptionState] = useState("information");
   return (
     <div className={styles.UserContainer}>
       {/* {JSON.stringify(session)} */}
@@ -30,7 +30,15 @@ export default function User() {
           />
         </div>
 
-        <div className={styles.InfoDisplay}></div>
+        <div className={styles.InfoDisplay}>
+          {optionState === "information" ? (
+            <UserInfo />
+          ) : optionState === "favorites" ? (
+            <UserFavorite />
+          ) : (
+            <Purchases />
+          )}
+        </div>
       </div>
 
       <button
@@ -41,6 +49,67 @@ export default function User() {
       >
         sign out
       </button>
+    </div>
+  );
+}
+
+function UserInfo() {
+  const { data: session } = useSession();
+
+  return (
+    <div className={styles.UserInfoContainer}>
+      <span className={styles.InfoTitleContainer}>
+        <p>Information</p>
+      </span>
+      <span className={styles.InfoName}>
+        <span>
+          <p className={styles.InfoTitle}>first:</p>
+          <p className={styles.InfoValue}>{session?.user.name.split(" ")[0]}</p>
+        </span>
+        <span>
+          <p className={styles.InfoTitle}>last:</p>
+          <p className={styles.InfoValue}>{session?.user.name.split(" ")[1]}</p>
+        </span>
+      </span>
+
+      <span className={styles.InfoEmail}>
+        <span className={styles.Email}>
+          <p className={styles.InfoTitle}>email:</p>
+          <p className={styles.InfoValue}>{session?.user.email}</p>
+        </span>
+
+        <span className={styles.phone}>
+          <p className={styles.InfoTitle}>phone number:</p>
+          <p className={styles.InfoValue}>N/a</p>
+        </span>
+      </span>
+
+      <span className={styles.InfoShipping}>
+        <span>
+          <p className={styles.InfoTitle}>shipping address:</p>
+          <p className={styles.InfoValue}>N/a</p>
+        </span>
+      </span>
+    </div>
+  );
+}
+
+function UserFavorite() {
+  return (
+    <div className={styles.UserInfoContainer}>
+      <span className={styles.InfoTitleContainer}>
+        <p>Favorites</p>
+      </span>
+    </div>
+  );
+}
+
+function Purchases() {
+  return (
+    <div className={styles.UserInfoContainer}>
+      <span className={styles.InfoTitleContainer}>
+        <p>Purchases</p>
+      </span>
     </div>
   );
 }
