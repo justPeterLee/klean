@@ -3,6 +3,7 @@ import styles from "../../../styling/User.module.css";
 import { signOut, useSession } from "next-auth/react";
 import Menu from "@/components/Feature/Menu/Menu";
 import { useState } from "react";
+import { Favorites, Purchases } from "./UserInfo";
 export default function User() {
   const { data: session, status } = useSession();
 
@@ -34,7 +35,7 @@ export default function User() {
           {optionState === "information" ? (
             <UserInfo />
           ) : optionState === "favorites" ? (
-            <UserFavorite />
+            <Favorites />
           ) : (
             <Purchases />
           )}
@@ -89,26 +90,6 @@ function UserInfo() {
           <p className={styles.InfoTitle}>shipping address:</p>
           <p className={styles.InfoValue}>N/a</p>
         </span>
-      </span>
-    </div>
-  );
-}
-
-function UserFavorite() {
-  return (
-    <div className={styles.UserInfoContainer}>
-      <span className={styles.InfoTitleContainer}>
-        <p>Favorites</p>
-      </span>
-    </div>
-  );
-}
-
-function Purchases() {
-  return (
-    <div className={styles.UserInfoContainer}>
-      <span className={styles.InfoTitleContainer}>
-        <p>Purchases</p>
       </span>
     </div>
   );
