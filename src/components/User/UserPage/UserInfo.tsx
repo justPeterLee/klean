@@ -44,12 +44,9 @@ export function Favorites() {
           favoriteData.map((item: any) => (
             <FavoriteItem
               key={item.id}
-              name={item.product_ref.product_name}
-              category={
-                item.product_ref.product_category[0].category_ref
-                  .category_description
-              }
-              price={item.product_ref.product_price}
+              name={item.productData.name}
+              category={item.productData.category}
+              price={item.productData.price}
             />
           ))
         ) : (

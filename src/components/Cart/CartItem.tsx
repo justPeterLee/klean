@@ -68,6 +68,7 @@ export default function CartItem(props: CartItemProps) {
           body: JSON.stringify({
             userId: session?.user.id,
             productId: data.id,
+            skuId: data.skuId,
           }),
           headers: {
             "Content-Type": "application/json",

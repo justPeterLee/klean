@@ -8,6 +8,7 @@ export async function POST(req: any) {
     data: {
       product_id: data.productId,
       user_id: parseInt(data.userId),
+      sku_id: parseInt(data.skuId),
     },
   });
 

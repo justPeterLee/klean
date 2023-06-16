@@ -12,14 +12,31 @@ export async function POST(req: any) {
       product_ref: {
         include: {
           product_category: { include: { category_ref: true } },
-          image: true,
+          image: { where: { image_name: "thumbnail" } },
         },
       },
+      sku_ref: true,
     },
   });
   await prisma.$disconnect();
 
-  return new NextResponse(JSON.stringify(favorites), {
+  const favoritesData = favorites.map((item) => {
+    return {
+      id: item.id,
+      productId: item.product_id,
+      skuId: item.sku_id,
+      productData: {
+        name: item.product_ref.product_name,
+        price: item.product_ref.product_price,
+        category:
+          item.product_ref.product_category[0].category_ref
+            .category_description,
+        thumbnail: item.product_ref.image[0].image_file,
+      },
+      toBeDeleted: false,
+    };
+  });
+  return new NextResponse(JSON.stringify(favoritesData), {
     headers: { "content-type": "application/json" },
   });
 }
