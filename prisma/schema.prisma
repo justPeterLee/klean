@@ -117,11 +117,15 @@ model favorite {
   product_id  Int
   product_ref product @relation(fields: [product_id], references: [id])
 
+  sku_id  Int
+  sku_ref product_sku @relation(fields: [sku_id], references: [id])
+
   user_id  Int
   user_ref user @relation(fields: [user_id], references: [id])
 
   @@index([product_id])
   @@index([user_id])
+  @@index([sku_id])
 }
 
 // ----------------------------
@@ -356,6 +360,8 @@ model product_sku {
   quanity     Int     @default(10)
   product_id  Int
   product_ref product @relation(fields: [product_id], references: [id])
+
+  favorite favorite[]
 
   @@index([product_id])
 }
