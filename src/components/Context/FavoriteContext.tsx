@@ -7,7 +7,19 @@ export const FavoriteContext = createContext<FavoriteContextType | undefined>(
 
 interface FavoriteContextType {
   favorite: {} | null;
-  favoriteFunc?: {};
+  favoriteFunc?: {
+    getFavorite: () => void;
+    postFavorite: (data: {
+      id: number;
+      productId: string;
+      skuId: string;
+    }) => void;
+    removeFavorite: (data: {
+      skuId: string;
+      userId: number;
+      productId: string;
+    }) => void;
+  };
 }
 
 export default function FavoriteContextProvider({
@@ -43,9 +55,65 @@ export default function FavoriteContextProvider({
     }
   }
   // add to favorites
-
+  interface PostFavorite {
+    id: number;
+    productId: string;
+    skuId: string;
+  }
+  async function postFavorite(data: PostFavorite) {
+    if (session && status === "authenticated") {
+      try {
+        if (session) {
+          const res = await fetch("/api/postFavorite", {
+            method: "POST",
+            body: JSON.stringify({
+              userId: session?.user.id,
+              productId: data.productId,
+              skuId: data.skuId,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          fetchFavorite();
+        } else {
+          console.log("must be logged in");
+        }
+      } catch (err) {
+        console.log("Error with favoriting item, ", err);
+      }
+    }
+  }
   // remove from favorites
-
+  interface RemoveInterface {
+    skuId: string;
+    userId: number;
+    productId: string;
+  }
+  async function removeFavorite(data: RemoveInterface) {
+    if (session && status === "authenticated") {
+      try {
+        if (session) {
+          const res = await fetch("/api/removeFavorite", {
+            method: "POST",
+            body: JSON.stringify({
+              userId: session?.user.id,
+              productId: data.productId,
+              skuId: data.skuId,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          fetchFavorite();
+        } else {
+          console.log("must be logged in");
+        }
+      } catch (err) {
+        console.log("Error with removing favorite item: ", err);
+      }
+    }
+  }
   useEffect(() => {
     if (session && status === "authenticated") {
       fetchFavorite();
@@ -54,7 +122,16 @@ export default function FavoriteContextProvider({
     }
   }, []);
   return (
-    <FavoriteContext.Provider value={{ favorite: favorite }}>
+    <FavoriteContext.Provider
+      value={{
+        favorite: favorite,
+        favoriteFunc: {
+          getFavorite: fetchFavorite,
+          postFavorite: postFavorite,
+          removeFavorite: removeFavorite,
+        },
+      }}
+    >
       {children}
     </FavoriteContext.Provider>
   );
