@@ -9,7 +9,12 @@ export async function POST(req: any) {
       user_id: parseInt(userId),
     },
     include: {
-      product_ref: true,
+      product_ref: {
+        include: {
+          product_category: { include: { category_ref: true } },
+          image: true,
+        },
+      },
     },
   });
   await prisma.$disconnect();

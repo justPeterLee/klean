@@ -22,6 +22,7 @@ export function Favorites() {
         });
 
         const favoriteItems = await res.json();
+        console.log(favoriteItems);
         setFavoriteData(favoriteItems);
         setError(false);
       } catch (err) {
@@ -35,19 +36,54 @@ export function Favorites() {
   return (
     <div className={styles.UserInfoContainer}>
       <span className={styles.InfoTitleContainer}>
-        {JSON.stringify(favoriteData)}
         <p>Favorites</p>
       </span>
+      <div>
+        {/* {JSON.stringify(favoriteData)} */}
+        {favoriteData.length ? (
+          favoriteData.map((item: any) => (
+            <FavoriteItem
+              key={item.id}
+              name={item.product_ref.product_name}
+              category={
+                item.product_ref.product_category[0].category_ref
+                  .category_description
+              }
+              price={item.product_ref.product_price}
+            />
+          ))
+        ) : (
+          <p>no favorites</p>
+        )}
+      </div>
     </div>
   );
 }
 
-function FavoriteItem() {
+interface FavoriteItemProps {
+  name: string;
+  category: string;
+  price: string;
+}
+function FavoriteItem(props: FavoriteItemProps) {
+  const { name, category, price } = props;
   return (
-    <div className={styles.UserInfoContainer}>
-      <span className={styles.InfoTitleContainer}>
-        <p>Favorites</p>
-      </span>
+    <div className={styles.FavoriteItemContainer}>
+      <div className={styles.imageContainer}>
+        <span>image</span>
+      </div>
+      <div className={styles.FavoriteInfoContainer}>
+        <span>
+          <p>{name}</p>
+          <p>{category}</p>
+        </span>
+        <span>
+          <p>${price}</p>
+        </span>
+      </div>
+      <div className={styles.FavoriteButton}>
+        <button>{"<3"}</button>
+      </div>
     </div>
   );
 }
