@@ -1,25 +1,52 @@
 "use client";
-import { useContext, createContext, useState, useEffect } from "react";
-import { useSession, getSession } from "next-auth/react";
+import { createContext, useState, useEffect } from "react";
+import { getSession } from "next-auth/react";
 export const FavoriteContext = createContext<FavoriteContextType | undefined>(
   undefined
 );
+interface favorite {
+  id: number;
+  productId: number;
+  skuId: number;
+  productData: {
+    name: string;
+    price: number;
+    category: string;
+    thumbnail: string;
+  };
+  toBeDeleted: boolean;
+}
+
+interface AddProxyFavParams {
+  id: number;
+  productId: number;
+  skuId: number;
+  productData: {
+    name: string;
+    price: number;
+    category: string;
+    thumbnail: string;
+  };
+}
+
+interface ChangeFavoriteDBParams {
+  skuId: number;
+  productId: number;
+}
 
 interface FavoriteContextType {
-  favorite: any[];
+  favorite: favorite[];
   skuIDs: number[];
   favoriteFunc?: {
     getFavorite: () => void;
-    postFavorite: (data: {
-      id: number;
-      productId: string;
-      skuId: string;
-    }) => void;
-    removeFavorite: (data: {
-      skuId: string;
-      userId: number;
-      productId: string;
-    }) => void;
+    proxyRemove: (skuId: number, productId: number, add: boolean) => void;
+    isFavorited: (skuId: number) => void;
+    getIndex: (skuId: number, productId: number) => any;
+    postFavorite: (
+      data: { skuId: number; productId: number },
+      refesh: boolean
+    ) => void;
+    addProxyFav: (params: AddProxyFavParams) => void;
   };
 }
 
@@ -28,7 +55,6 @@ export default function FavoriteContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { data: session, status } = useSession();
   const [CurSession, setCurSession] = useState<any>(null);
   const [favorite, setFavorite] = useState([]);
   const [error, setError] = useState(false);
@@ -59,12 +85,7 @@ export default function FavoriteContextProvider({
     }
   }
   // add to favorites
-  interface PostFavorite {
-    id: number;
-    productId: string;
-    skuId: string;
-  }
-  async function postFavorite(data: PostFavorite) {
+  async function postFavorite(data: ChangeFavoriteDBParams, refesh: boolean) {
     const session = await getCurSession();
     setCurSession(session);
     if (session) {
@@ -73,7 +94,7 @@ export default function FavoriteContextProvider({
           const res = await fetch("/api/postFavorite", {
             method: "POST",
             body: JSON.stringify({
-              userId: session?.user.id,
+              userId: parseInt(session?.user.id),
               productId: data.productId,
               skuId: data.skuId,
             }),
@@ -81,7 +102,9 @@ export default function FavoriteContextProvider({
               "Content-Type": "application/json",
             },
           });
-          fetchFavorite();
+          if (refesh) {
+            fetchFavorite();
+          }
         } else {
           console.log("must be logged in");
         }
@@ -91,21 +114,18 @@ export default function FavoriteContextProvider({
     }
   }
   // remove from favorites
-  interface RemoveInterface {
-    skuId: string;
-    userId: number;
-    productId: string;
-  }
-  async function removeFavorite(data: RemoveInterface) {
+
+  async function removeFavorite(data: ChangeFavoriteDBParams) {
     const session = await getCurSession();
     setCurSession(session);
+
     if (session) {
       try {
         if (session) {
           const res = await fetch("/api/removeFavorite", {
             method: "POST",
             body: JSON.stringify({
-              userId: session?.user.id,
+              userId: parseInt(session?.user.id),
               productId: data.productId,
               skuId: data.skuId,
             }),
@@ -113,7 +133,7 @@ export default function FavoriteContextProvider({
               "Content-Type": "application/json",
             },
           });
-          fetchFavorite();
+          //   fetchFavorite();
         } else {
           console.log("must be logged in");
         }
@@ -123,9 +143,80 @@ export default function FavoriteContextProvider({
     }
   }
 
+  function proxyRemove(skuId: number, productId: number, add: boolean) {
+    const proxyRemoveArr: any = favorite.map((item: any) => {
+      if (item.skuId === skuId) {
+        if (add) {
+          return { ...item, toBeDeleted: false };
+        } else {
+          return { ...item, toBeDeleted: true };
+        }
+      }
+      return item;
+    });
+    setFavorite(proxyRemoveArr);
+
+    if (!add) {
+      removeFavorite({ skuId: skuId, productId: productId });
+    } else {
+      postFavorite({ skuId: skuId, productId: productId }, false);
+    }
+  }
+
+  // is favorited (should return true or false if item is in array && item is false (toBeDeleted))
+  function isFavorited(skuId: number) {
+    const proxyArr = favorite.map((item) => item);
+
+    const proxyEvalutatedArr = proxyArr
+      .map((item: any) => {
+        if (skuId === item.skuId) {
+          return item;
+        }
+      })
+      .filter((item: any) => {
+        if (item) {
+          return item;
+        }
+      });
+
+    if (proxyEvalutatedArr.length) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function getIndex(skuId: number, productId: number) {
+    const proxyArr = favorite.map((item) => item);
+    let proxyIndex;
+    proxyArr.map((item: any, index: number) => {
+      if (skuId === item.skuId && productId === item.productId) {
+        proxyIndex = index;
+      }
+    });
+
+    if (typeof proxyIndex === "number") {
+      return proxyIndex;
+    } else {
+      return 10;
+    }
+  }
+
+  function addProxyFav(data: AddProxyFavParams) {
+    let proxyArr: any = favorite.map((item) => item);
+    let proxyData: any = data;
+    proxyData.toBeDeleted = false;
+    proxyArr.push(proxyData);
+
+    let copyProxy = proxyArr.map((item: any) => item);
+
+    setFavorite(copyProxy);
+
+    postFavorite({ skuId: data.skuId, productId: data.productId }, true);
+  }
+
   async function getCurSession() {
     const session = await getSession();
-    console.log(session);
     setCurSession(session);
     return session;
   }
@@ -142,8 +233,11 @@ export default function FavoriteContextProvider({
         }),
         favoriteFunc: {
           getFavorite: fetchFavorite,
+          proxyRemove: proxyRemove,
+          isFavorited: isFavorited,
+          getIndex: getIndex,
           postFavorite: postFavorite,
-          removeFavorite: removeFavorite,
+          addProxyFav: addProxyFav,
         },
       }}
     >

@@ -17,12 +17,16 @@ export function Favorites() {
         {/* {JSON.stringify(favoriteData)} */}
         {favoriteContext?.favorite ? (
           favoriteContext.favorite.length ? (
-            favoriteContext?.favorite.map((item: any) => (
+            favoriteContext?.favorite.map((item: any, index: number) => (
               <FavoriteItem
                 key={item.id}
                 name={item.productData.name}
                 category={item.productData.category}
                 price={item.productData.price}
+                skuId={item.skuId}
+                productId={item.productId}
+                userId={session?.user.id}
+                index={index}
               />
             ))
           ) : (
@@ -40,12 +44,19 @@ interface FavoriteItemProps {
   name: string;
   category: string;
   price: string;
+  skuId: number;
+  productId: number;
+  userId: number;
+  index: number;
 }
 function FavoriteItem(props: FavoriteItemProps) {
-  const { name, category, price } = props;
+  const { name, category, price, skuId, productId, userId, index } = props;
+  const favoriteContext = useContext(FavoriteContext);
+
   return (
     <div className={styles.FavoriteItemContainer}>
       <div className={styles.imageContainer}>
+        {JSON.stringify(skuId)}
         <span>image</span>
       </div>
       <div className={styles.FavoriteInfoContainer}>
@@ -58,7 +69,31 @@ function FavoriteItem(props: FavoriteItemProps) {
         </span>
       </div>
       <div className={styles.FavoriteButton}>
-        <button>{"<3"}</button>
+        <button
+          style={
+            !favoriteContext?.favorite[index].toBeDeleted
+              ? { background: "rgb(200,200,200)" }
+              : {}
+          }
+          onClick={async () => {
+            if (favoriteContext?.favorite[index].toBeDeleted === false) {
+              //proxy remove
+              favoriteContext?.favoriteFunc?.proxyRemove(
+                skuId,
+                productId,
+                false
+              );
+            } else {
+              favoriteContext?.favoriteFunc?.proxyRemove(
+                skuId,
+                productId,
+                true
+              );
+            }
+          }}
+        >
+          {"<3"}
+        </button>
       </div>
     </div>
   );

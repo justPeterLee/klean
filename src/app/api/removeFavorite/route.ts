@@ -6,9 +6,9 @@ export async function POST(req: any) {
 
   await prisma.favorite.deleteMany({
     where: {
-      product_id: parseInt(data.productId),
-      user_id: parseInt(data.userId),
-      sku_id: parseInt(data.skuId),
+      product_id: data.productId,
+      user_id: data.userId,
+      sku_id: data.skuId,
     },
   });
 
