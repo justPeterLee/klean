@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, useContext } from "react";
 import { CartContext } from "../Context/CartContext";
+import { FavoriteContext } from "../Context/FavoriteContext";
 import styles from "../../styling/Checkout.module.css";
 
 export default function CheckoutItem() {
@@ -42,6 +43,7 @@ interface ItemProps {
 function Item(props: ItemProps) {
   const { data } = props;
   const cartContext = useContext(CartContext);
+  const favoriteContext = useContext(FavoriteContext);
 
   return (
     <div className={styles.ItemContainer}>
@@ -83,7 +85,54 @@ function Item(props: ItemProps) {
         >
           []
         </button>
-        <button className={styles.MisButton}>{"<3"}</button>
+        <button
+          className={styles.MisButton}
+          style={
+            favoriteContext?.favoriteFunc?.isFavorited(data.skuId)
+              ? !favoriteContext?.favorite[
+                  favoriteContext?.favoriteFunc?.getIndex(data.skuId, data.id)
+                ].toBeDeleted
+                ? { background: "rgb(150,150,150)" }
+                : {}
+              : {}
+          }
+          onClick={() => {
+            if (favoriteContext?.favoriteFunc?.isFavorited(data.skuId)) {
+              if (
+                favoriteContext?.favorite[
+                  favoriteContext?.favoriteFunc?.getIndex(data.skuId, data.id)
+                ].toBeDeleted === false
+              ) {
+                //proxy remove
+                favoriteContext?.favoriteFunc?.proxyRemove(
+                  data.skuId,
+                  data.id,
+                  false
+                );
+              } else {
+                favoriteContext?.favoriteFunc?.proxyRemove(
+                  data.skuId,
+                  data.id,
+                  true
+                );
+              }
+            } else {
+              favoriteContext?.favoriteFunc?.addProxyFav({
+                id: Math.random(),
+                productId: data.id,
+                skuId: data.skuId,
+                productData: {
+                  name: data.name,
+                  price: data.price,
+                  category: data.category,
+                  thumbnail: data.image!,
+                },
+              });
+            }
+          }}
+        >
+          {"<3"}
+        </button>
       </div>
     </div>
   );

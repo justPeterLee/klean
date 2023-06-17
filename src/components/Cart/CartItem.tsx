@@ -126,7 +126,7 @@ export default function CartItem(props: CartItemProps) {
                 : {}
               : {}
           }
-          onClick={async () => {
+          onClick={() => {
             if (favoriteContext?.favoriteFunc?.isFavorited(data.skuId)) {
               if (
                 favoriteContext?.favorite[
