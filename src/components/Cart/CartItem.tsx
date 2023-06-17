@@ -3,8 +3,8 @@
 import { useState, useContext } from "react";
 import styles from "../../styling/Cart.module.css";
 import { CartContext } from "../Context/CartContext";
+import { FavoriteContext } from "../Context/FavoriteContext";
 import { useSession } from "next-auth/react";
-import { error } from "console";
 interface CartItemProps {
   data: {
     id: number;
@@ -23,6 +23,7 @@ export default function CartItem(props: CartItemProps) {
   const { data: session } = useSession();
 
   const cartContext = useContext(CartContext);
+  const favoriteContext = useContext(FavoriteContext);
 
   const [removeAni, setRemoveAni] = useState(false);
   const offRemoveItem = () => {

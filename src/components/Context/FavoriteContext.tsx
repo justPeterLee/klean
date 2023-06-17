@@ -1,12 +1,13 @@
 "use client";
 import { useContext, createContext, useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 export const FavoriteContext = createContext<FavoriteContextType | undefined>(
   undefined
 );
 
 interface FavoriteContextType {
-  favorite: {} | null;
+  favorite: any[];
+  skuIDs: number[];
   favoriteFunc?: {
     getFavorite: () => void;
     postFavorite: (data: {
@@ -28,11 +29,14 @@ export default function FavoriteContextProvider({
   children: React.ReactNode;
 }) {
   const { data: session, status } = useSession();
-  const [favorite, setFavorite] = useState(null);
+  const [CurSession, setCurSession] = useState<any>(null);
+  const [favorite, setFavorite] = useState([]);
   const [error, setError] = useState(false);
   // get favorites
   async function fetchFavorite() {
-    if (session && status === "authenticated") {
+    const session = await getCurSession();
+    setCurSession(session);
+    if (session) {
       try {
         const res = await fetch(`/api/favorite/${session?.user.id}`, {
           method: "POST",
@@ -61,7 +65,9 @@ export default function FavoriteContextProvider({
     skuId: string;
   }
   async function postFavorite(data: PostFavorite) {
-    if (session && status === "authenticated") {
+    const session = await getCurSession();
+    setCurSession(session);
+    if (session) {
       try {
         if (session) {
           const res = await fetch("/api/postFavorite", {
@@ -91,7 +97,9 @@ export default function FavoriteContextProvider({
     productId: string;
   }
   async function removeFavorite(data: RemoveInterface) {
-    if (session && status === "authenticated") {
+    const session = await getCurSession();
+    setCurSession(session);
+    if (session) {
       try {
         if (session) {
           const res = await fetch("/api/removeFavorite", {
@@ -114,17 +122,24 @@ export default function FavoriteContextProvider({
       }
     }
   }
+
+  async function getCurSession() {
+    const session = await getSession();
+    console.log(session);
+    setCurSession(session);
+    return session;
+  }
+
   useEffect(() => {
-    if (session && status === "authenticated") {
-      fetchFavorite();
-    } else {
-      setFavorite(null);
-    }
+    fetchFavorite();
   }, []);
   return (
     <FavoriteContext.Provider
       value={{
         favorite: favorite,
+        skuIDs: favorite.map((item: any) => {
+          return item.skuId;
+        }),
         favoriteFunc: {
           getFavorite: fetchFavorite,
           postFavorite: postFavorite,
