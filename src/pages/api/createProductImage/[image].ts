@@ -81,9 +81,9 @@ router
     const command = new GetObjectCommand(getObjectParams);
     const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
 
-    console.log(url);
+    console.log("return image url: ", url);
 
-    return res.status(200).json(url);
+    return res.send(url);
   });
 
 router.all((req, res: any) => {

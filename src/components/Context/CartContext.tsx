@@ -33,9 +33,7 @@ export default function CartContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [cart, setCart] = useState<CartItem[] | null>(
-    JSON.parse(window.localStorage.getItem("cart")!)
-  );
+  const [cart, setCart] = useState<CartItem[] | null>(null);
 
   const [total, setTotal] = useState<number>(0);
 
