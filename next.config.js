@@ -1,5 +1,17 @@
 /** @type {import('next').NextConfig} */
+// const UglifyJsPlugin = require('uglify-js-plugin');
+// const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
 const nextConfig = {
+    webpack: (config, { isServer }) => {
+        if (!isServer) {
+            // Optimize JavaScript for the client bundle
+            config.optimization.minimize = true;
+            config.optimization.minimizer = [];
+        }
+
+        return config;
+    },
     experimental: {
         appDir: true,
     },
