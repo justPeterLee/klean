@@ -3,6 +3,9 @@ import prisma from "../../../../lib/db";
 
 import ProductImage from "@/components/ProductPage/ProductImage";
 import ProductInfo from "@/components/ProductPage/ProductInfo";
+
+import fetchImage from "../../../../serverComponents/fetchImage";
+
 interface Props {
   params: { productId: string };
 }
@@ -26,9 +29,6 @@ async function getProductDetail(productId: string) {
     },
   });
 
-  console.log(
-    productData?.product_category[0].category_ref.category_description
-  );
   const data = productData
     ? {
         id: productData.id,
@@ -46,13 +46,23 @@ async function getProductDetail(productId: string) {
     : false;
   return data;
 }
+
 export default async function ProductDetail({ params }: Props) {
-  const productData = await getProductDetail(params.productId);
+  const productData: any = await getProductDetail(params.productId);
+  console.log(productData);
+  const imageFiles = await Promise.all(
+    productData.images.map(async (imageObj: any) => {
+      const image = await fetchImage(imageObj.image_file);
+      return { file: image, name: imageObj.image_name };
+    })
+  );
+  const productDataStruct = { ...productData, image_files: imageFiles };
+
   return (
     <div className={styles.main}>
       {productData && (
         <div className={styles.ProductInfo}>
-          <ProductImage />
+          <ProductImage images={imageFiles} />
           <ProductInfo data={productData} />
         </div>
       )}

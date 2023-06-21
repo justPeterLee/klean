@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 interface ProductImageProps {
-  images?: string[];
+  images: { name: string; file: string }[];
 }
 
 const imagesArr = [
@@ -15,8 +15,9 @@ const imagesArr = [
   { name: "product-image", file: "image 5" },
   { name: "product-image", file: "image 6" },
 ];
-export default function ProductImage(images: ProductImageProps) {
-  const thumbnail = imagesArr.filter((image) => {
+export default function ProductImage(props: ProductImageProps) {
+  const { images } = props;
+  const thumbnail = images.filter((image) => {
     return image.name === "thumbnail";
   })[0].file;
 
@@ -28,8 +29,8 @@ export default function ProductImage(images: ProductImageProps) {
   return (
     <div className={styles.ImageContainer}>
       <div className={styles.SubImageContainer}>
-        {imagesArr.length ? (
-          imagesArr.map((image, index) => (
+        {images.length ? (
+          images.map((image, index) => (
             <SubImage key={index} image={image.file} sendImage={readImage} />
           ))
         ) : (
@@ -37,7 +38,14 @@ export default function ProductImage(images: ProductImageProps) {
         )}
       </div>
       <div className={styles.MainImageContainer}>
-        <span className={styles.MainImage}>{mainImage}</span>
+        {/* <span className={styles.MainImage}>{mainImage}</span> */}
+        <img
+          src={mainImage}
+          alt=""
+          width={480}
+          height={560}
+          style={{ borderRadius: "10px" }}
+        />
       </div>
     </div>
   );
@@ -57,7 +65,13 @@ function SubImage(props: SubImageProps) {
         sendImage(image);
       }}
     >
-      <span className={styles.SubImageImg}>{image}</span>
+      <img
+        src={image}
+        alt=""
+        width={80}
+        height={80}
+        style={{ borderRadius: "10px" }}
+      />
     </button>
   );
 }
