@@ -1,6 +1,6 @@
-import styles from "../../../styling/Shop.module.css";
 import { ShopItemDisplay } from "@/components/ShopPage/ShopComponents";
 import prisma from "../../../../lib/db";
+import fetchImage from "../../../../serverComponents/fetchImage";
 
 interface Props {
   params: {
@@ -47,8 +47,35 @@ async function getItems(params: string) {
   return products;
 }
 
+// const fetchImage = async (key: string) => {
+//   const bucketName = process.env.BUCKET_NAME;
+//   const bucketRegion = process.env.BUCKET_REGION;
+//   const accessKey = process.env.ACCESS_KEY;
+//   const secretAccessKey = process.env.SECRET_ACCESS_KEY;
+//   const s3 = new S3Client({
+//     credentials: {
+//       accessKeyId: accessKey!,
+//       secretAccessKey: secretAccessKey!,
+//     },
+//     region: bucketRegion,
+//   });
+//   const getObjectParams = {
+//     Bucket: bucketName,
+//     Key: key?.toString(),
+//   };
+//   const command = new GetObjectCommand(getObjectParams);
+//   const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+//   return url;
+// };
+
 export default async function ShopCategory({ params }: Props) {
   const productItems = await getItems(params.category);
-  const { category } = params;
-  return <ShopItemDisplay items={productItems} />;
+
+  const productImage = await Promise.all(
+    productItems.map(async (product: any) => {
+      const image = await fetchImage(product.image);
+      return { ...product, imageUrl: image };
+    })
+  );
+  return <ShopItemDisplay items={productImage} />;
 }

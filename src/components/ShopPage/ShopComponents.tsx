@@ -40,25 +40,27 @@ interface ShopItemProps {
   image: string;
   name: string;
   price: string;
+  imageUrl: string;
 }
 
-export function ShopItem({ id, image, name, price }: ShopItemProps) {
+export function ShopItem({ id, image, name, price, imageUrl }: ShopItemProps) {
   const router = useRouter();
   const [imageSrc, setImageSrc] = useState<any>("");
 
-  const fetchImage = async () => {
-    const res: any = await fetch(`/api/fetchImageProduct/${image}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then(async (response) => {
-      setImageSrc(await response.json());
-    });
-  };
+  // const fetchImage = async () => {
+  //   const res: any = await fetch(`/api/fetchImageProduct/${image}`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   }).then(async (response) => {
+  //     setImageSrc(await response.json());
+  //   });
+  // };
 
   useEffect(() => {
-    fetchImage();
+    // fetchImage();
+    setImageSrc(imageUrl);
   }, []);
   return (
     <button
@@ -68,7 +70,13 @@ export function ShopItem({ id, image, name, price }: ShopItemProps) {
       }}
     >
       <div className={styles.Image}>
-        <img src={imageSrc} alt={""} className={styles.Image} />
+        <Image
+          src={imageUrl}
+          alt={""}
+          className={styles.Image}
+          width={100}
+          height={100}
+        />
       </div>
       <div className={styles.ItemInfo}>
         <p className={styles.Name}>{name}</p>
@@ -93,6 +101,7 @@ export function ShopItemDisplay({ items }: ShopItemDisplayProps) {
               name={item.name}
               price={item.price}
               image={item.image}
+              imageUrl={item.imageUrl}
             />
           );
         })

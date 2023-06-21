@@ -11,7 +11,9 @@ const nextConfig = {
                 port: '',
                 pathname: '/u/**',
             }
-        ]
+        ],
+        domains: ['kleanbucket.s3.us-east-2.amazonaws.com'],
+
     }
 }
 

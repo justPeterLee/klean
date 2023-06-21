@@ -1,5 +1,5 @@
-import styles from "../../styling/Shop.module.css";
 import { ShopItemDisplay } from "@/components/ShopPage/ShopComponents";
+import fetchImage from "../../../serverComponents/fetchImage";
 import prisma from "../../../lib/db";
 
 async function getAllProducts() {
@@ -23,5 +23,17 @@ async function getAllProducts() {
 
 export default async function Shop() {
   const products = await getAllProducts();
-  return <ShopItemDisplay items={products} />;
+
+  const productImage = await Promise.all(
+    products.map(async (product: any) => {
+      const image = await fetchImage(product.image);
+      return { ...product, imageUrl: image };
+    })
+  );
+
+  return (
+    <>
+      <ShopItemDisplay items={productImage} />
+    </>
+  );
 }
