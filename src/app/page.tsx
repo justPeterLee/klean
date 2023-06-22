@@ -2,11 +2,10 @@ import styles from "../styling/page.module.css";
 
 import {
   MainFeature,
-  StoreFeature,
   SideFeature,
   ContactButton,
 } from "@/components/Feature/Feature";
-
+import { StoreFeature } from "@/components/Feature/FeatureStoreItem/FeatureStoreItem";
 const items = [
   { id: 1, product_name: "product_1", product_image: "image", price: "$100" },
   { id: 2, product_name: "product_1", product_image: "image", price: "$100" },
