@@ -49,7 +49,6 @@ async function getProductDetail(productId: string) {
 
 export default async function ProductDetail({ params }: Props) {
   const productData: any = await getProductDetail(params.productId);
-  console.log(productData);
   const imageFiles = await Promise.all(
     productData.images.map(async (imageObj: any) => {
       const image = await fetchImage(imageObj.image_file);
@@ -63,7 +62,7 @@ export default async function ProductDetail({ params }: Props) {
       {productData && (
         <div className={styles.ProductInfo}>
           <ProductImage images={imageFiles} />
-          <ProductInfo data={productData} />
+          <ProductInfo data={productDataStruct} />
         </div>
       )}
     </div>

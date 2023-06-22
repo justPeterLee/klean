@@ -13,6 +13,7 @@ interface ProductInfoProps {
     selection: SelectionType[];
     SKUs: SkuType[];
     images: ImageType[];
+    imageFiles: { file: string; name: string }[];
     review: any[];
   };
 }
@@ -65,7 +66,6 @@ interface SkuType {
   quanity: number;
 }
 
-interface ReviewType {}
 export default function ProductInfo(props: ProductInfoProps) {
   const { data } = props;
   const context = useContext(MyContext);

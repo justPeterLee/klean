@@ -5,6 +5,7 @@ import { MyContext } from "../ClientContext";
 import { CartContext } from "../Context/CartContext";
 import CartItem from "./CartItem";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 export default function Cart() {
   const router = useRouter();
   const context = useContext(MyContext);
@@ -88,7 +89,17 @@ interface NewCartItemProps {
 }
 function NewCartItem(props: NewCartItemProps) {
   const { data } = props;
-
+  const [imageUrl, setImageUrl] = useState("");
+  const fetchImageUrl = async () => {
+    const res = await fetch(`/api/fetchImageProduct/${data.image}`).then(
+      async (response) => {
+        setImageUrl(await response.json());
+      }
+    );
+  };
+  useEffect(() => {
+    fetchImageUrl();
+  }, []);
   return (
     <div
       style={{
@@ -103,12 +114,23 @@ function NewCartItem(props: NewCartItemProps) {
         id={styles.NewInfoContainer}
         style={{ justifyContent: "left", gap: "1.9rem", height: "6rem" }}
       >
-        <span
-          className={styles.ItemImage}
-          style={{ height: "6rem", width: "6rem" }}
-        >
-          image
-        </span>
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt=""
+            height={96}
+            width={96}
+            style={{ borderRadius: "10px" }}
+          />
+        ) : (
+          <span
+            className={styles.ItemImage}
+            style={{ height: "6rem", width: "6rem" }}
+          >
+            loading...
+          </span>
+        )}
+
         <div className={styles.ItemInfoContainer} style={{ marginLeft: "0" }}>
           <div className={styles.Iteminfo}>
             <span className={styles.name}>{data.name}</span>

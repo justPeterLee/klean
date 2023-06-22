@@ -1,20 +1,11 @@
 "use client";
 import styles from "../../styling/Product.module.css";
-import Image from "next/image";
 import { useState } from "react";
 
 interface ProductImageProps {
   images: { name: string; file: string }[];
 }
 
-const imagesArr = [
-  { name: "thumbnail", file: "image 1" },
-  { name: "product-image", file: "image 2" },
-  { name: "product-image", file: "image 3" },
-  { name: "product-image", file: "image 4" },
-  { name: "product-image", file: "image 5" },
-  { name: "product-image", file: "image 6" },
-];
 export default function ProductImage(props: ProductImageProps) {
   const { images } = props;
   const thumbnail = images.filter((image) => {

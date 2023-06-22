@@ -4,6 +4,8 @@ import { useState, useContext, useEffect } from "react";
 import styles from "../../styling/Cart.module.css";
 import { CartContext } from "../Context/CartContext";
 import { FavoriteContext } from "../Context/FavoriteContext";
+import fetchImage from "../../../serverComponents/fetchImage";
+import Image from "next/image";
 interface CartItemProps {
   data: {
     id: number;
@@ -23,6 +25,7 @@ export default function CartItem(props: CartItemProps) {
   const cartContext = useContext(CartContext);
   const favoriteContext = useContext(FavoriteContext);
 
+  const [imageUrl, setImageUrl] = useState("");
   const [removeAni, setRemoveAni] = useState(false);
 
   const offRemoveItem = () => {
@@ -46,6 +49,16 @@ export default function CartItem(props: CartItemProps) {
     }, 300);
   };
 
+  const fetchImageUrl = async () => {
+    const res = await fetch(`/api/fetchImageProduct/${data.image}`).then(
+      async (response) => {
+        setImageUrl(await response.json());
+      }
+    );
+  };
+  useEffect(() => {
+    fetchImageUrl();
+  }, []);
   const addBackItem = () => {
     const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
 
@@ -79,7 +92,17 @@ export default function CartItem(props: CartItemProps) {
           </div>
         </div>
       )}
-      <span className={styles.ItemImage}>image</span>
+      {imageUrl ? (
+        <Image
+          src={imageUrl}
+          alt=""
+          height={136}
+          width={136}
+          style={{ borderRadius: "10px" }}
+        />
+      ) : (
+        <span className={styles.ItemImage}>image</span>
+      )}
       <div className={styles.ItemInfoContainer}>
         <div className={styles.Iteminfo}>
           <span className={styles.name}>{data.name}</span>
