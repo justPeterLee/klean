@@ -2,6 +2,7 @@
 import { useState, useContext, useEffect } from "react";
 import styles from "../../styling/Product.module.css";
 import { MyContext } from "../ClientContext";
+import { CartContext } from "../Context/CartContext";
 interface ProductInfoProps {
   data: {
     id: number;
@@ -69,6 +70,7 @@ interface SkuType {
 export default function ProductInfo(props: ProductInfoProps) {
   const { data } = props;
   const context = useContext(MyContext);
+  const cartContext = useContext(CartContext);
 
   // get thumbnail
   const thumbnail = data.images.filter((images: any) => {
@@ -109,7 +111,7 @@ export default function ProductInfo(props: ProductInfoProps) {
         };
 
         // show the newly added item (newest item added)
-        window.localStorage.setItem("newCartItem", JSON.stringify(productData));
+        context?.getNewCartItem(productData);
         // get the current cart (stored in local storage)
         const currentCart: string | null = window.localStorage.getItem("cart");
         // parse current cart
@@ -136,11 +138,14 @@ export default function ProductInfo(props: ProductInfoProps) {
               JSON.stringify([...newCart, { ...productData, quantity: 1 }])
             );
           }
+
+          cartContext?.initalCart();
         } else {
           window.localStorage.setItem(
             "cart",
             JSON.stringify([{ ...productData, quantity: 1 }])
           );
+          cartContext?.initalCart();
         }
         context?.setCartState(true);
       } else {
@@ -151,9 +156,6 @@ export default function ProductInfo(props: ProductInfoProps) {
     }
   };
 
-  useEffect(() => {
-    console.log(data);
-  }, []);
   return (
     <div className={styles.ProductInfoContainer}>
       {/* general information (name, price, category, favoirte(button)) */}

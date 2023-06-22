@@ -1,6 +1,6 @@
 "use client";
 import { useContext, createContext, useState, useEffect } from "react";
-
+import { MyContext } from "../ClientContext";
 interface CartContext {
   cart: CartItem[] | null;
   total: number;
@@ -9,6 +9,7 @@ interface CartContext {
   changeQuantity: (item: CartItem, add: boolean) => void;
   removeItem: (item: CartItem) => void;
   instantRemove: (curItem: CartItem) => void;
+  initalCart: () => void;
 }
 
 interface CartItem {
@@ -21,6 +22,14 @@ interface CartItem {
   quantity: number;
 }
 
+interface NewCartItem {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  image: string | null;
+  skuId: number;
+}
 export const CartContext = createContext<CartContext | undefined>(undefined);
 
 /*
@@ -33,12 +42,15 @@ export default function CartContextProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const context = useContext(MyContext);
+
   const [cart, setCart] = useState<CartItem[] | null>(null);
 
   const [total, setTotal] = useState<number>(0);
 
   const getCart = () => {
     const cart = JSON.parse(window.localStorage.getItem("cart")!);
+    console.log(cart);
     setCart(cart);
     console.log("asdf");
   };
@@ -46,6 +58,7 @@ export default function CartContextProvider({
   const changeCart = (newCart: CartItem[]) => {
     window.localStorage.setItem("cart", JSON.stringify(newCart));
     setCart(JSON.parse(window.localStorage.getItem("cart")!));
+    console.log(cart);
   };
 
   const changeQuantity = (curItem: CartItem, add: boolean) => {
@@ -99,7 +112,8 @@ export default function CartContextProvider({
       });
     changeCart(updatedCart);
   };
-  useEffect(() => {
+
+  function initalCart() {
     setCart(JSON.parse(window.localStorage.getItem("cart")!));
     const cart = JSON.parse(window.localStorage.getItem("cart")!);
     let total = 0;
@@ -107,7 +121,11 @@ export default function CartContextProvider({
       total += item.quantity * item.price;
     });
     setTotal(total);
-  }, [window.localStorage.getItem("cart")]);
+  }
+
+  useEffect(() => {
+    initalCart();
+  }, []);
 
   return (
     <CartContext.Provider
@@ -119,6 +137,7 @@ export default function CartContextProvider({
         changeQuantity: changeQuantity,
         removeItem: removeItem,
         instantRemove: instantRemove,
+        initalCart: initalCart,
       }}
     >
       {children}

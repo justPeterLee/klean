@@ -11,16 +11,13 @@ export default function Cart() {
   const context = useContext(MyContext);
   const cartContext = useContext(CartContext);
 
-  const [newCartItem, setNewCartItem] = useState(
-    JSON.parse(window.localStorage.getItem("newCartItem")!)
-  );
-  useEffect(() => {
-    setNewCartItem(JSON.parse(window.localStorage.getItem("newCartItem")!));
-  }, [window.localStorage.getItem("newCartItem")]);
+  // const [newCartItem, setNewCartItem] = useState(null);
+  // useEffect(() => {
+  //   setNewCartItem(JSON.parse(window.localStorage.getItem("newCartItem")!));
+  // }, [window.localStorage.getItem("newCartItem")]);
 
   useEffect(() => {
-    setNewCartItem(null);
-    window.localStorage.removeItem("newCartItem");
+    context?.resetNewCartItem();
   }, []);
 
   return (
@@ -42,7 +39,7 @@ export default function Cart() {
       </div>
 
       <div className={styles.CartItemDisplay}>
-        {newCartItem && <NewCartItem data={newCartItem} />}
+        {context?.newCart && <NewCartItem data={context?.newCart} />}
         {cartContext?.cart && cartContext.cart.length ? (
           cartContext.cart.map((item: any, index: number) => (
             <CartItem
@@ -83,7 +80,7 @@ interface NewCartItemProps {
     name: string;
     category: string;
     price: number;
-    image: string;
+    image: string | null;
     skuId: number;
   };
 }

@@ -13,7 +13,19 @@ const inter = Inter({ subsets: ["latin"] });
 interface MyContextProps {
   cartActive: boolean;
   setCartState: any;
+  newCart: NewCartItem | null;
   toggleOff: () => void;
+  getNewCartItem: (newItem: NewCartItem) => void;
+  resetNewCartItem: () => void;
+}
+
+interface NewCartItem {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  image: string | null;
+  skuId: number;
 }
 
 export const MyContext = createContext<MyContextProps | undefined>(undefined);
@@ -28,16 +40,30 @@ export default function ClientContextProvider({
   const toggleOff = () => {
     setCartState(false);
 
-    if (JSON.parse(window.localStorage.getItem("newCartItem")!)) {
-      window.localStorage.removeItem("newCartItem");
-    }
+    resetNewCartItem();
   };
+
+  const [newCartItem, setNewCartItem] = useState(null);
+
+  const getNewCartItem = (data: any) => {
+    setNewCartItem(data);
+  };
+
+  const resetNewCartItem = () => {
+    setNewCartItem(null);
+  };
+
   return (
     <MyContext.Provider
       value={{
         cartActive: cartState,
         setCartState: setCartState,
         toggleOff: toggleOff,
+
+        newCart: newCartItem,
+
+        getNewCartItem: getNewCartItem,
+        resetNewCartItem: resetNewCartItem,
       }}
     >
       <body
