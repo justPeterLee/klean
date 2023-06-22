@@ -4,6 +4,10 @@ import styles from "../styling/Cart.module.css";
 import CartContextProvider from "./Context/CartContext";
 import FavoriteContextProvider from "./Context/FavoriteContext";
 import { Inter } from "next/font/google";
+
+import dynamic from "next/dynamic";
+const Cart = dynamic(() => import("@/components/Cart/Cart"));
+
 const inter = Inter({ subsets: ["latin"] });
 
 interface MyContextProps {
@@ -41,7 +45,10 @@ export default function ClientContextProvider({
         style={cartState ? { overflow: "hidden" } : {}}
       >
         <FavoriteContextProvider>
-          <CartContextProvider>{children}</CartContextProvider>
+          <CartContextProvider>
+            {/* {cartState && <Cart />} */}
+            {children}
+          </CartContextProvider>
         </FavoriteContextProvider>
       </body>
     </MyContext.Provider>
