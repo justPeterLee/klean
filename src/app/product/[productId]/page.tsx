@@ -3,8 +3,22 @@ import prisma from "../../../../lib/db";
 
 import ProductImage from "@/components/ProductPage/ProductImage";
 import ProductInfo from "@/components/ProductPage/ProductInfo";
-
+import { StoreCarousel } from "@/components/Feature/FeatureStoreItem/FeatureStoreItem";
 import fetchImage from "../../../../serverComponents/fetchImage";
+
+const itemss = [
+  { id: 1, name: "product_1", image: "image", price: "$100" },
+  { id: 2, name: "product_2", image: "image", price: "$100" },
+  { id: 3, name: "product_3", image: "image", price: "$100" },
+  { id: 4, name: "product_4", image: "image", price: "$100" },
+  { id: 5, name: "product_5", image: "image", price: "$100" },
+  { id: 6, name: "product_6", image: "image", price: "$100" },
+  { id: 7, name: "product_7", image: "image", price: "$100" },
+  { id: 8, name: "product_8", image: "image", price: "$100" },
+  { id: 9, name: "product_9", image: "image", price: "$100" },
+  { id: 10, name: "product_10", image: "image", price: "$100" },
+  { id: 11, name: "product_11", image: "image", price: "$100" },
+];
 
 interface Props {
   params: { productId: string };
@@ -65,6 +79,8 @@ export default async function ProductDetail({ params }: Props) {
           <ProductInfo data={productDataStruct} />
         </div>
       )}
+
+      <StoreCarousel data={itemss} />
     </div>
   );
 }

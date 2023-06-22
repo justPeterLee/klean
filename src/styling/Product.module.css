@@ -1,8 +1,9 @@
 .main {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  gap: 2rem;
+  align-items: center;
+  gap: 5rem;
 
   min-height: 91vh;
 }

@@ -246,6 +246,10 @@
   align-items: center;
 }
 
+.CaruselItemImage:hover {
+  cursor: pointer;
+}
+
 .CaruselItemInfo {
   display: flex;
   justify-content: space-between;
