@@ -4,7 +4,7 @@ import { MyContext } from "../ClientContext";
 interface CartContext {
   cart: CartItem[] | null;
   total: number;
-  getCart: () => void;
+  // getCart: () => void;
   changeCart: (newCart: CartItem[]) => void;
   changeQuantity: (item: CartItem, add: boolean) => void;
   removeItem: (item: CartItem) => void;
@@ -55,10 +55,28 @@ export default function CartContextProvider({
     console.log("asdf");
   };
 
-  const changeCart = (newCart: CartItem[]) => {
+  const fetchImageUrl = async (imageKey: string) => {
+    const res = await fetch(`/api/fetchImageProduct/${imageKey}`);
+    return await res.json();
+  };
+
+  const changeCart = async (newCart: CartItem[]) => {
     window.localStorage.setItem("cart", JSON.stringify(newCart));
-    setCart(JSON.parse(window.localStorage.getItem("cart")!));
-    console.log(cart);
+    const proxyCart = JSON.parse(window.localStorage.getItem("cart")!);
+
+    const proxy = await Promise.all(
+      proxyCart.map(async (item: CartItem) => {
+        let imageUrl = "";
+        if (item.image) {
+          imageUrl = await fetchImageUrl(item.image);
+        }
+        return { ...item, image: imageUrl };
+      })
+    );
+    console.log(proxy);
+
+    setCart(proxy);
+    updateTotal();
   };
 
   const changeQuantity = (curItem: CartItem, add: boolean) => {
@@ -113,8 +131,25 @@ export default function CartContextProvider({
     changeCart(updatedCart);
   };
 
-  function initalCart() {
-    setCart(JSON.parse(window.localStorage.getItem("cart")!));
+  async function initalCart() {
+    const proxyCart = JSON.parse(window.localStorage.getItem("cart")!);
+
+    const proxy = await Promise.all(
+      proxyCart.map(async (item: CartItem) => {
+        let imageUrl = "";
+        if (item.image) {
+          imageUrl = await fetchImageUrl(item.image);
+        }
+        return { ...item, image: imageUrl };
+      })
+    );
+    console.log(proxy);
+
+    setCart(proxy);
+    updateTotal();
+  }
+
+  function updateTotal() {
     const cart = JSON.parse(window.localStorage.getItem("cart")!);
     let total = 0;
     cart.map((item: any) => {
@@ -122,7 +157,6 @@ export default function CartContextProvider({
     });
     setTotal(total);
   }
-
   useEffect(() => {
     initalCart();
   }, []);
@@ -132,7 +166,7 @@ export default function CartContextProvider({
       value={{
         cart: cart,
         total: total,
-        getCart: getCart,
+        // getCart: getCart,
         changeCart: changeCart,
         changeQuantity: changeQuantity,
         removeItem: removeItem,

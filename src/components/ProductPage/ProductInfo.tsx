@@ -91,7 +91,7 @@ export default function ProductInfo(props: ProductInfoProps) {
   };
 
   // add item to selection
-  const addToCart = () => {
+  const addToCart = async () => {
     const selectedSKU = data.SKUs.filter((sku: any) => {
       return sku.product_sku === productSku;
     });

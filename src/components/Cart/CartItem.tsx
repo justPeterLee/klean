@@ -24,7 +24,6 @@ export default function CartItem(props: CartItemProps) {
 
   const cartContext = useContext(CartContext);
   const favoriteContext = useContext(FavoriteContext);
-
   const [imageUrl, setImageUrl] = useState("");
   const [removeAni, setRemoveAni] = useState(false);
 
@@ -49,16 +48,16 @@ export default function CartItem(props: CartItemProps) {
     }, 300);
   };
 
-  const fetchImageUrl = async () => {
-    const res = await fetch(`/api/fetchImageProduct/${data.image}`).then(
-      async (response) => {
-        setImageUrl(await response.json());
-      }
-    );
-  };
-  useEffect(() => {
-    fetchImageUrl();
-  }, []);
+  // const fetchImageUrl = async () => {
+  //   const res = await fetch(`/api/fetchImageProduct/${data.image}`).then(
+  //     async (response) => {
+  //       setImageUrl(await response.json());
+  //     }
+  //   );
+  // };
+  // useEffect(() => {
+  //   fetchImageUrl();
+  // }, []);
   const addBackItem = () => {
     const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
 
@@ -92,9 +91,9 @@ export default function CartItem(props: CartItemProps) {
           </div>
         </div>
       )}
-      {imageUrl ? (
+      {data.image ? (
         <Image
-          src={imageUrl}
+          src={data.image}
           alt=""
           height={136}
           width={136}
