@@ -5,17 +5,7 @@ import {
   SideFeature,
   ContactButton,
 } from "@/components/Feature/Feature";
-import {
-  StoreFeature,
-  StoreCarousel,
-} from "@/components/Feature/FeatureStoreItem/FeatureStoreItem";
-const items = [
-  { id: 1, product_name: "product_1", product_image: "image", price: "$100" },
-  { id: 2, product_name: "product_2", product_image: "image", price: "$100" },
-  { id: 3, product_name: "product_3", product_image: "image", price: "$100" },
-  { id: 4, product_name: "product_4", product_image: "image", price: "$100" },
-  { id: 5, product_name: "product_5", product_image: "image", price: "$100" },
-];
+import { StoreCarousel } from "@/components/Feature/FeatureStoreItem/FeatureStoreItem";
 
 const itemss = [
   { id: 1, name: "product_1", image: "image", price: "$100" },
@@ -41,7 +31,6 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <MainFeature />
-      <StoreFeature caruselItem={items} />
       <StoreCarousel data={itemss} />
       <SideFeature product_info={product_info1} />
       <SideFeature
