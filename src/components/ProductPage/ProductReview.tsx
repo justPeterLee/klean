@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styles from "../../styling/Product.module.css";
 import { AiOutlineDown } from "react-icons/ai";
 
@@ -5,13 +6,25 @@ interface ProductReviewProps {
   reviews: ReviewItemProps[];
 }
 export default function ProductReview(props: ProductReviewProps) {
+  const [showReview, setShowReview] = useState(false);
   return (
     <div className={styles.ReviewContainer}>
-      <button className={styles.ReviewButton}>
+      <button
+        className={styles.ReviewButton}
+        onClick={() => {
+          setShowReview(!showReview);
+        }}
+      >
         <p>Reviews</p>
-        <AiOutlineDown />
+        <AiOutlineDown
+          className={`${styles.ReviewArrow} ${showReview && styles.FlipArrow}`}
+        />
       </button>
-      <div className={styles.ReviewDisplay}>
+      <div
+        className={`${styles.ReviewDisplay} ${
+          showReview ? styles.ShowReviewDisplay : styles.HideReviewDisplay
+        }`}
+      >
         {props.reviews.length ? (
           props.reviews.map((review) => (
             <ReviewItem

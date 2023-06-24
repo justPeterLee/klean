@@ -187,3 +187,38 @@ Product Info
   cursor: pointer;
   background-color: rgb(230, 230, 230);
 }
+
+/* -----------------------------------
+Review
+----------------------------------- */
+
+.ReviewButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 20px;
+  background-color: transparent;
+  border: none;
+}
+
+.ReviewButton:hover {
+  cursor: pointer;
+}
+
+.ReviewArrow {
+  margin-right: 1rem;
+  transition: all ease 0.2s;
+}
+
+.FlipArrow {
+  transform: rotate(180deg);
+}
+
+.ShowReviewDisplay {
+  display: block;
+}
+
+.HideReviewDisplay {
+  display: none;
+}
