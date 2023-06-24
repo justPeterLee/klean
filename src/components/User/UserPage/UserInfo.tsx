@@ -1,9 +1,10 @@
 "use client";
 import styles from "../../../styling/User.module.css";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { FavoriteContext } from "@/components/Context/FavoriteContext";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import Image from "next/image";
 export function Favorites() {
   const { data: session } = useSession();
   const favoriteContext = useContext(FavoriteContext);
@@ -27,6 +28,7 @@ export function Favorites() {
                 productId={item.productId}
                 userId={session?.user.id}
                 index={index}
+                image={item.productData.thumbnail}
               />
             ))
           ) : (
@@ -48,15 +50,35 @@ interface FavoriteItemProps {
   productId: number;
   userId: number;
   index: number;
+  image: string;
 }
 function FavoriteItem(props: FavoriteItemProps) {
-  const { name, category, price, skuId, productId, userId, index } = props;
+  const { name, category, price, skuId, productId, userId, index, image } =
+    props;
   const favoriteContext = useContext(FavoriteContext);
+  const [imageUrl, setImageUrl] = useState("");
 
+  const fetchImageUrl = async (imageKey: string) => {
+    const res = await fetch(`/api/fetchImageProduct/${imageKey}`);
+    setImageUrl(await res.json());
+  };
+  useEffect(() => {
+    fetchImageUrl(image);
+  }, []);
   return (
     <div className={styles.FavoriteItemContainer}>
       <div className={styles.imageContainer}>
-        <div className={styles.FavoriteImage}>image</div>
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt=""
+            height={112}
+            width={112}
+            style={{ borderRadius: "10px" }}
+          />
+        ) : (
+          <div className={styles.FavoriteImage}>loading...</div>
+        )}
       </div>
       <div className={styles.FavoriteInfoContainer}>
         <span>
