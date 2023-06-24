@@ -1,9 +1,9 @@
 "use client";
 import styles from "../../../styling/User.module.css";
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import { useSession } from "next-auth/react";
 import { FavoriteContext } from "@/components/Context/FavoriteContext";
-
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 export function Favorites() {
   const { data: session } = useSession();
   const favoriteContext = useContext(FavoriteContext);
@@ -13,7 +13,7 @@ export function Favorites() {
       <span className={styles.InfoTitleContainer}>
         <p>Favorites</p>
       </span>
-      <div>
+      <div className={styles.FavoriteDisplay}>
         {/* {JSON.stringify(favoriteData)} */}
         {favoriteContext?.favorite ? (
           favoriteContext.favorite.length ? (
@@ -56,25 +56,20 @@ function FavoriteItem(props: FavoriteItemProps) {
   return (
     <div className={styles.FavoriteItemContainer}>
       <div className={styles.imageContainer}>
-        {JSON.stringify(skuId)}
-        <span>image</span>
+        <div className={styles.FavoriteImage}>image</div>
       </div>
       <div className={styles.FavoriteInfoContainer}>
         <span>
-          <p>{name}</p>
-          <p>{category}</p>
+          <p className={styles.FavName}>{name}</p>
+          <p className={styles.FavCat}>{category}</p>
         </span>
-        <span>
+        <span className={styles.FavPriceContainer}>
           <p>${price}</p>
         </span>
       </div>
       <div className={styles.FavoriteButton}>
         <button
-          style={
-            !favoriteContext?.favorite[index].toBeDeleted
-              ? { background: "rgb(200,200,200)" }
-              : {}
-          }
+          className={styles.FavButton}
           onClick={async () => {
             if (favoriteContext?.favorite[index].toBeDeleted === false) {
               //proxy remove
@@ -92,7 +87,11 @@ function FavoriteItem(props: FavoriteItemProps) {
             }
           }}
         >
-          {"<3"}
+          {!favoriteContext?.favorite[index].toBeDeleted ? (
+            <AiFillHeart size={30} color="rgb(200,100,100)" />
+          ) : (
+            <AiOutlineHeart size={30} color="rgb(200,100,100)" />
+          )}
         </button>
       </div>
     </div>
