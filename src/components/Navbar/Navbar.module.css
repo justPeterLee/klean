@@ -36,3 +36,31 @@
   display: flex;
   gap: 2rem;
 }
+
+.link {
+  text-decoration: none;
+  transition: all ease 0.2s;
+}
+.link:visited {
+  color: black;
+}
+.link:hover {
+  color: rgb(100, 100, 100);
+}
+
+.cartButton {
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  transition: all ease 0.2s;
+}
+
+.cartButton p {
+  margin: 0;
+}
+
+.cartButton:hover {
+  cursor: pointer;
+  color: rgb(100, 100, 100);
+}

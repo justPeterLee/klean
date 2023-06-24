@@ -3,6 +3,9 @@ import { useState, useEffect, useContext } from "react";
 import styles from "./Navbar.module.css";
 import Link from "next/link";
 import { MyContext } from "../ClientContext";
+import { FaRegUser } from "react-icons/fa";
+import { FiShoppingCart } from "react-icons/fi";
+
 export default function Navbar() {
   const context = useContext(MyContext);
   let lastScroll = 0;
@@ -30,22 +33,32 @@ export default function Navbar() {
     <div className={styles.container} style={{ top: topStyle }}>
       <div className={styles.subContainer}>
         <div className={styles.logoContainer}>
-          <Link href={"/"}>Logo</Link>
+          <Link href={"/"} className={styles.link}>
+            Logo
+          </Link>
         </div>
         <div className={styles.linkContainer}>
-          <Link href={"/shop"}>shop</Link>
-          <Link href={"/about"}>about</Link>
-          <Link href={"/contact"}>contact</Link>
+          <Link href={"/shop"} className={styles.link}>
+            shop
+          </Link>
+          <Link href={"/about"} className={styles.link}>
+            about
+          </Link>
+          <Link href={"/contact"} className={styles.link}>
+            contact
+          </Link>
         </div>
         <div className={styles.iconContainer}>
-          <Link href={"/user"}>user</Link>
+          <Link href={"/user"} className={styles.link}>
+            <FaRegUser size={20} />
+          </Link>
           <button
             className={styles.cartButton}
             onClick={() => {
               context?.setCartState(true);
             }}
           >
-            cart
+            <FiShoppingCart size={20} />
           </button>
         </div>
       </div>
