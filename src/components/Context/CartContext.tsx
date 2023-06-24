@@ -48,13 +48,6 @@ export default function CartContextProvider({
 
   const [total, setTotal] = useState<number>(0);
 
-  const getCart = () => {
-    const cart = JSON.parse(window.localStorage.getItem("cart")!);
-    console.log(cart);
-    setCart(cart);
-    console.log("asdf");
-  };
-
   const fetchImageUrl = async (imageKey: string) => {
     const res = await fetch(`/api/fetchImageProduct/${imageKey}`);
     return await res.json();
@@ -73,8 +66,6 @@ export default function CartContextProvider({
         return { ...item, image: imageUrl };
       })
     );
-    console.log(proxy);
-
     setCart(proxy);
     updateTotal();
   };
@@ -143,7 +134,6 @@ export default function CartContextProvider({
         return { ...item, image: imageUrl };
       })
     );
-    console.log(proxy);
 
     setCart(proxy);
     updateTotal();

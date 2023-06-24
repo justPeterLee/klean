@@ -3,7 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import { CartContext } from "../Context/CartContext";
 import { FavoriteContext } from "../Context/FavoriteContext";
 import styles from "../../styling/Checkout.module.css";
-
+import Image from "next/image";
 export default function CheckoutItem() {
   const cartContext = useContext(CartContext);
 
@@ -48,7 +48,17 @@ function Item(props: ItemProps) {
   return (
     <div className={styles.ItemContainer}>
       <div className={styles.ImageContainer}>
-        <span className={styles.Image}>image</span>
+        {data.image ? (
+          <Image
+            src={data.image}
+            alt=""
+            height={128}
+            width={128}
+            style={{ borderRadius: "10px" }}
+          />
+        ) : (
+          <span className={styles.Image}>image</span>
+        )}
       </div>
       <div className={styles.InfoContainer}>
         <span className={styles.NameCategory}>
