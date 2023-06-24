@@ -3,6 +3,35 @@ import { useState, useContext, useEffect } from "react";
 import styles from "../../styling/Product.module.css";
 import { MyContext } from "../ClientContext";
 import { CartContext } from "../Context/CartContext";
+import ProductReview from "./ProductReview";
+
+const today = new Date().toISOString().slice(0, 10);
+const dummyReviews: any[] = [
+  {
+    id: 1,
+    name: "Chad L.",
+    date: today,
+    rate: 3,
+    message:
+      "I absolutely love these wireless earbuds! The sound quality is fantastic, and they fit comfortably in my ears. The battery life is impressive, lasting me throughout the day. The Bluetooth connection is strong and stable. Definitely worth the price!",
+  },
+  {
+    id: 2,
+    name: "Tony T.",
+    date: today,
+    rate: 5,
+    message:
+      "I bought these earbuds based on the positive reviews, but I'm disappointed. The sound quality is average at best, and the battery life is not as long as advertised. The earbuds tend to fall out of my ears easily, which is frustrating. I wouldn't recommend these.",
+  },
+  {
+    id: 3,
+    name: "Johnny G.",
+    date: today,
+    rate: 4,
+    message:
+      "This smartwatch is amazing! It's stylish, comfortable to wear, and packed with features. The display is clear and vibrant, and it syncs seamlessly with my smartphone. The battery life is impressive, lasting several days on a single charge. I highly recommend it!",
+  },
+];
 interface ProductInfoProps {
   data: {
     id: number;
@@ -206,6 +235,7 @@ export default function ProductInfo(props: ProductInfoProps) {
       <LINEBREAK />
 
       {/* review */}
+      <ProductReview reviews={dummyReviews} />
     </div>
   );
 }

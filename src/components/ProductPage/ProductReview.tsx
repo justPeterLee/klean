@@ -38,11 +38,14 @@ interface ReviewItemProps {
   message: string;
 }
 function ReviewItem(props: ReviewItemProps) {
+  const { name, date, rate, message } = props;
   return (
     <div className={styles.ReviewItemContainer}>
-      <div className={styles.ReviewRate}></div>
-      <div className={styles.ReviewUser}></div>
-      <div className={styles.ReviewMessage}></div>
+      <div className={styles.ReviewRate}>{rate}</div>
+      <div className={styles.ReviewUser}>
+        {name} {date.toLocaleString()}
+      </div>
+      <div className={styles.ReviewMessage}>{message}</div>
     </div>
   );
 }
