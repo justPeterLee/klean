@@ -10,11 +10,14 @@ export default function Navbar() {
 
   const pageScroll = (e: any) => {
     let currentScroll: number = window.pageYOffset;
+    // console.log(currentScroll);
 
     if (currentScroll - lastScroll < 0) {
       setTopStyle("0px");
     } else {
-      setTopStyle("-100px");
+      if (currentScroll > 25) {
+        setTopStyle("-100px");
+      }
     }
 
     lastScroll = currentScroll;
