@@ -194,6 +194,7 @@ Review
 
 .ReviewButton {
   width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -215,10 +216,15 @@ Review
   transform: rotate(180deg);
 }
 
-.ShowReviewDisplay {
-  display: block;
+.ReviewDisplay {
+  margin-top: 1rem;
 }
 
-.HideReviewDisplay {
-  display: none;
+.ReviewItemContainer {
+  margin-bottom: 2rem;
+}
+
+.ProductSectionTitle {
+  color: black;
+  font-size: 20px;
 }

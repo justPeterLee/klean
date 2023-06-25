@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../../styling/Product.module.css";
-import { AiOutlineDown } from "react-icons/ai";
-
+import { AiOutlineDown, AiFillStar, AiOutlineStar } from "react-icons/ai";
 interface ProductReviewProps {
   reviews: ReviewItemProps[];
 }
@@ -24,6 +23,7 @@ export default function ProductReview(props: ProductReviewProps) {
         className={`${styles.ReviewDisplay} ${
           showReview ? styles.ShowReviewDisplay : styles.HideReviewDisplay
         }`}
+        style={showReview ? { display: "block" } : { display: "none" }}
       >
         {props.reviews.length ? (
           props.reviews.map((review) => (
@@ -54,11 +54,43 @@ function ReviewItem(props: ReviewItemProps) {
   const { name, date, rate, message } = props;
   return (
     <div className={styles.ReviewItemContainer}>
-      <div className={styles.ReviewRate}>{rate}</div>
+      <div className={styles.ReviewRate}>
+        <ReviewStars rate={rate} />
+      </div>
       <div className={styles.ReviewUser}>
         {name} {date.toLocaleString()}
       </div>
       <div className={styles.ReviewMessage}>{message}</div>
     </div>
+  );
+}
+
+function ReviewStars(props: { rate: number }) {
+  const [stars, setStars] = useState<boolean[]>([]);
+  useEffect(() => {
+    let proxyArr: boolean[] = [];
+    for (let i = 0; i < 5; i++) {
+      if (i <= props.rate) {
+        proxyArr.push(true);
+      } else {
+        proxyArr.push(false);
+      }
+    }
+    setStars(proxyArr);
+  }, []);
+  return (
+    <>
+      {stars.length ? (
+        stars.map((item) => {
+          if (item) {
+            return <AiFillStar />;
+          } else {
+            return <AiOutlineStar />;
+          }
+        })
+      ) : (
+        <>{props.rate}</>
+      )}
+    </>
   );
 }

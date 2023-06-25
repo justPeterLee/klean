@@ -220,6 +220,7 @@ export default function ProductInfo(props: ProductInfoProps) {
 
       {/* description (description, technical points) */}
       <div className={styles.ProductDescriptionContainer}>
+        <p className={styles.ProductSectionTitle}>Description</p>
         <span className={styles.Description}>
           <p>{data.description}</p>
         </span>
@@ -236,6 +237,7 @@ export default function ProductInfo(props: ProductInfoProps) {
 
       {/* review */}
       <ProductReview reviews={dummyReviews} />
+      <LINEBREAK />
     </div>
   );
 }
