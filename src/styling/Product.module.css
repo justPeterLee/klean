@@ -228,3 +228,18 @@ Review
   color: black;
   font-size: 20px;
 }
+
+.ReviewUser {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.ReviewUser p {
+  margin: 0;
+}
+
+.ReviewRate {
+  margin-bottom: 0.65rem;
+}

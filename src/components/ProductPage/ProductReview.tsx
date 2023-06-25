@@ -54,12 +54,14 @@ function ReviewItem(props: ReviewItemProps) {
   const { name, date, rate, message } = props;
   return (
     <div className={styles.ReviewItemContainer}>
+      <div className={styles.ReviewUser}>
+        <p>{name}</p>
+        <p>{date.toLocaleString()}</p>
+      </div>
       <div className={styles.ReviewRate}>
         <ReviewStars rate={rate} />
       </div>
-      <div className={styles.ReviewUser}>
-        {name} {date.toLocaleString()}
-      </div>
+
       <div className={styles.ReviewMessage}>{message}</div>
     </div>
   );
