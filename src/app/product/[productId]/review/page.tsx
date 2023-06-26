@@ -47,7 +47,10 @@ export default async function reivew({
     <div className={styles.main}>
       {JSON.stringify(session)}
       <ReviewItem data={itemData!} />
-      <ReviewForm name={session.user.name.split(" ")[0]} />
+      <ReviewForm
+        name={session.user.name.split(" ")[0]}
+        productId={parseInt(params.productId)}
+      />
     </div>
   );
 }

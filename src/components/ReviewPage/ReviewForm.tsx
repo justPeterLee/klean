@@ -9,7 +9,7 @@ import { useState } from "react";
 
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
-export default function ReviewForm(props: { name: string }) {
+export default function ReviewForm(props: { name: string; productId: number }) {
   const [error, setError] = useState({
     name: true,
     starRating: true,
@@ -21,7 +21,7 @@ export default function ReviewForm(props: { name: string }) {
   const [message, setMessage] = useState("");
   const ratingArr = [1, 2, 3, 4, 5];
 
-  const postReivew = () => {
+  const postReview = () => {
     // create error copy
     let proxyError = error;
 
@@ -49,9 +49,26 @@ export default function ReviewForm(props: { name: string }) {
 
     const value = Object.values(proxyError);
     if (!value.includes(false)) {
+      postReviewDB();
     } else {
       console.log("fail to create review");
     }
+  };
+
+  const postReviewDB = async () => {
+    const data = {
+      name,
+      starRating,
+      message,
+      productId: props.productId,
+    };
+    await fetch("/api/review", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { "content-type": "application/json" },
+    }).then((response) => {
+      window.location.reload();
+    });
   };
   return (
     <div className={styles.FormContainer}>
@@ -135,7 +152,7 @@ export default function ReviewForm(props: { name: string }) {
       </div>
 
       <div className={styles.ButtonContainer}>
-        <button className={styles.CreateButton} onClick={postReivew}>
+        <button className={styles.CreateButton} onClick={postReview}>
           create
         </button>
       </div>
