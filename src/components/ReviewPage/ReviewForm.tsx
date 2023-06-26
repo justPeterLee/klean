@@ -54,6 +54,7 @@ export default function ReviewForm() {
           {ratingArr.map((pos) => {
             return (
               <StarRating
+                key={pos}
                 postion={pos}
                 curRating={starRating}
                 proxyRating={proxyRating}

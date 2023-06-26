@@ -14,15 +14,13 @@ export default function ReviewItem({
 }: ReviewItemProps) {
   return (
     <div className={styles.ReviewItemContainer}>
-      <div className={styles.ReviewItemImage}>
-        <Image
-          src={image}
-          alt=""
-          height={120}
-          width={120}
-          style={{ borderRadius: "10px" }}
-        />
-      </div>
+      <Image
+        src={image}
+        alt=""
+        height={120}
+        width={120}
+        style={{ borderRadius: "10px" }}
+      />
       <div className={styles.ReviewItemInfo}>
         <p className={styles.name}>{name}</p>
         <p className={styles.cat}>{category}</p>
