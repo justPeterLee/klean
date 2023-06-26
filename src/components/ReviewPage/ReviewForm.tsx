@@ -2,6 +2,7 @@
 import styles from "../../styling/Review.module.css";
 import { FavoriteItem } from "../User/UserPage/UserInfo";
 import { InputValidation } from "../ContactPage/ContactForm";
+import { LongInput } from "../AdminPage/AdminComponents";
 import { useState } from "react";
 
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
@@ -14,7 +15,7 @@ export default function ReviewForm() {
   const [name, setName] = useState("");
   const [starRating, setStarRating] = useState(0);
   const [proxyRating, setProxyRating] = useState(0);
-
+  const [message, setMessage] = useState("");
   const ratingArr = [1, 2, 3, 4, 5];
   return (
     <div className={styles.FormContainer}>
@@ -28,30 +29,59 @@ export default function ReviewForm() {
             setName(value);
           }}
           characterLimit={40}
-          width={{ width: "20rem" }}
-          initialValue=""
+          width={{ width: "24rem" }}
+          initialValue="User Name"
         />
       </div>
       <div className={styles.Rate}>
-        {JSON.stringify(proxyRating)}
-        {JSON.stringify(starRating)}
-        {ratingArr.map((pos) => {
-          return (
-            <StarRating
-              postion={pos}
-              curRating={starRating}
-              proxyRating={proxyRating}
-              sendCurrentRating={(curRating) => {
-                setStarRating(curRating);
+        <div className={styles.RateTitle}>
+          <p>Rating</p>
+          {starRating ? (
+            <button
+              onClick={() => {
+                setStarRating(0);
+                setProxyRating(0);
               }}
-              sendProxyRating={(proxyRating) => {
-                setProxyRating(proxyRating);
-              }}
-            />
-          );
-        })}
+            >
+              clear
+            </button>
+          ) : (
+            <></>
+          )}
+        </div>
+
+        <div>
+          {ratingArr.map((pos) => {
+            return (
+              <StarRating
+                postion={pos}
+                curRating={starRating}
+                proxyRating={proxyRating}
+                sendCurrentRating={(curRating) => {
+                  setStarRating(curRating);
+                }}
+                sendProxyRating={(proxyRating) => {
+                  setProxyRating(proxyRating);
+                }}
+              />
+            );
+          })}
+        </div>
       </div>
-      <div className={styles.Message}></div>
+      <div className={styles.Message}>
+        <div className={styles.RateTitle}>
+          <p>Message</p>
+        </div>
+        <LongInput
+          readDescription={(params) => {
+            setMessage(params);
+          }}
+        />
+      </div>
+
+      <div className={styles.ButtonContainer}>
+        <button className={styles.CreateButton}>create</button>
+      </div>
     </div>
   );
 }
@@ -73,6 +103,7 @@ function StarRating({
 }: StartRatingProps) {
   return (
     <button
+      className={styles.StarButton}
       onClick={() => {
         sendCurrentRating(postion);
       }}
@@ -84,17 +115,14 @@ function StarRating({
       onMouseOut={() => {
         sendProxyRating(0);
       }}
+      onMouseLeave={() => {
+        sendProxyRating(0);
+      }}
     >
       {postion <= curRating ? (
-        <AiFillStar />
-      ) : postion <= proxyRating ? (
-        postion > curRating ? (
-          <AiFillStar color="blue" />
-        ) : (
-          <AiOutlineStar />
-        )
+        <AiFillStar size={27} className={styles.Star} color="#FFCD3c" />
       ) : (
-        <AiOutlineStar />
+        <AiOutlineStar size={27} color="#FFCD3c" />
       )}
     </button>
   );

@@ -7,3 +7,77 @@
 
   min-height: 91vh;
 }
+
+/* -------------------------------
+Review Form 
+------------------------------- */
+.FormContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
+/* star button */
+.StarButton {
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.Star {
+  transition: all ease 0.2s;
+}
+.StarButton:hover {
+  cursor: pointer;
+}
+.Rate {
+  display: flex;
+  flex-direction: column;
+  /* position: relative; */
+}
+
+.Rate p,
+.Message p {
+  margin: 0;
+  font-size: 11px;
+  margin-bottom: 7px;
+  /* position: absolute; */
+  /* left: -5px; */
+  transform: translateX(-6px);
+}
+
+.RateTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.RateTitle button {
+  margin: 0;
+  padding: 0;
+  font-size: 11px;
+  color: blue;
+  text-decoration: underline;
+  border: none;
+  background-color: transparent;
+}
+
+.RateTitle button:hover {
+  cursor: pointer;
+}
+
+.CreateButton {
+  height: 2rem;
+  width: 6rem;
+  border-radius: 5px;
+  border: none;
+}
+.CreateButton:hover {
+  cursor: pointer;
+}
+.ButtonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

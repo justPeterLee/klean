@@ -681,3 +681,71 @@ function OptionDisplay({
     </span>
   );
 }
+
+interface LongInputProps {
+  readDescription: (params: string) => void;
+}
+export function LongInput(props: LongInputProps) {
+  const descriptionRef = useRef<HTMLInputElement | null>(null);
+  const [descriptionLimit, setDescriptionLimit] = useState({});
+  const [descriptionStyle, setDescriptionStyle] = useState({
+    minHeight: "2rem",
+  });
+  const [description, setDescrption] = useState("");
+
+  return (
+    <span className={styles.descriptionContainer}>
+      <label htmlFor="description-input" style={descriptionLimit}>
+        {description.length}/255
+      </label>
+      <textarea
+        className={styles.description}
+        id="description-input"
+        style={{ ...descriptionStyle }}
+        placeholder="enter description"
+        value={description}
+        onChange={(e) => {
+          if (e.target.value.length <= 255) {
+            setDescrption(e.target.value);
+            // readDescription(e.target.value);
+            props.readDescription(e.target.value);
+          }
+        }}
+        onFocus={() => {
+          setDescriptionStyle({ minHeight: "10rem" });
+          setDescriptionLimit({ color: "rgb(0,0,0,.5)" });
+        }}
+        onBlur={() => {
+          if (descriptionRef.current?.offsetHeight) {
+            if (descriptionRef.current?.offsetHeight >= 32) {
+              setDescriptionStyle({
+                minHeight: `${descriptionRef.current?.offsetHeight + 15}px`,
+              });
+            } else {
+              setDescriptionStyle({ minHeight: "2rem" });
+            }
+          } else {
+            setDescriptionStyle({ minHeight: "2rem" });
+          }
+          setDescriptionLimit({ color: "rgb(0,0,0,0)" });
+        }}
+      />
+      <div
+        style={{
+          width: "22rem",
+          wordWrap: "break-word",
+          visibility: "hidden",
+          position: "absolute",
+          fontSize: "15px",
+          // display: "none",
+        }}
+      >
+        <p ref={descriptionRef} style={{ fontSize: "15px" }}>
+          {description}
+        </p>
+
+        {JSON.stringify(descriptionRef.current?.offsetHeight)}
+      </div>
+    </span>
+  );
+}
