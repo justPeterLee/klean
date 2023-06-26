@@ -1,9 +1,9 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { redirect } from "next/navigation";
 
 import styles from "../../../../styling/Review.module.css";
 import ReviewRedirect from "@/components/ReviewPage/ReviewRedirect";
+import ReviewForm from "@/components/ReviewPage/ReviewForm";
 
 export default async function reivew({
   params,
@@ -17,6 +17,7 @@ export default async function reivew({
   return (
     <div className={styles.main}>
       <p>add review page</p>
+      <ReviewForm />
     </div>
   );
 }

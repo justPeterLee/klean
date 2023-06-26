@@ -13,6 +13,7 @@ interface inputValidationProps {
   };
   characterLimit?: number;
   isNumber?: boolean;
+  initialValue?: string;
 }
 export function InputValidation({
   valueName,
@@ -22,8 +23,11 @@ export function InputValidation({
   width,
   characterLimit,
   isNumber,
+  initialValue,
 }: inputValidationProps) {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(
+    initialValue ? initialValue : ""
+  );
   const [error, setError] = useState({ [valueName]: true });
 
   useEffect(() => {
@@ -31,6 +35,7 @@ export function InputValidation({
       setError({ [valueName]: false });
     }
   }, [triggerError]);
+
   return (
     <span className={styles.inputContainer} style={width}>
       {!isNumber ? (
