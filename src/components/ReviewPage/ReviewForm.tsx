@@ -1,5 +1,7 @@
 "use client";
 import styles from "../../styling/Review.module.css";
+import stylesC from "../../styling/Contact.module.css";
+
 import { FavoriteItem } from "../User/UserPage/UserInfo";
 import { InputValidation } from "../ContactPage/ContactForm";
 import { LongInput } from "../AdminPage/AdminComponents";
@@ -7,16 +9,50 @@ import { useState } from "react";
 
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
-export default function ReviewForm() {
+export default function ReviewForm(props: { name: string }) {
   const [error, setError] = useState({
     name: true,
-    password: true,
+    starRating: true,
+    message: true,
   });
-  const [name, setName] = useState("");
+  const [name, setName] = useState(props.name);
   const [starRating, setStarRating] = useState(0);
   const [proxyRating, setProxyRating] = useState(0);
   const [message, setMessage] = useState("");
   const ratingArr = [1, 2, 3, 4, 5];
+
+  const postReivew = () => {
+    // create error copy
+    let proxyError = error;
+
+    // create copy of values to see if valid
+    const proxyValue: any = {
+      name,
+      starRating,
+      message,
+    };
+    // create array of keys to be able to iterate
+    const keys: string[] = Object.keys(proxyError);
+
+    for (let key of keys) {
+      if (
+        proxyValue[key] === 0 ||
+        !proxyValue[key].toString().replace(/\s/g, "")
+      ) {
+        proxyError = { ...proxyError, [key]: false };
+        setError(proxyError);
+      } else {
+        proxyError = { ...proxyError, [key]: true };
+        setError(proxyError);
+      }
+    }
+
+    const value = Object.values(proxyError);
+    if (!value.includes(false)) {
+    } else {
+      console.log("fail to create review");
+    }
+  };
   return (
     <div className={styles.FormContainer}>
       <div className={styles.FormNameDate}>
@@ -30,12 +66,12 @@ export default function ReviewForm() {
           }}
           characterLimit={40}
           width={{ width: "24rem" }}
-          initialValue="User Name"
+          initialValue={props.name}
         />
       </div>
       <div className={styles.Rate}>
         <div className={styles.RateTitle}>
-          <p>Rating</p>
+          <p style={!error.starRating ? { color: "red" } : {}}>Rating</p>
           {starRating ? (
             <button
               onClick={() => {
@@ -67,21 +103,41 @@ export default function ReviewForm() {
               />
             );
           })}
+
+          {!error.starRating && (
+            <p
+              className={styles.errorText}
+              style={{ color: "red", marginLeft: ".345rem" }}
+            >
+              * must include rating
+            </p>
+          )}
         </div>
       </div>
       <div className={styles.Message}>
         <div className={styles.RateTitle}>
-          <p>Message</p>
+          <p style={!error.message ? { color: "red" } : {}}>Message</p>
         </div>
         <LongInput
+          error={error.message}
           readDescription={(params) => {
             setMessage(params);
           }}
         />
+        {!error.message && (
+          <p
+            className={styles.errorText}
+            style={{ color: "red", marginLeft: ".345rem" }}
+          >
+            * must include message
+          </p>
+        )}
       </div>
 
       <div className={styles.ButtonContainer}>
-        <button className={styles.CreateButton}>create</button>
+        <button className={styles.CreateButton} onClick={postReivew}>
+          create
+        </button>
       </div>
     </div>
   );

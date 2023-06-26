@@ -468,3 +468,7 @@ Image preview
 .technicalAdd {
   position: relative;
 }
+
+.descriptionError {
+  border: solid 1px red;
+}

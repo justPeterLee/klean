@@ -684,6 +684,7 @@ function OptionDisplay({
 
 interface LongInputProps {
   readDescription: (params: string) => void;
+  error: boolean;
 }
 export function LongInput(props: LongInputProps) {
   const descriptionRef = useRef<HTMLInputElement | null>(null);
@@ -699,7 +700,9 @@ export function LongInput(props: LongInputProps) {
         {description.length}/255
       </label>
       <textarea
-        className={styles.description}
+        className={`${styles.description} ${
+          !props.error && styles.descriptionError
+        }`}
         id="description-input"
         style={{ ...descriptionStyle }}
         placeholder="enter description"
