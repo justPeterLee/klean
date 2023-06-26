@@ -52,7 +52,7 @@ interface FavoriteItemProps {
   index: number;
   image: string;
 }
-function FavoriteItem(props: FavoriteItemProps) {
+export function FavoriteItem(props: FavoriteItemProps) {
   const { name, category, price, skuId, productId, userId, index, image } =
     props;
   const favoriteContext = useContext(FavoriteContext);

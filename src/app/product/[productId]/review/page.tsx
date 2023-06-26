@@ -16,7 +16,6 @@ export default async function reivew({
   }
   return (
     <div className={styles.main}>
-      {JSON.stringify(session)}
       <p>add review page</p>
     </div>
   );
