@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import styles from "../../styling/Product.module.css";
 import { AiOutlineDown, AiFillStar, AiOutlineStar } from "react-icons/ai";
+import prisma from "../../../lib/db";
+import { useSession, getSession } from "next-auth/react";
 interface ProductReviewProps {
   reviews: ReviewItemProps[];
 }
+
 export default function ProductReview(props: ProductReviewProps) {
   const [showReview, setShowReview] = useState(false);
   return (
@@ -28,6 +31,7 @@ export default function ProductReview(props: ProductReviewProps) {
         {props.reviews.length ? (
           props.reviews.map((review) => (
             <ReviewItem
+              key={review.id}
               id={review.id}
               name={review.name}
               date={review.date}
@@ -38,6 +42,7 @@ export default function ProductReview(props: ProductReviewProps) {
         ) : (
           <p>no reviews</p>
         )}
+        <AddReviewButton />
       </div>
     </div>
   );
@@ -83,16 +88,33 @@ function ReviewStars(props: { rate: number }) {
   return (
     <>
       {stars.length ? (
-        stars.map((item) => {
+        stars.map((item, index) => {
           if (item) {
-            return <AiFillStar />;
+            return <AiFillStar key={index} />;
           } else {
-            return <AiOutlineStar />;
+            return <AiOutlineStar key={index} />;
           }
         })
       ) : (
         <>{props.rate}</>
       )}
     </>
+  );
+}
+
+function AddReviewButton() {
+  const { data: session, status } = useSession();
+  return (
+    <button
+      onClick={() => {
+        if (session) {
+          console.log("logged in");
+        } else {
+          console.log("logged out");
+        }
+      }}
+    >
+      + add review
+    </button>
   );
 }
