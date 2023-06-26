@@ -26,7 +26,6 @@ export function Favorites() {
                 price={item.productData.price}
                 skuId={item.skuId}
                 productId={item.productId}
-                userId={session?.user.id}
                 index={index}
                 image={item.productData.thumbnail}
               />
@@ -46,15 +45,13 @@ interface FavoriteItemProps {
   name: string;
   category: string;
   price: string;
-  skuId: number;
+  skuId?: number;
   productId: number;
-  userId: number;
-  index: number;
+  index?: number;
   image: string;
 }
 export function FavoriteItem(props: FavoriteItemProps) {
-  const { name, category, price, skuId, productId, userId, index, image } =
-    props;
+  const { name, category, price, skuId, productId, index, image } = props;
   const favoriteContext = useContext(FavoriteContext);
   const [imageUrl, setImageUrl] = useState("");
 
@@ -93,23 +90,23 @@ export function FavoriteItem(props: FavoriteItemProps) {
         <button
           className={styles.FavButton}
           onClick={async () => {
-            if (favoriteContext?.favorite[index].toBeDeleted === false) {
+            if (favoriteContext?.favorite[index!].toBeDeleted === false) {
               //proxy remove
               favoriteContext?.favoriteFunc?.proxyRemove(
-                skuId,
+                skuId!,
                 productId,
                 false
               );
             } else {
               favoriteContext?.favoriteFunc?.proxyRemove(
-                skuId,
+                skuId!,
                 productId,
                 true
               );
             }
           }}
         >
-          {!favoriteContext?.favorite[index].toBeDeleted ? (
+          {!favoriteContext?.favorite[index!].toBeDeleted ? (
             <AiFillHeart size={30} color="rgb(200,100,100)" />
           ) : (
             <AiOutlineHeart size={30} color="rgb(200,100,100)" />
