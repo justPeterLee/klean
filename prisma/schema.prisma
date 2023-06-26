@@ -46,7 +46,6 @@ model user {
 
   order            order[]
   purchase_history purchase_history[]
-  review           review[]
   admin            admin[]
 }
 
@@ -309,11 +308,9 @@ model review {
   product_id  Int
   product_ref product @relation(fields: [product_id], references: [id])
 
-  user_id  Int
-  user_ref user @relation(fields: [user_id], references: [id])
+  user_name String @db.VarChar(75)
 
   @@index([product_id])
-  @@index([user_id])
 }
 
 // technical 
