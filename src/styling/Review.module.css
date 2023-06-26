@@ -1,11 +1,11 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 5rem;
+  margin-top: 2rem;
 
-  min-height: 91vh;
+  min-height: 80vh;
 }
 
 /* -------------------------------
