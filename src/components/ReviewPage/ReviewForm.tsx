@@ -6,6 +6,7 @@ import { LongInput } from "../AdminPage/AdminComponents";
 import { useState } from "react";
 
 import { AiOutlineStar, AiFillStar, AiOutlineLoading } from "react-icons/ai";
+import { ApiRequestLoad } from "../Loading/RequestLoad";
 
 export default function ReviewForm(props: { name: string; productId: number }) {
   const [error, setError] = useState({
@@ -17,6 +18,7 @@ export default function ReviewForm(props: { name: string; productId: number }) {
   const [starRating, setStarRating] = useState(0);
   const [proxyRating, setProxyRating] = useState(0);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const ratingArr = [1, 2, 3, 4, 5];
 
   const postReview = () => {
@@ -47,6 +49,7 @@ export default function ReviewForm(props: { name: string; productId: number }) {
 
     const value = Object.values(proxyError);
     if (!value.includes(false)) {
+      setLoading(true);
       postReviewDB();
     } else {
       console.log("fail to create review");
@@ -70,6 +73,8 @@ export default function ReviewForm(props: { name: string; productId: number }) {
   };
   return (
     <div className={styles.FormContainer}>
+      {loading && <ApiRequestLoad />}
+
       <div className={styles.FormNameDate}>
         <InputValidation
           valueName="Name"

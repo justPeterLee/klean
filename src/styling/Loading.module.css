@@ -1,0 +1,36 @@
+.ApiReqLoadMain {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  background-color: rgb(250, 250, 250, 0.7);
+}
+.ApiReqLoadContainer {
+  height: 10rem;
+  width: 10rem;
+  background-color: rgb(240, 240, 240);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+}
+
+.ApiReqLoad {
+  animation: loading 1s ease-out infinite;
+  color: rgb(100, 100, 100);
+}
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
