@@ -61,6 +61,15 @@ async function getProductDetail(productId: string) {
   return data;
 }
 
+async function ProductReview(productId: string) {
+  const productReview = await prisma.review.findMany({
+    where: { product_id: parseInt(productId) },
+    take: 3,
+  });
+
+  return productReview;
+}
+
 export default async function ProductDetail({ params }: Props) {
   const productData: any = await getProductDetail(params.productId);
   const imageFiles = await Promise.all(
@@ -70,13 +79,13 @@ export default async function ProductDetail({ params }: Props) {
     })
   );
   const productDataStruct = { ...productData, image_files: imageFiles };
-
+  const productReview = await ProductReview(params.productId);
   return (
     <div className={styles.main}>
       {productData && (
         <div className={styles.ProductInfo}>
           <ProductImage images={imageFiles} />
-          <ProductInfo data={productDataStruct} />
+          <ProductInfo data={productDataStruct} review={productReview} />
         </div>
       )}
 

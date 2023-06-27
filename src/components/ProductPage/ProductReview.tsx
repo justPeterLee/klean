@@ -33,10 +33,10 @@ export default function ProductReview(props: ProductReviewProps) {
             <ReviewItem
               key={review.id}
               id={review.id}
-              name={review.name}
-              date={review.date}
-              rate={review.rate}
-              message={review.message}
+              user_name={review.user_name}
+              review_date={review.createdAt!}
+              review_rate={review.review_rate}
+              review_message={review.review_message}
             />
           ))
         ) : (
@@ -50,24 +50,27 @@ export default function ProductReview(props: ProductReviewProps) {
 
 interface ReviewItemProps {
   id: number;
-  name: string;
-  date: Date;
-  rate: number;
-  message: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  review_rate: number;
+  review_date: Date;
+  review_message: string | null;
+  product_id?: number;
+  user_name: string;
 }
 function ReviewItem(props: ReviewItemProps) {
-  const { name, date, rate, message } = props;
+  const { user_name, review_date, review_rate, review_message } = props;
   return (
     <div className={styles.ReviewItemContainer}>
       <div className={styles.ReviewUser}>
-        <p>{name}</p>
-        <p>{date.toLocaleString()}</p>
+        <p>{user_name}</p>
+        <p>{review_date.toLocaleString()}</p>
       </div>
       <div className={styles.ReviewRate}>
-        <ReviewStars rate={rate} />
+        <ReviewStars rate={review_rate} />
       </div>
 
-      <div className={styles.ReviewMessage}>{message}</div>
+      <div className={styles.ReviewMessage}>{review_message}</div>
     </div>
   );
 }

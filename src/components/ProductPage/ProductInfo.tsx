@@ -46,6 +46,18 @@ interface ProductInfoProps {
     imageFiles: { file: string; name: string }[];
     review: any[];
   };
+  review: Review[];
+}
+
+interface Review {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  review_rate: number;
+  review_date: Date;
+  review_message: string | null;
+  product_id: number;
+  user_name: string;
 }
 
 interface SelectionType {
@@ -97,7 +109,7 @@ interface SkuType {
 }
 
 export default function ProductInfo(props: ProductInfoProps) {
-  const { data } = props;
+  const { data, review } = props;
   const context = useContext(MyContext);
   const cartContext = useContext(CartContext);
 
@@ -236,7 +248,7 @@ export default function ProductInfo(props: ProductInfoProps) {
       <LINEBREAK />
 
       {/* review */}
-      <ProductReview reviews={dummyReviews} />
+      <ProductReview reviews={review} />
       <LINEBREAK />
     </div>
   );
