@@ -1,13 +1,11 @@
 "use client";
 import styles from "../../styling/Review.module.css";
-import stylesC from "../../styling/Contact.module.css";
 
-import { FavoriteItem } from "../User/UserPage/UserInfo";
 import { InputValidation } from "../ContactPage/ContactForm";
 import { LongInput } from "../AdminPage/AdminComponents";
 import { useState } from "react";
 
-import { AiOutlineStar, AiFillStar } from "react-icons/ai";
+import { AiOutlineStar, AiFillStar, AiOutlineLoading } from "react-icons/ai";
 
 export default function ReviewForm(props: { name: string; productId: number }) {
   const [error, setError] = useState({
@@ -200,4 +198,8 @@ function StarRating({
       )}
     </button>
   );
+}
+
+function loading() {
+  return <AiOutlineLoading />;
 }

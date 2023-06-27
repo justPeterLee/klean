@@ -45,7 +45,6 @@ export default async function reivew({
   const itemData = await fetchItem(parseInt(params.productId));
   return (
     <div className={styles.main}>
-      {JSON.stringify(session)}
       <ReviewItem data={itemData!} />
       <ReviewForm
         name={session.user.name.split(" ")[0]}
