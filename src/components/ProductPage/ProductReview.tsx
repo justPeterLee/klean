@@ -5,6 +5,7 @@ import prisma from "../../../lib/db";
 import { useSession, getSession } from "next-auth/react";
 interface ProductReviewProps {
   reviews: ReviewItemProps[];
+  productId: number;
 }
 
 export default function ProductReview(props: ProductReviewProps) {
@@ -42,6 +43,7 @@ export default function ProductReview(props: ProductReviewProps) {
         ) : (
           <p>no reviews</p>
         )}
+        <ShowMoreButton productId={props.productId} />
         <AddReviewButton />
       </div>
     </div>
@@ -118,6 +120,43 @@ function AddReviewButton() {
       }}
     >
       + add review
+    </button>
+  );
+}
+
+interface ShowMoreButtonProps {
+  productId: any;
+}
+function ShowMoreButton({ productId }: ShowMoreButtonProps) {
+  const [pageNumber, setPageNumber] = useState(2);
+  const [loading, setLoading] = useState(false);
+  const [showReview, setShowReview] = useState<any[]>([1, 2, 3, 4]);
+  const fetchReviewPagination = async () => {
+    setLoading(true);
+    const res = await fetch(`/api/review/${productId}`, {
+      method: "POST",
+      body: JSON.stringify({ productId, pageNumber }),
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then(async (response) => {
+      // console.log(await response.json());
+      setPageNumber(pageNumber + 1);
+      setLoading(false);
+      const newReviews = await response.json();
+      setShowReview(newReviews);
+      console.log(newReviews);
+    });
+  };
+
+  return (
+    <button
+      className={styles.ShowMoreButton}
+      onClick={fetchReviewPagination}
+      disabled={loading || showReview.length !== 4}
+    >
+      {JSON.stringify(pageNumber)}
+      show more
     </button>
   );
 }
