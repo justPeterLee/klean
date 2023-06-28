@@ -10,6 +10,7 @@ interface ProductReviewProps {
 
 export default function ProductReview(props: ProductReviewProps) {
   const [showReview, setShowReview] = useState(false);
+  const [showMoreReview, setShowMoreReview] = useState<any[]>([]);
   return (
     <div className={styles.ReviewContainer}>
       <button
@@ -43,7 +44,27 @@ export default function ProductReview(props: ProductReviewProps) {
         ) : (
           <p>no reviews</p>
         )}
-        <ShowMoreButton productId={props.productId} />
+
+        {showMoreReview.length ? (
+          showMoreReview.map((review) => (
+            <ReviewItem
+              key={review.id}
+              id={review.id}
+              user_name={review.user_name}
+              review_date={review.createdAt!}
+              review_rate={review.review_rate}
+              review_message={review.review_message}
+            />
+          ))
+        ) : (
+          <></>
+        )}
+        <ShowMoreButton
+          productId={props.productId}
+          readShowReview={(newReview: any) => {
+            setShowMoreReview(newReview);
+          }}
+        />
         <AddReviewButton />
       </div>
     </div>
@@ -126,11 +147,20 @@ function AddReviewButton() {
 
 interface ShowMoreButtonProps {
   productId: any;
+  readShowReview: (newReview: any) => void;
 }
-function ShowMoreButton({ productId }: ShowMoreButtonProps) {
+function ShowMoreButton({ productId, readShowReview }: ShowMoreButtonProps) {
   const [pageNumber, setPageNumber] = useState(2);
   const [loading, setLoading] = useState(false);
   const [showReview, setShowReview] = useState<any[]>([1, 2, 3, 4]);
+
+  const sendShowReview = (newReview: any[]) => {
+    setShowReview(newReview);
+    setPageNumber(pageNumber + 1);
+    setLoading(false);
+    console.log(newReview);
+    readShowReview(newReview);
+  };
   const fetchReviewPagination = async () => {
     setLoading(true);
     const res = await fetch(`/api/review/${productId}`, {
@@ -140,12 +170,8 @@ function ShowMoreButton({ productId }: ShowMoreButtonProps) {
         "content-type": "application/json",
       },
     }).then(async (response) => {
-      // console.log(await response.json());
-      setPageNumber(pageNumber + 1);
-      setLoading(false);
       const newReviews = await response.json();
-      setShowReview(newReviews);
-      console.log(newReviews);
+      sendShowReview(newReviews);
     });
   };
 
