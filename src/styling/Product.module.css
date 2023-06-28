@@ -243,3 +243,57 @@ Review
 .ReviewRate {
   margin-bottom: 0.65rem;
 }
+
+/* -------------------------------
+Review Action buttons 
+------------------------------- */
+
+.ActionReviewButton {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.ShowMoreButton {
+  border: none;
+  background-color: transparent;
+  text-decoration: underline;
+  color: rgb(100, 100, 100);
+  transition: all ease 0.2s;
+  font-size: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.ShowMoreButton:hover {
+  color: black;
+  cursor: pointer;
+}
+
+.ShowMoreLoading {
+  animation: loading 1s ease-out infinite;
+}
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.ReviewAdd {
+  border: solid 1px black;
+  background-color: transparent;
+  height: 2rem;
+
+  border-radius: 5px;
+}
+.ReviewAdd:hover {
+  cursor: pointer;
+}

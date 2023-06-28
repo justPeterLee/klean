@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import styles from "../../styling/Product.module.css";
-import { AiOutlineDown, AiFillStar, AiOutlineStar } from "react-icons/ai";
-import prisma from "../../../lib/db";
-import { useSession, getSession } from "next-auth/react";
+import {
+  AiOutlineDown,
+  AiFillStar,
+  AiOutlineStar,
+  AiOutlineLoading,
+} from "react-icons/ai";
+import { useRouter } from "next/navigation";
 interface ProductReviewProps {
   reviews: ReviewItemProps[];
   productId: number;
@@ -59,13 +63,17 @@ export default function ProductReview(props: ProductReviewProps) {
         ) : (
           <></>
         )}
-        <ShowMoreButton
-          productId={props.productId}
-          readShowReview={(newReview: any) => {
-            setShowMoreReview(newReview);
-          }}
-        />
-        <AddReviewButton />
+
+        <div className={styles.ActionReviewButton}>
+          <ShowMoreButton
+            productId={props.productId}
+            readShowReview={(newReview: any) => {
+              setShowMoreReview(newReview);
+            }}
+          />
+
+          <AddReviewButton productId={props.productId} />
+        </div>
       </div>
     </div>
   );
@@ -83,11 +91,12 @@ interface ReviewItemProps {
 }
 function ReviewItem(props: ReviewItemProps) {
   const { user_name, review_date, review_rate, review_message } = props;
+  const date = review_date;
   return (
     <div className={styles.ReviewItemContainer}>
       <div className={styles.ReviewUser}>
         <p>{user_name}</p>
-        <p>{review_date.toLocaleString()}</p>
+        <p>{review_date.toString().slice(0, 10)}</p>
       </div>
       <div className={styles.ReviewRate}>
         <ReviewStars rate={review_rate} />
@@ -128,16 +137,13 @@ function ReviewStars(props: { rate: number }) {
   );
 }
 
-function AddReviewButton() {
-  const { data: session, status } = useSession();
+function AddReviewButton(props: { productId: number }) {
+  const router = useRouter();
   return (
     <button
+      className={styles.ReviewAdd}
       onClick={() => {
-        if (session) {
-          console.log("logged in");
-        } else {
-          console.log("logged out");
-        }
+        router.push(`product/${props.productId}/review`);
       }}
     >
       + add review
@@ -181,8 +187,9 @@ function ShowMoreButton({ productId, readShowReview }: ShowMoreButtonProps) {
       onClick={fetchReviewPagination}
       disabled={loading || showReview.length !== 4}
     >
-      {JSON.stringify(pageNumber)}
-      show more
+      <p>show more</p>
+
+      {loading && <AiOutlineLoading className={styles.ShowMoreLoading} />}
     </button>
   );
 }
