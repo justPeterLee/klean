@@ -13,6 +13,7 @@ export default function ProductImage(props: ProductImageProps) {
   })[0].file;
 
   const [mainImage, setMainImage] = useState(thumbnail);
+  const [selected, setSelected] = useState(0);
   const readImage = (image: string) => {
     setMainImage(image);
   };
@@ -22,7 +23,16 @@ export default function ProductImage(props: ProductImageProps) {
       <div className={styles.SubImageContainer}>
         {images.length ? (
           images.map((image, index) => (
-            <SubImage key={index} image={image.file} sendImage={readImage} />
+            <SubImage
+              key={index}
+              id={index}
+              image={image.file}
+              sendImage={readImage}
+              sendSelected={(selected) => {
+                setSelected(selected);
+              }}
+              selected={selected}
+            />
           ))
         ) : (
           <></>
@@ -43,24 +53,29 @@ export default function ProductImage(props: ProductImageProps) {
 }
 
 interface SubImageProps {
+  id: number;
   image: string;
+  selected: number;
   sendImage: (params: string) => void;
+  sendSelected: (params: number) => void;
 }
 
 function SubImage(props: SubImageProps) {
-  const { image, sendImage } = props;
+  const { image, id, selected, sendImage, sendSelected } = props;
   return (
     <button
       className={styles.SubImageButton}
       onClick={() => {
         sendImage(image);
+        sendSelected(id);
       }}
+      style={selected === id ? { border: "solid 2px black" } : {}}
     >
       <img
         src={image}
         alt=""
-        width={80}
-        height={80}
+        width={77}
+        height={77}
         style={{ borderRadius: "10px" }}
       />
     </button>

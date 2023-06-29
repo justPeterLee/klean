@@ -24,7 +24,7 @@ export default function user() {
 
   return (
     <div className={styles.main}>
-      <User />
+      {!session?.user ? <p>loading</p> : <User />}
     </div>
   );
 }
