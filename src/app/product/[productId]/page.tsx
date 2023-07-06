@@ -85,6 +85,7 @@ export default async function ProductDetail({ params }: Props) {
   const productDataStruct = { ...productData, image_files: imageFiles };
   const productReview = await ProductReview(params.productId);
   const caruselItems = await getFeatureCarousel(productData.categoryId)
+
   return (
     <div className={styles.main}>
       {productData && (
@@ -94,7 +95,7 @@ export default async function ProductDetail({ params }: Props) {
         </div>
       )}
 
-      <StoreCarousel data={caruselItems} />
+      <StoreCarousel data={caruselItems.filter((item)=>{return item.id !== parseInt(params.productId)})} />
     </div>
   );
 }
