@@ -100,7 +100,7 @@ function StoreCarouselItem(props: StoreCarouselItem) {
     <div className={styles.StoreCarouselItemContainer} onClick={()=>{router.push(`/product/${id}`)}}>
      { image !== "image" ? <Image src={image} alt={""} width={261} height={248} className={styles.CaruselItemImage} /> : <span className={styles.CaruselItemImage}>loading...</span>}
       <span className={styles.CaruselItemInfo}>
-        <p>{name}{id}</p>
+        <p>{name}</p>
         <p>${price}</p>
       </span>
     </div>
