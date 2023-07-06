@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useState, useEffect } from "react";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 export const FavoriteContext = createContext<FavoriteContextType | undefined>(
   undefined
 );
@@ -58,10 +58,11 @@ export default function FavoriteContextProvider({
   const [CurSession, setCurSession] = useState<any>(null);
   const [favorite, setFavorite] = useState([]);
   const [error, setError] = useState(false);
+  const { data: session, status } = useSession();
   // get favorites
   async function fetchFavorite() {
-    const session = await getCurSession();
-    setCurSession(session);
+    // const session = await getCurSession();
+    // setCurSession(session);
     if (session) {
       try {
         const res = await fetch(`/api/favorite/${session?.user.id}`, {
@@ -82,12 +83,13 @@ export default function FavoriteContextProvider({
       }
     } else {
       console.log("need to logged in to add to favorites");
+      setFavorite([])
     }
   }
   // add to favorites
   async function postFavorite(data: ChangeFavoriteDBParams, refesh: boolean) {
-    const session = await getCurSession();
-    setCurSession(session);
+    // const session = await getCurSession();
+    // setCurSession(session);
     if (session) {
       try {
         if (session) {
@@ -116,8 +118,8 @@ export default function FavoriteContextProvider({
   // remove from favorites
 
   async function removeFavorite(data: ChangeFavoriteDBParams) {
-    const session = await getCurSession();
-    setCurSession(session);
+    // const session = await getCurSession();
+    // setCurSession(session);
 
     if (session) {
       try {
@@ -223,7 +225,8 @@ export default function FavoriteContextProvider({
 
   useEffect(() => {
     fetchFavorite();
-  }, []);
+    console.log(session)
+  }, [session]);
   return (
     <FavoriteContext.Provider
       value={{
