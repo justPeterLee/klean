@@ -96,7 +96,7 @@ function StoreCarouselItem(props: StoreCarouselItem) {
 
   return (
     <div className={styles.StoreCarouselItemContainer}>
-      <Image src={image} alt={""} height={248} width={260.8} className={styles.CaruselItemImage}/>
+      <Image src={image} alt={""} width={261} height={248} className={styles.CaruselItemImage} />
       <span className={styles.CaruselItemInfo}>
         <p>{name}</p>
         <p>${price}</p>
