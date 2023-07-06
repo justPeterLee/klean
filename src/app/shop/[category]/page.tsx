@@ -25,7 +25,7 @@ async function getItems(params: string) {
     include: {
       product_ref: {
         include: {
-          image: true,
+          image: { where: { image_name: "thumbnail" } },
         },
       },
     },
@@ -40,33 +40,13 @@ async function getItems(params: string) {
       id: product.product_ref.id,
       name: product.product_ref.product_name,
       price: product.product_ref.product_price,
-      image: thumbnail[0].image_file,
+      image: product.product_ref.image[0].image_file,
     };
   });
 
   return products;
 }
 
-// const fetchImage = async (key: string) => {
-//   const bucketName = process.env.BUCKET_NAME;
-//   const bucketRegion = process.env.BUCKET_REGION;
-//   const accessKey = process.env.ACCESS_KEY;
-//   const secretAccessKey = process.env.SECRET_ACCESS_KEY;
-//   const s3 = new S3Client({
-//     credentials: {
-//       accessKeyId: accessKey!,
-//       secretAccessKey: secretAccessKey!,
-//     },
-//     region: bucketRegion,
-//   });
-//   const getObjectParams = {
-//     Bucket: bucketName,
-//     Key: key?.toString(),
-//   };
-//   const command = new GetObjectCommand(getObjectParams);
-//   const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
-//   return url;
-// };
 
 export default async function ShopCategory({ params }: Props) {
   const productItems = await getItems(params.category);

@@ -1,6 +1,7 @@
 "use client";
 import styles from "../Feature.module.css";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import useElementOnScreen from "@/hooks/useElementOnScreen";
 import Image from "next/image";
 interface StoreCarouselProps {
@@ -42,7 +43,7 @@ export function StoreCarousel(props: StoreCarouselProps) {
     }
   };
 
-useEffect(()=>{if(isVisible)console.log("makeing fetch call");
+useEffect(()=>{if(isVisible && props.fetchData)console.log("makeing fetch call");
 console.log(isVisible)},[isVisible])
 
   return (
@@ -93,12 +94,13 @@ interface StoreCarouselItem {
 }
 function StoreCarouselItem(props: StoreCarouselItem) {
   const { id, name, price, image } = props;
-
+  const router = useRouter();
+  // useEffect(()=>{console.log(image)},[])
   return (
-    <div className={styles.StoreCarouselItemContainer}>
-      <Image src={image} alt={""} width={261} height={248} className={styles.CaruselItemImage} />
+    <div className={styles.StoreCarouselItemContainer} onClick={()=>{router.push(`/product/${id}`)}}>
+     { image !== "image" ? <Image src={image} alt={""} width={261} height={248} className={styles.CaruselItemImage} /> : <span className={styles.CaruselItemImage}>loading...</span>}
       <span className={styles.CaruselItemInfo}>
-        <p>{name}</p>
+        <p>{name}{id}</p>
         <p>${price}</p>
       </span>
     </div>
