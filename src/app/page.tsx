@@ -1,5 +1,4 @@
 import styles from "../styling/page.module.css";
-
 import {
   MainFeature,
   SideFeature,
@@ -7,19 +6,21 @@ import {
 } from "@/components/Feature/Feature";
 import { StoreCarousel } from "@/components/Feature/FeatureStoreItem/FeatureStoreItem";
 
-const itemss = [
-  { id: 1, name: "product_1", image: "image", price: "$100" },
-  { id: 2, name: "product_2", image: "image", price: "$100" },
-  { id: 3, name: "product_3", image: "image", price: "$100" },
-  { id: 4, name: "product_4", image: "image", price: "$100" },
-  { id: 5, name: "product_5", image: "image", price: "$100" },
-  { id: 6, name: "product_6", image: "image", price: "$100" },
-  { id: 7, name: "product_7", image: "image", price: "$100" },
-  { id: 8, name: "product_8", image: "image", price: "$100" },
-  { id: 9, name: "product_9", image: "image", price: "$100" },
-  { id: 10, name: "product_10", image: "image", price: "$100" },
-  { id: 11, name: "product_11", image: "image", price: "$100" },
-];
+import prisma from "../../lib/db";
+import fetchImage from "../../serverComponents/fetchImage";
+async function getFeatureCarousel(){
+  const res = await prisma.product.findMany({
+    take: 11,
+    include: {
+      image: { where: { image_name: "thumbnail" } },
+    },
+  })
+
+  const structureArr = await Promise.all(
+    res.map(async (item)=>{ const image = await fetchImage(item.image[0].image_file!); return{id: item.id, name:item.product_name, image: image, price: item.product_price}})
+  );
+  return structureArr;
+}
 
 const product_info1 = {
   id: 1,
@@ -27,11 +28,12 @@ const product_info1 = {
   description:
     "Introducing the all-new ZenithX Pro-7, a revolutionary product that will transform your everyday life like never before. With its cutting-edge technology and sleek design.",
 };
-export default function Home() {
+export default async function Home() {
+  const caruselItems = await getFeatureCarousel();
   return (
     <main className={styles.main}>
       <MainFeature />
-      <StoreCarousel data={itemss} />
+      <StoreCarousel data={caruselItems}/>
       <SideFeature product_info={product_info1} />
       <SideFeature
         product_info={product_info1}

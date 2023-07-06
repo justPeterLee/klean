@@ -2,8 +2,10 @@
 import styles from "../Feature.module.css";
 import { useState, useEffect } from "react";
 import useElementOnScreen from "@/hooks/useElementOnScreen";
+import Image from "next/image";
 interface StoreCarouselProps {
-  data: { id: number; name: string; price: string; image: string }[];
+  data: { id: number; name: string; price: number | null; image: string }[];
+  fetchData?: ()=>string;
 }
 export function StoreCarousel(props: StoreCarouselProps) {
   const [containerRef, isVisible] = useElementOnScreen({});
@@ -86,7 +88,7 @@ console.log(isVisible)},[isVisible])
 interface StoreCarouselItem {
   id: number;
   name: string;
-  price: string;
+  price: number | null;
   image: string;
 }
 function StoreCarouselItem(props: StoreCarouselItem) {
@@ -94,10 +96,10 @@ function StoreCarouselItem(props: StoreCarouselItem) {
 
   return (
     <div className={styles.StoreCarouselItemContainer}>
-      <div className={styles.CaruselItemImage}>{image}</div>
+      <Image src={image} alt={""} height={248} width={260.8} className={styles.CaruselItemImage}/>
       <span className={styles.CaruselItemInfo}>
         <p>{name}</p>
-        <p>{price}</p>
+        <p>${price}</p>
       </span>
     </div>
   );
