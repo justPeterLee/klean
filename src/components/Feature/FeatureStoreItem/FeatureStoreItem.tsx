@@ -1,11 +1,13 @@
 "use client";
 import styles from "../Feature.module.css";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import useElementOnScreen from "@/hooks/useElementOnScreen";
 interface StoreCarouselProps {
   data: { id: number; name: string; price: string; image: string }[];
 }
 export function StoreCarousel(props: StoreCarouselProps) {
+  const [containerRef, isVisible] = useElementOnScreen({});
+
   const { data } = props;
   const transitionPerItem = 16.8;
   const maxClick = Math.floor(data.length / 3);
@@ -38,8 +40,11 @@ export function StoreCarousel(props: StoreCarouselProps) {
     }
   };
 
+useEffect(()=>{if(isVisible)console.log("makeing fetch call");
+console.log(isVisible)},[isVisible])
+
   return (
-    <div className={styles.CaruselContainer}>
+    <div className={styles.CaruselContainer} ref={containerRef}>
       <button
         className={styles.CaruselButton}
         style={{ left: "-5rem" }}
