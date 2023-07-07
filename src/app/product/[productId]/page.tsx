@@ -3,7 +3,6 @@ import prisma from "../../../../lib/db";
 
 import ProductImage from "@/components/ProductPage/ProductImage";
 import ProductInfo from "@/components/ProductPage/ProductInfo";
-import { StoreCarousel } from "@/components/Feature/FeatureStoreItem/FeatureStoreItem";
 import { StoreCarouselClient } from "@/components/Feature/FeatureStoreItem/FeatureStoreItem";
 import fetchImage from "../../../../serverComponents/fetchImage";
 
@@ -49,40 +48,6 @@ async function getProductDetail(productId: string) {
   return data;
 }
 
-async function ProductReview(productId: string) {
-  const productReview = await prisma.review.findMany({
-    where: { product_id: parseInt(productId) },
-    take: 3,
-  });
-
-  return productReview;
-}
-
-async function getFeatureCarousel(categoryId: number) {
-  const res = await prisma.product.findMany({
-    take: 11,
-    where: {
-      product_category: { some: { category_id: categoryId } },
-    },
-    include: {
-      image: { where: { image_name: "thumbnail" } },
-    },
-  });
-
-  const structureArr = await Promise.all(
-    res.map(async (item) => {
-      const image = await fetchImage(item.image[0].image_file!);
-      return {
-        id: item.id,
-        name: item.product_name,
-        image: image,
-        price: item.product_price,
-      };
-    })
-  );
-  return structureArr;
-}
-
 export default async function ProductDetail({ params }: Props) {
   const productData: any = await getProductDetail(params.productId);
   const imageFiles = await Promise.all(
@@ -92,8 +57,6 @@ export default async function ProductDetail({ params }: Props) {
     })
   );
   const productDataStruct = { ...productData, image_files: imageFiles };
-  // const productReview = await ProductReview(params.productId);
-  // const caruselItems = await getFeatureCarousel(productData.categoryId)
 
   return (
     <div className={styles.main}>
@@ -104,7 +67,6 @@ export default async function ProductDetail({ params }: Props) {
         </div>
       )}
 
-      {/* <StoreCarousel data={caruselItems.filter((item)=>{return item.id !== parseInt(params.productId)})} /> */}
       <StoreCarouselClient catId={productData.categoryId} />
     </div>
   );
