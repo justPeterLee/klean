@@ -92,7 +92,7 @@ export default async function ProductDetail({ params }: Props) {
     })
   );
   const productDataStruct = { ...productData, image_files: imageFiles };
-  const productReview = await ProductReview(params.productId);
+  // const productReview = await ProductReview(params.productId);
   // const caruselItems = await getFeatureCarousel(productData.categoryId)
 
   return (
@@ -100,7 +100,7 @@ export default async function ProductDetail({ params }: Props) {
       {productData && (
         <div className={styles.ProductInfo}>
           <ProductImage images={imageFiles} />
-          <ProductInfo data={productDataStruct} review={productReview} />
+          <ProductInfo data={productDataStruct} />
         </div>
       )}
 

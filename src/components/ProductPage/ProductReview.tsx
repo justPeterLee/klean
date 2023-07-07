@@ -8,19 +8,36 @@ import {
 } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 interface ProductReviewProps {
-  reviews: ReviewItemProps[];
+  reviews?: ReviewItemProps[];
   productId: number;
 }
 
 export default function ProductReview(props: ProductReviewProps) {
   const [showReview, setShowReview] = useState(false);
   const [showMoreReview, setShowMoreReview] = useState<any[]>([]);
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const [initalReview, setInitalReview] = useState([]);
+  const fetchInitalReview = async () => {
+    await fetch(`/api/review/inital/${props.productId}`, {
+      method: "GET",
+      headers: { "content-type": "application/json" },
+    }).then(async (response) => {
+      const data = await response.json();
+      console.log(data);
+      setInitalReview(data);
+      setLoading(false);
+    });
+  };
   return (
     <div className={styles.ReviewContainer}>
       <button
         className={styles.ReviewButton}
         onClick={() => {
           setShowReview(!showReview);
+          if (loading) {
+            fetchInitalReview();
+          }
         }}
       >
         <p>Reviews</p>
@@ -34,8 +51,10 @@ export default function ProductReview(props: ProductReviewProps) {
         }`}
         style={showReview ? { display: "block" } : { display: "none" }}
       >
-        {props.reviews.length ? (
-          props.reviews.map((review) => (
+        {loading ? (
+          <p>loading...</p>
+        ) : initalReview.length ? (
+          initalReview.map((review: any) => (
             <ReviewItem
               key={review.id}
               id={review.id}
