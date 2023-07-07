@@ -1,7 +1,7 @@
 "use client";
 import styles from "../../styling/Product.module.css";
 import { useState } from "react";
-
+import Image from "next/image";
 interface ProductImageProps {
   images: { name: string; file: string }[];
 }

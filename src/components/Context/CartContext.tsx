@@ -148,7 +148,7 @@ export default function CartContextProvider({
     setTotal(total);
   }
   useEffect(() => {
-    initalCart();
+    // initalCart();
   }, []);
 
   return (

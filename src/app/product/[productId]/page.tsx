@@ -4,6 +4,7 @@ import prisma from "../../../../lib/db";
 import ProductImage from "@/components/ProductPage/ProductImage";
 import ProductInfo from "@/components/ProductPage/ProductInfo";
 import { StoreCarousel } from "@/components/Feature/FeatureStoreItem/FeatureStoreItem";
+import { StoreCarouselClient } from "@/components/Feature/FeatureStoreItem/FeatureStoreItem";
 import fetchImage from "../../../../serverComponents/fetchImage";
 
 interface Props {
@@ -36,7 +37,7 @@ async function getProductDetail(productId: string) {
         price: productData.product_price,
         category:
           productData.product_category[0].category_ref.category_description,
-          categoryId: productData.product_category[0].category_id,
+        categoryId: productData.product_category[0].category_id,
         description: productData.product_description,
         technical: productData.technical_point,
         selection: productData.product_selection,
@@ -57,19 +58,27 @@ async function ProductReview(productId: string) {
   return productReview;
 }
 
-async function getFeatureCarousel(categoryId : number){
+async function getFeatureCarousel(categoryId: number) {
   const res = await prisma.product.findMany({
     take: 11,
     where: {
-      product_category : {some: {category_id: categoryId}}
+      product_category: { some: { category_id: categoryId } },
     },
     include: {
       image: { where: { image_name: "thumbnail" } },
     },
-  })
+  });
 
   const structureArr = await Promise.all(
-    res.map(async (item)=>{ const image = await fetchImage(item.image[0].image_file!); return{id: item.id, name:item.product_name, image: image, price: item.product_price}})
+    res.map(async (item) => {
+      const image = await fetchImage(item.image[0].image_file!);
+      return {
+        id: item.id,
+        name: item.product_name,
+        image: image,
+        price: item.product_price,
+      };
+    })
   );
   return structureArr;
 }
@@ -84,7 +93,7 @@ export default async function ProductDetail({ params }: Props) {
   );
   const productDataStruct = { ...productData, image_files: imageFiles };
   const productReview = await ProductReview(params.productId);
-  const caruselItems = await getFeatureCarousel(productData.categoryId)
+  // const caruselItems = await getFeatureCarousel(productData.categoryId)
 
   return (
     <div className={styles.main}>
@@ -95,7 +104,8 @@ export default async function ProductDetail({ params }: Props) {
         </div>
       )}
 
-      <StoreCarousel data={caruselItems.filter((item)=>{return item.id !== parseInt(params.productId)})} />
+      {/* <StoreCarousel data={caruselItems.filter((item)=>{return item.id !== parseInt(params.productId)})} /> */}
+      <StoreCarouselClient catId={productData.categoryId} />
     </div>
   );
 }

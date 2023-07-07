@@ -4,9 +4,32 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useElementOnScreen from "@/hooks/useElementOnScreen";
 import Image from "next/image";
+import { fetchData } from "next-auth/client/_utils";
+interface CaruselData {
+  id: number;
+  name: string;
+  price: number | null;
+  image: string;
+}
+export function StoreCarouselClient(props: { catId: number }) {
+  const [caruselData, setCaruselData] = useState<CaruselData[]>([]);
+  const fetchDatas = async () => {
+    await fetch(`/api/carusel/${props.catId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(async (response) => {
+      const data = await response.json();
+      setCaruselData(data);
+    });
+  };
+  return <StoreCarousel data={caruselData} setData={fetchDatas} />;
+}
+
 interface StoreCarouselProps {
   data: { id: number; name: string; price: number | null; image: string }[];
-  fetchData?: ()=>string;
+  setData?: () => any;
 }
 export function StoreCarousel(props: StoreCarouselProps) {
   const [containerRef, isVisible] = useElementOnScreen({});
@@ -43,8 +66,12 @@ export function StoreCarousel(props: StoreCarouselProps) {
     }
   };
 
-useEffect(()=>{if(isVisible && props.fetchData)console.log("makeing fetch call");
-console.log(isVisible)},[isVisible])
+  useEffect(() => {
+    if (isVisible && props.setData) {
+      props.setData();
+    }
+    console.log(isVisible);
+  }, [isVisible]);
 
   return (
     <div className={styles.CaruselContainer} ref={containerRef}>
@@ -97,8 +124,23 @@ function StoreCarouselItem(props: StoreCarouselItem) {
   const router = useRouter();
   // useEffect(()=>{console.log(image)},[])
   return (
-    <div className={styles.StoreCarouselItemContainer} onClick={()=>{router.push(`/product/${id}`)}}>
-     { image !== "image" ? <Image src={image} alt={""} width={261} height={248} className={styles.CaruselItemImage} /> : <span className={styles.CaruselItemImage}>loading...</span>}
+    <div
+      className={styles.StoreCarouselItemContainer}
+      onClick={() => {
+        router.push(`/product/${id}`);
+      }}
+    >
+      {image !== "image" ? (
+        <Image
+          src={image}
+          alt={""}
+          width={261}
+          height={248}
+          className={styles.CaruselItemImage}
+        />
+      ) : (
+        <span className={styles.CaruselItemImage}>loading...</span>
+      )}
       <span className={styles.CaruselItemInfo}>
         <p>{name}</p>
         <p>${price}</p>
