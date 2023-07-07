@@ -5,9 +5,12 @@ import Link from "next/link";
 import { MyContext } from "../ClientContext";
 import { FaRegUser } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
+import { CartContext } from "../Context/CartContext";
 
 export default function Navbar() {
   const context = useContext(MyContext);
+  const cartContext = useContext(CartContext);
+
   let lastScroll = 0;
   const [topStyle, setTopStyle] = useState<string>();
 
@@ -56,6 +59,7 @@ export default function Navbar() {
             className={styles.cartButton}
             onClick={() => {
               context?.setCartState(true);
+              if (cartContext?.loading) cartContext?.initalCart();
             }}
           >
             <FiShoppingCart size={20} />

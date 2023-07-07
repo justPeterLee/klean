@@ -4,6 +4,7 @@ import { MyContext } from "../ClientContext";
 interface CartContext {
   cart: CartItem[] | null;
   total: number;
+  loading: boolean;
   // getCart: () => void;
   changeCart: (newCart: CartItem[]) => void;
   changeQuantity: (item: CartItem, add: boolean) => void;
@@ -43,6 +44,8 @@ export default function CartContextProvider({
   children: React.ReactNode;
 }) {
   const context = useContext(MyContext);
+
+  const [loading, setLoading] = useState(true);
 
   const [cart, setCart] = useState<CartItem[] | null>(null);
 
@@ -137,6 +140,7 @@ export default function CartContextProvider({
 
     setCart(proxy);
     updateTotal();
+    setLoading(false);
   }
 
   function updateTotal() {
@@ -156,6 +160,7 @@ export default function CartContextProvider({
       value={{
         cart: cart,
         total: total,
+        loading: loading,
         // getCart: getCart,
         changeCart: changeCart,
         changeQuantity: changeQuantity,
