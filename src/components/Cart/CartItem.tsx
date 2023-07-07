@@ -48,16 +48,6 @@ export default function CartItem(props: CartItemProps) {
     }, 300);
   };
 
-  // const fetchImageUrl = async () => {
-  //   const res = await fetch(`/api/fetchImageProduct/${data.image}`).then(
-  //     async (response) => {
-  //       setImageUrl(await response.json());
-  //     }
-  //   );
-  // };
-  // useEffect(() => {
-  //   fetchImageUrl();
-  // }, []);
   const addBackItem = () => {
     const cartItems = JSON.parse(window.localStorage.getItem("cart")!);
 

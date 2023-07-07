@@ -47,16 +47,6 @@ export function ShopItem({ id, image, name, price, imageUrl }: ShopItemProps) {
   const router = useRouter();
   const [imageSrc, setImageSrc] = useState<any>("");
 
-  // const fetchImage = async () => {
-  //   const res: any = await fetch(`/api/fetchImageProduct/${image}`, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   }).then(async (response) => {
-  //     setImageSrc(await response.json());
-  //   });
-  // };
 
   useEffect(() => {
     // fetchImage();
