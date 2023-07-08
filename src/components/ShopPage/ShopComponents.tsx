@@ -35,18 +35,27 @@ export function ShopMenu(props: ShopMenuProps) {
   );
 }
 
+export function LoadingShopItem() {
+  return (
+    <div className={`${styles.ItemContainer}`}>
+      <div className={`${styles.Image} ${styles.LoadingSkeleton}`}></div>
+      <div className={`${styles.ItemInfo} ${styles.LoadingInfo}`}>
+        <div className={styles.LoadingBar}></div>
+        <div className={styles.LoadingBar} style={{ width: "13.8rem" }}></div>
+      </div>
+    </div>
+  );
+}
 interface ShopItemProps {
   id: string;
-  image: string;
   name: string;
   price: string;
   imageUrl: string;
 }
 
-export function ShopItem({ id, image, name, price, imageUrl }: ShopItemProps) {
+export function ShopItem({ id, name, price, imageUrl }: ShopItemProps) {
   const router = useRouter();
   const [imageSrc, setImageSrc] = useState<any>("");
-
 
   useEffect(() => {
     // fetchImage();
@@ -90,7 +99,6 @@ export function ShopItemDisplay({ items }: ShopItemDisplayProps) {
               id={item.id}
               name={item.name}
               price={item.price}
-              image={item.image}
               imageUrl={item.imageUrl}
             />
           );

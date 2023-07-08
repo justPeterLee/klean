@@ -40,7 +40,7 @@ export default function ProductImage(props: ProductImageProps) {
       </div>
       <div className={styles.MainImageContainer}>
         {/* <span className={styles.MainImage}>{mainImage}</span> */}
-        <img
+        <Image
           src={mainImage}
           alt=""
           width={480}
@@ -71,7 +71,7 @@ function SubImage(props: SubImageProps) {
       }}
       style={selected === id ? { border: "solid 2px black" } : {}}
     >
-      <img
+      <Image
         src={image}
         alt=""
         width={77}
