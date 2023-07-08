@@ -198,7 +198,7 @@ Cart
 .Remove,
 .Heart {
   border: none;
-  background-color: rgb(230, 230, 230);
+  background-color: transparent;
   border-radius: 5px;
 
   height: 2rem;

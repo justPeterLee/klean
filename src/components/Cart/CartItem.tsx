@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import styles from "../../styling/Cart.module.css";
 import { CartContext } from "../Context/CartContext";
 import { FavoriteContext } from "../Context/FavoriteContext";
-import fetchImage from "../../../serverComponents/fetchImage";
 import Image from "next/image";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { GoTrash } from "react-icons/go";
 interface CartItemProps {
   data: {
     id: number;
@@ -24,7 +25,6 @@ export default function CartItem(props: CartItemProps) {
 
   const cartContext = useContext(CartContext);
   const favoriteContext = useContext(FavoriteContext);
-  const [imageUrl, setImageUrl] = useState("");
   const [removeAni, setRemoveAni] = useState(false);
 
   const offRemoveItem = () => {
@@ -122,22 +122,7 @@ export default function CartItem(props: CartItemProps) {
       </div>
       <div className={styles.MisButton}>
         <button
-          className={styles.Remove}
-          onClick={() => cartContext?.removeItem(data)}
-        >
-          {"[]"}
-        </button>
-        <button
           className={styles.Heart}
-          style={
-            favoriteContext?.favoriteFunc?.isFavorited(data.skuId)
-              ? !favoriteContext?.favorite[
-                  favoriteContext?.favoriteFunc?.getIndex(data.skuId, data.id)
-                ].toBeDeleted
-                ? { background: "rgb(200,200,200)" }
-                : {}
-              : {}
-          }
           onClick={() => {
             if (favoriteContext?.favoriteFunc?.isFavorited(data.skuId)) {
               if (
@@ -173,7 +158,24 @@ export default function CartItem(props: CartItemProps) {
             }
           }}
         >
-          {"<3"}
+          {favoriteContext?.favoriteFunc?.isFavorited(data.skuId) ? (
+            !favoriteContext?.favorite[
+              favoriteContext?.favoriteFunc?.getIndex(data.skuId, data.id)
+            ].toBeDeleted ? (
+              <AiFillHeart size={20} color="rgb(200,100,100)" />
+            ) : (
+              <AiOutlineHeart size={20} color="rgb(200,100,100)" />
+            )
+          ) : (
+            <AiOutlineHeart size={20} color="black" />
+          )}
+        </button>
+
+        <button
+          className={styles.Remove}
+          onClick={() => cartContext?.removeItem(data)}
+        >
+          <GoTrash size={20} />
         </button>
       </div>
     </div>
