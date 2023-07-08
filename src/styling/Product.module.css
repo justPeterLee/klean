@@ -300,31 +300,3 @@ Review Action buttons
 .ReviewAdd:hover {
   cursor: pointer;
 }
-
-/* Loading animation */
-
-@keyframes skeleton-loading {
-  0% {
-    background-color: hsl(200, 20%, 70%);
-  }
-
-  100% {
-    background-color: hsl(200, 20%, 95%);
-  }
-}
-
-.LoadingAnimation {
-  animation: skeleton-loading 1s linear infinite alternate;
-  background-color: hsl(200, 20%, 70%);
-}
-
-.MainImageLoading {
-  animation: skeleton-loading 1s linear infinite alternate;
-  background-color: hsl(200, 20%, 70%);
-  border-radius: 10px;
-  height: 35rem;
-  width: 30rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}

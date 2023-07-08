@@ -226,7 +226,7 @@ export default function ProductInfo(props: ProductInfoProps) {
   );
 }
 
-function LINEBREAK() {
+export function LINEBREAK() {
   return <div className={styles.line}></div>;
 }
 
