@@ -28,11 +28,11 @@ export default function RootLayout({
       <html lang="en">
         <ClientContextProvider>
           <FavoriteContextProvider>
-          <Cart />
-          <BackDrop />
-          <Navbar />
-          {children}
-          <Footer />
+            <Cart />
+            <BackDrop />
+            <Navbar />
+            {children}
+            <Footer />
           </FavoriteContextProvider>
         </ClientContextProvider>
       </html>

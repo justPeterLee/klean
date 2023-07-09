@@ -5,19 +5,15 @@ import { MyContext } from "../ClientContext";
 import { CartContext } from "../Context/CartContext";
 import CartItem from "./CartItem";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 export default function Cart() {
   const router = useRouter();
   const context = useContext(MyContext);
   const cartContext = useContext(CartContext);
 
-  // const [newCartItem, setNewCartItem] = useState(null);
-  // useEffect(() => {
-  //   setNewCartItem(JSON.parse(window.localStorage.getItem("newCartItem")!));
-  // }, [window.localStorage.getItem("newCartItem")]);
-
   useEffect(() => {
-    context?.resetNewCartItem();
+    if (context?.newCart) {
+      context?.resetNewCartItem();
+    }
   }, []);
 
   return (
