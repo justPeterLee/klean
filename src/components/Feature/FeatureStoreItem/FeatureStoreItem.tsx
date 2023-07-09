@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useElementOnScreen from "@/hooks/useElementOnScreen";
 import Image from "next/image";
-import { fetchData } from "next-auth/client/_utils";
 interface CaruselData {
   id: number;
   name: string;
@@ -122,7 +121,7 @@ interface StoreCarouselItem {
 function StoreCarouselItem(props: StoreCarouselItem) {
   const { id, name, price, image } = props;
   const router = useRouter();
-  // useEffect(()=>{console.log(image)},[])
+
   return (
     <div
       className={styles.StoreCarouselItemContainer}
