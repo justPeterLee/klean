@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 import styles from "../../styling/Shop.module.css";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -22,16 +21,6 @@ export function ShopMenu(props: ShopMenuProps) {
       >
         All Products ({all})
       </button>
-      {/* {categories.map((category, index) => (
-        <button
-          key={index}
-          onClick={() => {
-            router.push(`/shop/${category.link}`);
-          }}
-        >
-          {category.category} ({category.amount})
-        </button>
-      ))} */}
 
       {categoriesName.map((name: string, index: number) => {
         if (name !== "All Products") {
@@ -71,12 +60,6 @@ interface ShopItemProps {
 
 export function ShopItem({ id, name, price, imageUrl }: ShopItemProps) {
   const router = useRouter();
-  const [imageSrc, setImageSrc] = useState<any>("");
-
-  useEffect(() => {
-    // fetchImage();
-    setImageSrc(imageUrl);
-  }, []);
   return (
     <button
       className={styles.ItemContainer}
