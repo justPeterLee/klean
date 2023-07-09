@@ -9,6 +9,7 @@ import { BackDrop } from "@/components/ClientContext";
 import dynamic from "next/dynamic";
 import ClientContextProvider from "@/components/ClientContext";
 import FavoriteContextProvider from "@/components/Context/FavoriteContext";
+import QuantityProvider from "@/components/Context/ProductQuantity";
 const inter = Inter({ subsets: ["latin"] });
 
 const Cart = dynamic(() => import("@/components/Cart/Cart"));
@@ -28,11 +29,13 @@ export default function RootLayout({
       <html lang="en">
         <ClientContextProvider>
           <FavoriteContextProvider>
-            <Cart />
-            <BackDrop />
-            <Navbar />
-            {children}
-            <Footer />
+            <QuantityProvider>
+              <Cart />
+              <BackDrop />
+              <Navbar />
+              {children}
+              <Footer />
+            </QuantityProvider>
           </FavoriteContextProvider>
         </ClientContextProvider>
       </html>
