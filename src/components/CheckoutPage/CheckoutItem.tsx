@@ -1,12 +1,18 @@
 "use client";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { CartContext } from "../Context/CartContext";
 import { FavoriteContext } from "../Context/FavoriteContext";
 import styles from "../../styling/Checkout.module.css";
 import Image from "next/image";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { GoTrash } from "react-icons/go";
 export default function CheckoutItem() {
   const cartContext = useContext(CartContext);
-
+  useEffect(() => {
+    if (!cartContext?.cart) {
+      cartContext?.initalCart();
+    }
+  }, []);
   return (
     <div className={styles.ItemDisplay}>
       {cartContext?.cart ? (
@@ -91,21 +97,6 @@ function Item(props: ItemProps) {
       <div className={styles.MisButtonContainer}>
         <button
           className={styles.MisButton}
-          onClick={() => cartContext?.instantRemove(data)}
-        >
-          []
-        </button>
-        <button
-          className={styles.MisButton}
-          style={
-            favoriteContext?.favoriteFunc?.isFavorited(data.skuId)
-              ? !favoriteContext?.favorite[
-                  favoriteContext?.favoriteFunc?.getIndex(data.skuId, data.id)
-                ].toBeDeleted
-                ? { background: "rgb(150,150,150)" }
-                : {}
-              : {}
-          }
           onClick={() => {
             if (favoriteContext?.favoriteFunc?.isFavorited(data.skuId)) {
               if (
@@ -141,7 +132,23 @@ function Item(props: ItemProps) {
             }
           }}
         >
-          {"<3"}
+          {favoriteContext?.favoriteFunc?.isFavorited(data.skuId) ? (
+            !favoriteContext?.favorite[
+              favoriteContext?.favoriteFunc?.getIndex(data.skuId, data.id)
+            ].toBeDeleted ? (
+              <AiFillHeart size={20} color="rgb(200,100,100)" />
+            ) : (
+              <AiOutlineHeart size={20} color="rgb(200,100,100)" />
+            )
+          ) : (
+            <AiOutlineHeart size={20} color="black" />
+          )}
+        </button>
+        <button
+          className={styles.MisButton}
+          onClick={() => cartContext?.instantRemove(data)}
+        >
+          <GoTrash size={20} />
         </button>
       </div>
     </div>

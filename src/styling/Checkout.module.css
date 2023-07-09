@@ -75,7 +75,7 @@ Checkout ITEMS
   height: 2rem;
   width: 2rem;
   border: none;
-  background-color: rgb(200, 200, 200);
+  background-color: transparent;
   border-radius: 5px;
 }
 
