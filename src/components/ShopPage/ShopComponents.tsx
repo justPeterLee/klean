@@ -4,13 +4,14 @@ import styles from "../../styling/Shop.module.css";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 interface ShopMenuProps {
-  categories: { category: string; link: string; amount: number }[];
+  categories: any;
   all: number;
 }
 
 export function ShopMenu(props: ShopMenuProps) {
   const { categories, all } = props;
   const router = useRouter();
+  const categoriesName = Object.keys(categories);
 
   return (
     <span className={styles.MenuContainer}>
@@ -21,7 +22,7 @@ export function ShopMenu(props: ShopMenuProps) {
       >
         All Products ({all})
       </button>
-      {categories.map((category, index) => (
+      {/* {categories.map((category, index) => (
         <button
           key={index}
           onClick={() => {
@@ -30,7 +31,22 @@ export function ShopMenu(props: ShopMenuProps) {
         >
           {category.category} ({category.amount})
         </button>
-      ))}
+      ))} */}
+
+      {categoriesName.map((name: string, index: number) => {
+        if (name !== "All Products") {
+          return (
+            <button
+              key={index}
+              onClick={() => {
+                router.push(`/shop/${categories[name].link}`);
+              }}
+            >
+              {name} ({categories[name].amount})
+            </button>
+          );
+        }
+      })}
     </span>
   );
 }

@@ -1,31 +1,36 @@
 import styles from "../../styling/Shop.module.css";
 import { ShopMenu } from "@/components/ShopPage/ShopComponents";
-
 import prisma from "../../../lib/db";
 
-async function fetchCategories() {
-  const responseCategories = await prisma.category.findMany();
-  const categories = await responseCategories;
-  const structuredCategories = fetchCategoriesAmount(categories);
-  return structuredCategories;
-}
-
-async function fetchCategoriesAmount(categoryArr: any[]) {
-  const categoryPromises = categoryArr.map(async (category: any) => {
-    const amount = await prisma.product_category.count({
-      where: {
-        category_id: category.id,
+async function fetchMenuData() {
+  const productCategory = await prisma.product_category.findMany({
+    include: {
+      category_ref: {
+        select: { category_description: true, category_name: true },
       },
-    });
-    return {
-      category: category.category_description,
-      link: category.category_name,
-      amount: amount,
-    };
+    },
   });
 
-  const categoryAmount = await Promise.all(categoryPromises);
-  return categoryAmount;
+  let sortedCategory: any = { ["All Products"]: 0 };
+
+  productCategory.map((item) => {
+    if (!sortedCategory[item.category_ref.category_description!]) {
+      sortedCategory[item.category_ref.category_description!] = {
+        amount: 1,
+        link: item.category_ref.category_name,
+      };
+    } else {
+      sortedCategory[item.category_ref.category_description!] = {
+        amount: (sortedCategory[
+          item.category_ref.category_description!
+        ].amount += 1),
+        link: item.category_ref.category_name,
+      };
+    }
+    sortedCategory["All Products"] += 1;
+  });
+
+  return sortedCategory;
 }
 
 export default async function ShopLayout({
@@ -33,14 +38,11 @@ export default async function ShopLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const dbCategories = await fetchCategories();
-  let all = 0;
-  dbCategories.map((category: any) => {
-    all += category.amount;
-  });
+  const menuData = await fetchMenuData();
+
   return (
     <main className={styles.main}>
-      <ShopMenu categories={dbCategories} all={all} />
+      <ShopMenu categories={menuData} all={menuData["All Products"]} />
       {children}
     </main>
   );
