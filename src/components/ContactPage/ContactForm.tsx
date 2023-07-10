@@ -14,6 +14,8 @@ interface inputValidationProps {
   characterLimit?: number;
   isNumber?: boolean;
   initialValue?: string;
+  customErrorMessage?: string;
+  triggerCustomError?: boolean;
 }
 export function InputValidation({
   valueName,
@@ -24,17 +26,28 @@ export function InputValidation({
   characterLimit,
   isNumber,
   initialValue,
+  customErrorMessage,
+  triggerCustomError,
 }: inputValidationProps) {
   const [inputValue, setInputValue] = useState(
     initialValue ? initialValue : ""
   );
   const [error, setError] = useState({ [valueName]: true });
-
+  const [customError, setCustomError] = useState({ [valueName]: false });
   useEffect(() => {
     if (!triggerError) {
       setError({ [valueName]: false });
     }
   }, [triggerError]);
+
+  useEffect(() => {
+    if (triggerCustomError !== undefined) {
+      if (!triggerCustomError) {
+        console.log(triggerCustomError);
+        setCustomError({ [valueName]: true });
+      }
+    }
+  }, [triggerCustomError]);
 
   return (
     <span className={styles.inputContainer} style={width}>
@@ -43,7 +56,7 @@ export function InputValidation({
           style={width}
           className={`${styles.input} ${
             !error[valueName] && styles.inputError
-          }`}
+          } ${customError[valueName] && styles.inputError}`}
           id={`${valueName}`}
           value={inputValue}
           onChange={(e) => {
@@ -76,7 +89,7 @@ export function InputValidation({
           style={width}
           className={`${styles.input} ${
             !error[valueName] && styles.inputError
-          }`}
+          } ${customError[valueName] && styles.inputError}`}
           id={`${valueName}`}
           value={inputValue}
           onChange={(e) => {
@@ -97,13 +110,18 @@ export function InputValidation({
       <label
         className={`${styles.label} ${
           inputValue.replace(/\s/g, "") && styles.labelActive
-        } ${!error[valueName] && styles.labelError}`}
+        } ${!error[valueName] && styles.labelError} ${
+          customError[valueName] && styles.labelError
+        }`}
         htmlFor={`${valueName}`}
       >
         {valueName}
       </label>
       {!error[valueName] && (
         <p className={styles.errorText}>* {errorMessage}</p>
+      )}
+      {customError[valueName] && (
+        <p className={styles.errorText}>* {customErrorMessage} </p>
       )}
     </span>
   );

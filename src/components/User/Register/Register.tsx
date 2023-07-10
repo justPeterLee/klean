@@ -14,6 +14,9 @@ export default function Register() {
     email: true,
     password: true,
   });
+  const [customError, setCustomError] = useState({
+    email: true,
+  });
 
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
@@ -49,9 +52,8 @@ export default function Register() {
       const data = await response.json();
       if (!response.ok) {
         if (data.error === "Email already exists") {
-          proxyError.email = false;
+          setCustomError({ ...customError, email: false });
         }
-        setError({ ...proxyError });
 
         throw new Error(data.error || "problem with creating account");
       }
@@ -101,6 +103,8 @@ export default function Register() {
         }}
         characterLimit={40}
         width={{ width: "20rem" }}
+        customErrorMessage="Email already exists"
+        triggerCustomError={customError.email}
       />
 
       <InputValidation
