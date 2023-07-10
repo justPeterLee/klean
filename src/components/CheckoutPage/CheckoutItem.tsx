@@ -1,23 +1,34 @@
 "use client";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { CartContext } from "../Context/CartContext";
 import { FavoriteContext } from "../Context/FavoriteContext";
+import { QuantityContext } from "../Context/ProductQuantity";
 import styles from "../../styling/Checkout.module.css";
 import Image from "next/image";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { GoTrash } from "react-icons/go";
 export default function CheckoutItem() {
   const cartContext = useContext(CartContext);
+  const quantityContext = useContext(QuantityContext);
+  const [quantity, setQuantity] = useState<any>({});
   useEffect(() => {
     if (!cartContext?.cart) {
       cartContext?.initalCart();
     }
   }, []);
+
+  useEffect(() => {
+    if (quantityContext?.productQuantity) {
+      if (Object.keys(quantityContext.productQuantity)) {
+        setQuantity(quantityContext.productQuantity);
+      }
+    }
+  }, [quantityContext?.productQuantity]);
   return (
     <div className={styles.ItemDisplay}>
       {cartContext?.cart ? (
         cartContext.cart.map((item: CartItem) => (
-          <Item data={item} key={item.skuId} />
+          <Item data={item} key={item.skuId} quantity={quantity[item.skuId]} />
         ))
       ) : (
         <></>
@@ -45,6 +56,7 @@ interface ItemProps {
     price: number;
     quantity: number;
   };
+  quantity: any;
 }
 function Item(props: ItemProps) {
   const { data } = props;
@@ -87,8 +99,13 @@ function Item(props: ItemProps) {
           <button
             className={styles.quantityButton}
             onClick={() => {
-              cartContext?.changeQuantity(data, true);
+              if (props.quantity) {
+                if (data.quantity < props.quantity) {
+                  cartContext?.changeQuantity(data, true);
+                }
+              }
             }}
+            disabled={data.quantity >= props.quantity}
           >
             +
           </button>

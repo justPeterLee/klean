@@ -37,7 +37,7 @@ export default function QuantityProvider({
   const [url, setUrl] = useState(`/api/quantity`);
 
   const { data, error, isLoading } = useSWR(url, fetcher, {
-    // refreshInterval: 1000,
+    refreshInterval: 180000,
   });
 
   useEffect(() => {

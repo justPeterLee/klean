@@ -21,7 +21,6 @@ export default function Cart() {
   }, []);
 
   useEffect(() => {
-    console.log(quantityContext?.productQuantity);
     if (quantityContext?.productQuantity) {
       if (Object.keys(quantityContext.productQuantity)) {
         setQuantity(quantityContext.productQuantity);

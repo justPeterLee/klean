@@ -98,9 +98,7 @@ export default function CartItem(props: CartItemProps) {
       <div className={styles.ItemInfoContainer}>
         <div className={styles.Iteminfo}>
           <span className={styles.name}>{data.name}</span>
-          <span className={styles.category}>
-            Computer Mouse {props.quantity}
-          </span>
+          <span className={styles.category}>Computer Mouse</span>
         </div>
 
         <span className={styles.price}>${data.quantity * data.price}</span>
