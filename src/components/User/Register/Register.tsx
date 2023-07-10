@@ -37,22 +37,27 @@ export default function Register() {
       }
     });
 
-    const response = await fetch("/api/auth/signup", {
-      method: "POST",
-      body: JSON.stringify({ first, last, email, password }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await response.json();
-    console.log(data);
-
-    if (!response.ok) {
-      throw new Error(data.message || "Something went wrong!");
-    }
-
     setError({ ...proxyError });
+    if (!Object.values(proxyError).includes(false)) {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        body: JSON.stringify({ first, last, email, password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        if (data.error === "Email already exists") {
+          proxyError.email = false;
+        }
+        setError({ ...proxyError });
+
+        throw new Error(data.error || "problem with creating account");
+      }
+    } else {
+      throw new Error("invalid inputs");
+    }
   };
   useEffect(() => {
     if (session && status === "authenticated") {
