@@ -33,16 +33,12 @@ export default function QuantityProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [url, setUrl] = useState(`/api/quantity`);
-  const [payload, setPayload] = useState({});
-
-  if (payload) {
-    const { data, error } = useSWR(url, fetcher);
-  }
-
   const [productQuantity, setProductQuantity] = useState({});
-  // get current cart
-  const fetchCurrentQuantity = () => {};
+  const [url, setUrl] = useState(`/api/quantity`);
+
+  const { data, error, isLoading } = useSWR(url, fetcher, {
+    // refreshInterval: 1000,
+  });
 
   useEffect(() => {
     const proxyCart = JSON.parse(window.localStorage.getItem("cart")!).map(
@@ -55,6 +51,10 @@ export default function QuantityProvider({
     console.log(queryString.stringify(quantityCart));
     setUrl(`/api/quantity?${queryString.stringify(quantityCart)}`);
   }, []);
+
+  useEffect(() => {
+    setProductQuantity(data);
+  }, [data]);
   return (
     <QuantityContext.Provider value={{ productQuantity: productQuantity }}>
       {children}

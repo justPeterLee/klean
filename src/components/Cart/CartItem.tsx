@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import styles from "../../styling/Cart.module.css";
 import { CartContext } from "../Context/CartContext";
 import { FavoriteContext } from "../Context/FavoriteContext";
+import { QuantityContext } from "../Context/ProductQuantity";
 import Image from "next/image";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { GoTrash } from "react-icons/go";
@@ -19,12 +20,14 @@ interface CartItemProps {
     remove?: boolean;
   };
   changeCart: (newCart: any) => void;
+  quantity: any;
 }
 export default function CartItem(props: CartItemProps) {
   const { data, changeCart } = props;
 
   const cartContext = useContext(CartContext);
   const favoriteContext = useContext(FavoriteContext);
+
   const [removeAni, setRemoveAni] = useState(false);
 
   const offRemoveItem = () => {
@@ -95,7 +98,9 @@ export default function CartItem(props: CartItemProps) {
       <div className={styles.ItemInfoContainer}>
         <div className={styles.Iteminfo}>
           <span className={styles.name}>{data.name}</span>
-          <span className={styles.category}>Computer Mouse</span>
+          <span className={styles.category}>
+            Computer Mouse {props.quantity}
+          </span>
         </div>
 
         <span className={styles.price}>${data.quantity * data.price}</span>
@@ -113,8 +118,13 @@ export default function CartItem(props: CartItemProps) {
           <button
             className={styles.ItemMinus}
             onClick={() => {
-              cartContext?.changeQuantity(data, true);
+              if (props.quantity) {
+                if (data.quantity < props.quantity) {
+                  cartContext?.changeQuantity(data, true);
+                }
+              }
             }}
+            disabled={data.quantity >= props.quantity}
           >
             +
           </button>

@@ -83,7 +83,7 @@ export default function FavoriteContextProvider({
       }
     } else {
       console.log("need to logged in to add to favorites");
-      setFavorite([])
+      setFavorite([]);
     }
   }
   // add to favorites
@@ -225,7 +225,7 @@ export default function FavoriteContextProvider({
 
   useEffect(() => {
     fetchFavorite();
-    console.log(session)
+    // console.log(session)
   }, [session]);
   return (
     <FavoriteContext.Provider

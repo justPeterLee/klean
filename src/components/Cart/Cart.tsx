@@ -3,18 +3,31 @@ import styles from "../../styling/Cart.module.css";
 import { useContext, useState, useEffect } from "react";
 import { MyContext } from "../ClientContext";
 import { CartContext } from "../Context/CartContext";
+import { QuantityContext } from "../Context/ProductQuantity";
 import CartItem from "./CartItem";
 import { useRouter } from "next/navigation";
 export default function Cart() {
   const router = useRouter();
   const context = useContext(MyContext);
   const cartContext = useContext(CartContext);
+  const quantityContext = useContext(QuantityContext);
+
+  const [quantity, setQuantity] = useState<any>({});
 
   useEffect(() => {
     if (context?.newCart) {
       context?.resetNewCartItem();
     }
   }, []);
+
+  useEffect(() => {
+    console.log(quantityContext?.productQuantity);
+    if (quantityContext?.productQuantity) {
+      if (Object.keys(quantityContext.productQuantity)) {
+        setQuantity(quantityContext.productQuantity);
+      }
+    }
+  }, [quantityContext?.productQuantity]);
 
   return (
     <div
@@ -44,6 +57,7 @@ export default function Cart() {
               changeCart={(newCart) => {
                 cartContext?.changeCart(newCart);
               }}
+              quantity={quantity[item.skuId]}
             />
           ))
         ) : (

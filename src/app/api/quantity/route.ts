@@ -5,8 +5,10 @@ export async function GET(request: any) {
   const ids = request.nextUrl.searchParams
     .getAll("ids")
     .map((id: string) => parseInt(id));
-  console.log(await getQuantity(ids));
-  return new NextResponse(JSON.stringify({ hello: "world" }), {
+
+  const quantity = await getQuantity(ids);
+  console.log(quantity);
+  return new NextResponse(JSON.stringify(quantity), {
     headers: { "content-type": "application/json" },
   });
 }
