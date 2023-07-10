@@ -23,6 +23,20 @@ export default function Register() {
   const handleRegister = async (e: any) => {
     e.preventDefault();
     console.log("is working");
+
+    const proxyValues: any = { first, last, email, password };
+    let proxyError: any = error;
+
+    const keys = Object.keys(proxyValues);
+
+    keys.map((key: string) => {
+      if (proxyValues[key].replace(/\s/g, "")) {
+        proxyError[key] = true;
+      } else {
+        proxyError[key] = false;
+      }
+    });
+
     const response = await fetch("/api/auth/signup", {
       method: "POST",
       body: JSON.stringify({ first, last, email, password }),
@@ -34,9 +48,11 @@ export default function Register() {
     const data = await response.json();
     console.log(data);
 
-    // if (!response.ok) {
-    //   throw new Error(data.message || "Something went wrong!");
-    // }
+    if (!response.ok) {
+      throw new Error(data.message || "Something went wrong!");
+    }
+
+    setError({ ...proxyError });
   };
   useEffect(() => {
     if (session && status === "authenticated") {
@@ -60,7 +76,7 @@ export default function Register() {
 
       <InputValidation
         valueName="Last"
-        triggerError={error.first}
+        triggerError={error.last}
         errorMessage="must include last name"
         sendValue={(value) => {
           // setName(value);
@@ -72,7 +88,7 @@ export default function Register() {
 
       <InputValidation
         valueName="Email"
-        triggerError={error.first}
+        triggerError={error.email}
         errorMessage="must include email"
         sendValue={(value) => {
           // setName(value);
@@ -84,7 +100,7 @@ export default function Register() {
 
       <InputValidation
         valueName="Password"
-        triggerError={error.first}
+        triggerError={error.password}
         errorMessage="must include password"
         sendValue={(value) => {
           // setName(value);

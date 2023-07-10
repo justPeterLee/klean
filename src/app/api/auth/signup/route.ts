@@ -3,70 +3,50 @@ import prisma from "../../../../../lib/db";
 import { NextResponse } from "next/server";
 
 export async function POST(req: any) {
-  const data = await req.json();
-  const { first, last, email, password } = data;
+  try {
+    const data = await req.json();
+    const { first, last, email, password } = data;
 
-  const hashedPassword = await encryptPassword(password);
+    const hashedPassword = await encryptPassword(password);
 
-  // interface MyResponse {
-  //   status: number;
-  // }
+    const isUniqueEmail = await isUnique(email);
 
-  const credSign = await signIn(first, last, email, hashedPassword)
-    .then(async () => {
-      await prisma.$disconnect();
-      return new NextResponse(JSON.stringify({ status: 200 }), {
-        headers: { "content-type": "application/json" },
+    if (isUniqueEmail) {
+      await prisma.user.create({
+        data: {
+          user_name: first,
+          user_last: last,
+          email: email,
+          password: hashedPassword,
+        },
       });
-    })
-    .catch(async (e) => {
-      console.error("Error with creating user: ", e);
+
       await prisma.$disconnect();
-      return new NextResponse(JSON.stringify({ status: 500 }), {
-        headers: { "content-type": "application/json" },
-      });
-      process.exit(1);
-    });
 
-  await prisma.$disconnect();
+      return new NextResponse(
+        JSON.stringify({ message: "User created successfully" }),
+        { status: 201, headers: { "content-type": "application/json" } }
+      );
+    } else {
+      await prisma.$disconnect();
 
-  return credSign;
-}
+      return new NextResponse(
+        JSON.stringify({ error: "Email already exists" }),
+        { status: 400, headers: { "content-type": "application/json" } }
+      );
+    }
+  } catch (error) {
+    await prisma.$disconnect();
+    console.error("Error creating user:", error);
 
-async function signIn(
-  first: string,
-  last: string,
-  email: string,
-  password: string
-) {
-  const isUniqueEmail = await isUnique(email);
-  //   await prisma.$connect();
-
-  if (isUniqueEmail) {
-    await prisma.user.create({
-      data: {
-        user_name: first,
-        user_last: last,
-        email: email,
-        password: password,
-      },
-    });
-  } else {
-    throw new Error("User already exists");
+    return new NextResponse(
+      JSON.stringify({ error: "Internal server error" }),
+      { status: 500, headers: { "content-type": "application/json" } }
+    );
   }
 }
 
 async function isUnique(email: string) {
-  const allUsers = await prisma.user.findFirst({
-    where: {
-      email: email,
-    },
-  });
-  //  console.log(allUsers);
-
-  if (allUsers) {
-    return false;
-  } else {
-    return true;
-  }
+  const user = await prisma.user.findFirst({ where: { email: email } });
+  return !user;
 }
