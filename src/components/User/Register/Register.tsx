@@ -16,7 +16,11 @@ export default function Register() {
   });
   const [customError, setCustomError] = useState({
     email: true,
+    password: true,
   });
+
+  const [emailError, setEmailError] = useState(true);
+  const [passError, setPassError] = useState(true);
 
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
@@ -25,13 +29,14 @@ export default function Register() {
 
   const handleRegister = async (e: any) => {
     e.preventDefault();
-    console.log("is working");
+    await setPassError(true);
+    await setEmailError(true);
 
     const proxyValues: any = { first, last, email, password };
     let proxyError: any = error;
 
+    // checks if blank
     const keys = Object.keys(proxyValues);
-
     keys.map((key: string) => {
       if (proxyValues[key].replace(/\s/g, "")) {
         proxyError[key] = true;
@@ -41,6 +46,19 @@ export default function Register() {
     });
 
     setError({ ...proxyError });
+
+    if (proxyValues.password.replace(/\s/g, "")) {
+      if (
+        proxyValues.password.match(/[a-z]/g) &&
+        proxyValues.password.match(/[A-Z]/g) &&
+        proxyValues.password.match(/[0-9]/g) &&
+        proxyValues.password.length >= 8
+      ) {
+      } else {
+        setPassError(false);
+      }
+    }
+
     if (!Object.values(proxyError).includes(false)) {
       const response = await fetch("/api/auth/signup", {
         method: "POST",
@@ -52,7 +70,7 @@ export default function Register() {
       const data = await response.json();
       if (!response.ok) {
         if (data.error === "Email already exists") {
-          setCustomError({ ...customError, email: false });
+          setEmailError(false);
         }
 
         throw new Error(data.error || "problem with creating account");
@@ -104,7 +122,7 @@ export default function Register() {
         characterLimit={40}
         width={{ width: "20rem" }}
         customErrorMessage="Email already exists"
-        triggerCustomError={customError.email}
+        triggerCustomError={emailError}
       />
 
       <InputValidation
@@ -117,6 +135,8 @@ export default function Register() {
         }}
         characterLimit={40}
         width={{ width: "20rem" }}
+        customErrorMessage="Password must be 8 character long (inclue 1 lowercase , uppercase, and number)"
+        triggerCustomError={passError}
       />
 
       <button type="submit" className={styles.SignInButton}>

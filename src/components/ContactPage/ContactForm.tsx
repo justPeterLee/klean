@@ -43,7 +43,6 @@ export function InputValidation({
   useEffect(() => {
     if (triggerCustomError !== undefined) {
       if (!triggerCustomError) {
-        console.log(triggerCustomError);
         setCustomError({ [valueName]: true });
       }
     }
@@ -77,6 +76,7 @@ export function InputValidation({
           }}
           onFocus={() => {
             setError({ [valueName]: true });
+            setCustomError({ ...customError, [valueName]: false });
           }}
           placeholder={`${valueName}`}
         />
@@ -103,6 +103,7 @@ export function InputValidation({
           }}
           onFocus={() => {
             setError({ [valueName]: true });
+            setCustomError({ ...customError, [valueName]: false });
           }}
           placeholder={`${valueName}`}
         />
@@ -117,12 +118,15 @@ export function InputValidation({
       >
         {valueName}
       </label>
-      {!error[valueName] && (
-        <p className={styles.errorText}>* {errorMessage}</p>
-      )}
-      {customError[valueName] && (
-        <p className={styles.errorText}>* {customErrorMessage} </p>
-      )}
+
+      <div className={styles.errorContainer}>
+        {!error[valueName] && (
+          <p className={styles.errorText}>* {errorMessage}</p>
+        )}
+        {customError[valueName] === true && (
+          <p className={styles.errorText}>* {customErrorMessage} </p>
+        )}
+      </div>
     </span>
   );
 }

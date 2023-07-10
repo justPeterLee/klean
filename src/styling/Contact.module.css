@@ -44,9 +44,13 @@
   position: relative;
 }
 
-.errorText {
+.errorContainer {
   position: absolute;
-  bottom: -15px;
+  top: 30px;
+}
+.errorText {
+  /* position: absolute;
+  bottom: -15px; */
   color: red;
   margin: 0;
   font-size: 11px;
