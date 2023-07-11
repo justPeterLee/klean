@@ -17,6 +17,7 @@ interface inputValidationProps {
   customErrorMessage?: string;
   triggerCustomError?: boolean;
   onEnter?: () => void;
+  focus?: boolean;
 }
 export function InputValidation({
   valueName,
@@ -30,6 +31,7 @@ export function InputValidation({
   customErrorMessage,
   triggerCustomError,
   onEnter,
+  focus,
 }: inputValidationProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState(
@@ -51,6 +53,14 @@ export function InputValidation({
     }
   }, [triggerCustomError]);
 
+  useEffect(() => {
+    if (focus) {
+      inputRef.current?.focus();
+    }
+    if (focus === false) {
+      inputRef.current?.blur();
+    }
+  }, [focus]);
   return (
     <span className={styles.inputContainer} style={width}>
       {!isNumber ? (

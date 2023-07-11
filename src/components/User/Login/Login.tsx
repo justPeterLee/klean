@@ -12,7 +12,10 @@ export default function Login() {
     email: true,
     password: true,
   });
-
+  const [focus, setFocus] = useState({
+    email: false,
+    password: false,
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -48,8 +51,9 @@ export default function Login() {
         characterLimit={40}
         width={{ width: "20rem" }}
         onEnter={() => {
-          handleSignIn();
+          setFocus({ email: false, password: true });
         }}
+        focus={focus.email}
       />
 
       <InputValidation
@@ -64,7 +68,9 @@ export default function Login() {
         width={{ width: "20rem" }}
         onEnter={() => {
           handleSignIn();
+          setFocus({ email: false, password: false });
         }}
+        focus={focus.password}
       />
 
       <button onClick={handleSignIn} className={styles.SignInButton}>
