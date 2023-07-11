@@ -19,16 +19,45 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [emailError, setEmailError] = useState(true);
+  const [passError, setPassError] = useState(true);
   const handleSignIn = async () => {
-    try {
-      console.log("running");
-      const result = await signIn("credentials", {
-        redirect: false,
-        email: email,
-        password: password,
-      });
-    } catch (err) {
-      console.log("Error with signing in: ", err);
+    const proxyValues: any = { email, password };
+    let proxyError: any = error;
+    setEmailError(true);
+    setPassError(true);
+
+    // checks if blank
+    const keys = Object.keys(proxyValues);
+    keys.map((key: string) => {
+      if (proxyValues[key].replace(/\s/g, "")) {
+        proxyError[key] = true;
+      } else {
+        proxyError[key] = false;
+      }
+    });
+
+    setError({ ...proxyError });
+
+    if (!Object.values(proxyError).includes(false)) {
+      try {
+        console.log("running");
+        const result = await signIn("credentials", {
+          redirect: false,
+          email: email,
+          password: password,
+        }).then((res) => {
+          if (res?.error) {
+            console.log("error");
+            setEmailError(false);
+            setPassError(false);
+          }
+        });
+      } catch (err) {
+        console.log("Error with signing in: ", err);
+      }
+    } else {
+      throw new Error("Invalid Input");
     }
   };
 
@@ -57,6 +86,8 @@ export default function Login() {
         onBlur={() => {
           setFocus({ email: false, password: false });
         }}
+        customErrorMessage="Wrong Email"
+        triggerCustomError={emailError}
       />
 
       <InputValidation
@@ -77,6 +108,8 @@ export default function Login() {
         onBlur={() => {
           setFocus({ email: false, password: false });
         }}
+        customErrorMessage="Wrong Password"
+        triggerCustomError={passError}
       />
 
       <button onClick={handleSignIn} className={styles.SignInButton}>

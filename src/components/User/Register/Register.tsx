@@ -40,8 +40,8 @@ export default function Register() {
 
   const handleRegister = async (e: any) => {
     e.preventDefault();
-    await setPassError(true);
-    await setEmailError(true);
+    setPassError(true);
+    setEmailError(true);
 
     const proxyValues: any = { first, last, email, password };
     let proxyError: any = error;
