@@ -54,6 +54,9 @@ export default function Login() {
           setFocus({ email: false, password: true });
         }}
         focus={focus.email}
+        onBlur={() => {
+          setFocus({ email: false, password: false });
+        }}
       />
 
       <InputValidation
@@ -71,6 +74,9 @@ export default function Login() {
           setFocus({ email: false, password: false });
         }}
         focus={focus.password}
+        onBlur={() => {
+          setFocus({ email: false, password: false });
+        }}
       />
 
       <button onClick={handleSignIn} className={styles.SignInButton}>

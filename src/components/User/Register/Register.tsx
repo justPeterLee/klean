@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
 import { InputValidation } from "@/components/ContactPage/ContactForm";
@@ -8,17 +8,28 @@ import Link from "next/link";
 export default function Register() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const submitButton = useRef<HTMLButtonElement>(null);
   const [error, setError] = useState({
     first: true,
     last: true,
     email: true,
     password: true,
   });
-  const [customError, setCustomError] = useState({
-    email: true,
-    password: true,
+  const [focus, setFocus] = useState({
+    first: false,
+    last: false,
+    email: false,
+    password: false,
   });
 
+  const clearFocus = () => {
+    setFocus({
+      first: false,
+      last: false,
+      email: false,
+      password: false,
+    });
+  };
   const [emailError, setEmailError] = useState(true);
   const [passError, setPassError] = useState(true);
 
@@ -108,6 +119,11 @@ export default function Register() {
         }}
         characterLimit={40}
         width={{ width: "20rem" }}
+        focus={focus.first}
+        onEnter={() => {
+          setFocus({ ...focus, first: false, last: true });
+        }}
+        onBlur={clearFocus}
       />
 
       <InputValidation
@@ -120,6 +136,11 @@ export default function Register() {
         }}
         characterLimit={40}
         width={{ width: "20rem" }}
+        focus={focus.last}
+        onEnter={() => {
+          setFocus({ ...focus, last: false, email: true });
+        }}
+        onBlur={clearFocus}
       />
 
       <InputValidation
@@ -134,6 +155,11 @@ export default function Register() {
         width={{ width: "20rem" }}
         customErrorMessage="Email already exists"
         triggerCustomError={emailError}
+        focus={focus.email}
+        onEnter={() => {
+          setFocus({ ...focus, email: false, password: true });
+        }}
+        onBlur={clearFocus}
       />
 
       <InputValidation
@@ -148,9 +174,15 @@ export default function Register() {
         width={{ width: "20rem" }}
         customErrorMessage="Password must be 8 character long (inclue 1 lowercase , uppercase, and number)"
         triggerCustomError={passError}
+        focus={focus.password}
+        onEnter={() => {
+          submitButton.current?.click();
+          setFocus({ ...focus, password: false });
+        }}
+        onBlur={clearFocus}
       />
 
-      <button type="submit" className={styles.SignInButton}>
+      <button type="submit" className={styles.SignInButton} ref={submitButton}>
         submit
       </button>
 

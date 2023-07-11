@@ -17,6 +17,7 @@ interface inputValidationProps {
   customErrorMessage?: string;
   triggerCustomError?: boolean;
   onEnter?: () => void;
+  onBlur?: () => void;
   focus?: boolean;
 }
 export function InputValidation({
@@ -31,6 +32,7 @@ export function InputValidation({
   customErrorMessage,
   triggerCustomError,
   onEnter,
+  onBlur,
   focus,
 }: inputValidationProps) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -87,6 +89,10 @@ export function InputValidation({
             !inputValue.replace(/\s/g, "")
               ? setError({ [valueName]: false })
               : setError({ [valueName]: true });
+
+            if (onBlur) {
+              onBlur();
+            }
           }}
           onFocus={() => {
             setError({ [valueName]: true });
@@ -95,6 +101,7 @@ export function InputValidation({
           onKeyDown={(e) => {
             if (e.code === "Enter" && onEnter) {
               inputRef.current!.blur();
+              e.preventDefault();
               onEnter();
             }
           }}
