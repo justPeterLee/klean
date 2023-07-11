@@ -10,8 +10,10 @@ interface CaruselData {
   price: number | null;
   image: string;
 }
+
 export function StoreCarouselClient(props: { catId: number }) {
   const [caruselData, setCaruselData] = useState<CaruselData[]>([]);
+
   const fetchDatas = async () => {
     await fetch(`/api/carusel/${props.catId}`, {
       method: "GET",

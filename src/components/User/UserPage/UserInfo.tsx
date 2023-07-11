@@ -4,6 +4,7 @@ import { useContext, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { FavoriteContext } from "@/components/Context/FavoriteContext";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import useSWR from "swr";
 import Image from "next/image";
 export function Favorites() {
   const { data: session } = useSession();
@@ -50,18 +51,36 @@ interface FavoriteItemProps {
   index?: number;
   image: string;
 }
+
+async function fetcher(url: string) {
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  const data = await response.json();
+  return data;
+}
+
 export function FavoriteItem(props: FavoriteItemProps) {
   const { name, category, price, skuId, productId, index, image } = props;
   const favoriteContext = useContext(FavoriteContext);
   const [imageUrl, setImageUrl] = useState("");
+  const { data, error } = useSWR(`/api/fetchImageProduct/${image}`, fetcher);
 
   const fetchImageUrl = async (imageKey: string) => {
     const res = await fetch(`/api/fetchImageProduct/${imageKey}`);
     setImageUrl(await res.json());
   };
   useEffect(() => {
-    fetchImageUrl(image);
-  }, []);
+    setImageUrl(data);
+  }, [data]);
   return (
     <div className={styles.FavoriteItemContainer}>
       <div className={styles.imageContainer}>
