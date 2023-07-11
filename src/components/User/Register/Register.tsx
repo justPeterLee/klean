@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { InputValidation } from "@/components/ContactPage/ContactForm";
 import styles from "../../../styling/User.module.css";
 import Link from "next/link";
@@ -59,22 +59,33 @@ export default function Register() {
       }
     }
 
-    if (!Object.values(proxyError).includes(false)) {
+    if (!Object.values(proxyError).includes(false) && emailError && passError) {
       const response = await fetch("/api/auth/signup", {
         method: "POST",
         body: JSON.stringify({ first, last, email, password }),
         headers: {
           "Content-Type": "application/json",
         },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        if (data.error === "Email already exists") {
-          setEmailError(false);
-        }
+      })
+        .then(async (res) => {
+          if (!res.ok) {
+            const data = await res.json();
+            if (data.error === "Email already exists") {
+              setEmailError(false);
+            }
 
-        throw new Error(data.error || "problem with creating account");
-      }
+            throw new Error(data.error || "problem with creating account");
+          } else {
+            await signIn("credentials", {
+              redirect: false,
+              email: email,
+              password: password,
+            });
+          }
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
     } else {
       throw new Error("invalid inputs");
     }
