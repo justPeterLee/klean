@@ -47,6 +47,9 @@ export default function Login() {
         }}
         characterLimit={40}
         width={{ width: "20rem" }}
+        onEnter={() => {
+          handleSignIn();
+        }}
       />
 
       <InputValidation
@@ -59,6 +62,9 @@ export default function Login() {
         }}
         characterLimit={40}
         width={{ width: "20rem" }}
+        onEnter={() => {
+          handleSignIn();
+        }}
       />
 
       <button onClick={handleSignIn} className={styles.SignInButton}>

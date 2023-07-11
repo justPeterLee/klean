@@ -1,7 +1,7 @@
 "use client";
 import styles from "../../styling/Contact.module.css";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface inputValidationProps {
   valueName: string;
@@ -16,6 +16,7 @@ interface inputValidationProps {
   initialValue?: string;
   customErrorMessage?: string;
   triggerCustomError?: boolean;
+  onEnter?: () => void;
 }
 export function InputValidation({
   valueName,
@@ -28,7 +29,9 @@ export function InputValidation({
   initialValue,
   customErrorMessage,
   triggerCustomError,
+  onEnter,
 }: inputValidationProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState(
     initialValue ? initialValue : ""
   );
@@ -52,6 +55,7 @@ export function InputValidation({
     <span className={styles.inputContainer} style={width}>
       {!isNumber ? (
         <input
+          ref={inputRef}
           style={width}
           className={`${styles.input} ${
             !error[valueName] && styles.inputError
@@ -77,6 +81,12 @@ export function InputValidation({
           onFocus={() => {
             setError({ [valueName]: true });
             setCustomError({ ...customError, [valueName]: false });
+          }}
+          onKeyDown={(e) => {
+            if (e.code === "Enter" && onEnter) {
+              inputRef.current!.blur();
+              onEnter();
+            }
           }}
           placeholder={`${valueName}`}
         />
