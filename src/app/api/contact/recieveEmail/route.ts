@@ -1,10 +1,13 @@
 import nodemailer, { Transporter } from "nodemailer";
 
 const transporter: Transporter = nodemailer.createTransport({
-  service: "Gmail",
+  host: "smtp.forwardemail.net",
+  port: 465,
+  secure: true,
   auth: {
-    user: process.env.CONTACT_INFO, // your Gmail email address
-    pass: process.env.CONTACT_PASSWORD, // your Gmail password
+    // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+    user: process.env.FORWARD_USER,
+    pass: process.env.FORWARD_PASS,
   },
 });
 
