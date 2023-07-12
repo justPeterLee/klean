@@ -70,10 +70,10 @@ export default function ClientContextProvider({
         className={inter.className}
         style={cartState ? { overflow: "hidden" } : {}}
       >
-          <CartContextProvider>
-            {/* {cartState && <Cart />} */}
-            {children}
-          </CartContextProvider>
+        <CartContextProvider>
+          {/* {cartState && <Cart />} */}
+          {children}
+        </CartContextProvider>
       </body>
     </MyContext.Provider>
   );
