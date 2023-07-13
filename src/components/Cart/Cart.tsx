@@ -59,6 +59,8 @@ export default function Cart() {
               quantity={quantity[item.skuId]}
             />
           ))
+        ) : cartContext?.loading ? (
+          <div className={styles.NoItems}>loading... </div>
         ) : (
           <div className={styles.NoItems}>( No Items )</div>
         )}
