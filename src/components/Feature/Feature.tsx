@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./Feature.module.css";
 import Menu from "./Menu/Menu";
 
@@ -81,5 +82,15 @@ export function SideFeature(props: SideFeatureProps) {
 }
 
 export function ContactButton() {
-  return <button className={styles.contactButton}>contact us</button>;
+  const router = useRouter();
+  return (
+    <button
+      className={styles.contactButton}
+      onClick={() => {
+        router.push("/contact");
+      }}
+    >
+      contact us
+    </button>
+  );
 }
