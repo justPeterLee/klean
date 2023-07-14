@@ -58,21 +58,19 @@ export function CreateForm({
 
   // ----- fetch categories -----
   const [dbCategories, setDbCategories] = useState<any>([]);
+  const fetchCategories = async () => {
+    const response = await fetch("/api/admin/categories", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
+    const categories = await response.json();
+    setDbCategories(categories);
+    readCategory(categories[0].id);
+  };
   useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await fetch("/api/admin/categories", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const categories = await response.json();
-      setDbCategories(categories);
-      readCategory(categories[0].id);
-    };
-
     fetchCategories();
   }, []);
 
@@ -178,16 +176,27 @@ export function CreateForm({
   const [categoryCreate, setCategoryCreate] = useState(false);
   const [newCategory, setNewCategory] = useState("");
   const [catLabel, setCatLabel] = useState(false);
+  const [newCatLoading, setNewCateLoading] = useState(false);
   const createCat = useRef<HTMLInputElement>(null);
 
   const createCategory = async () => {
+    setNewCateLoading(true);
     await fetch("/api/admin/categories", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newCategory),
-    });
+    })
+      .then(() => {
+        setNewCategory("");
+        fetchCategories();
+        setNewCateLoading(false);
+        setCategoryCreate(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div className={styles.CreateFormContainer}>
@@ -284,7 +293,9 @@ export function CreateForm({
             </div>
             <button
               className={styles.addCatButt}
-              disabled={!newCategory.replace(/\s/g, "") ? true : false}
+              disabled={
+                !newCategory.replace(/\s/g, "") || newCatLoading ? true : false
+              }
               onClick={() => {
                 createCategory();
               }}
