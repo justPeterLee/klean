@@ -535,3 +535,14 @@ Image preview
   left: -10px;
   color: blue;
 }
+
+.addCatButt {
+  border: none;
+  height: 1.5rem;
+  border-radius: 5px;
+  background-color: rgb(230, 230, 230);
+}
+
+.addCatButt:hover {
+  cursor: pointer;
+}

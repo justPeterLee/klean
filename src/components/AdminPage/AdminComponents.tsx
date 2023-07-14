@@ -266,8 +266,18 @@ export function CreateForm({
                 onFocus={() => {
                   setCatLabel(false);
                 }}
+                value={newCategory}
+                onChange={(e) => {
+                  setNewCategory(e.target.value);
+                }}
               />
             </div>
+            <button
+              className={styles.addCatButt}
+              disabled={!newCategory.replace(/\s/g, "") ? true : false}
+            >
+              add
+            </button>
           </>
         )}
       </div>
