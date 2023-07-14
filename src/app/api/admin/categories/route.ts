@@ -12,10 +12,13 @@ export async function GET() {
 
 export async function POST(req: any) {
   const newCat = await req.json();
-
+  let name = newCat.toLowerCase();
+  if (name.includes(" ")) {
+    name = name.split(" ").join("-");
+  }
   await prisma.category
     .create({
-      data: { category_name: newCat },
+      data: { category_name: name, category_description: newCat },
     })
     .then(() => {
       return new NextResponse(
