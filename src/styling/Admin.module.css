@@ -472,3 +472,28 @@ Image preview
 .descriptionError {
   border: solid 1px red;
 }
+
+/* ---------- category ------------- */
+.categoryContainer {
+  display: flex;
+  gap: 1rem;
+}
+
+.categoryButton {
+  border: none;
+  border-radius: 50px;
+  height: 2rem;
+  width: 2.2rem;
+  background-color: rgb(240, 240, 240);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all ease 0.2s;
+  font-size: 20px;
+}
+.categoryButton:hover {
+  background-color: rgb(210, 210, 210);
+  cursor: pointer;
+}

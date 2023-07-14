@@ -209,7 +209,7 @@ export function CreateForm({
 
       {/* categories */}
       <div className={styles.categoryContainer}>
-        <button>+</button>
+        <button className={styles.categoryButton}>+</button>
         <select
           className={styles.category}
           name={"category"}
