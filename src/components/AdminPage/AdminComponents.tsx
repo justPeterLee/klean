@@ -38,13 +38,11 @@ export function CreateForm({
   });
 
   const descriptionRef = useRef<HTMLInputElement | null>(null);
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  //   const [category, setCategory] = useState("");
+
   const [description, setDescrption] = useState("");
 
   const [technical, setTechnical] = useState<string[]>([]);
-  //   const [image, setImage] = useState([]);
+
   const [selection, setSelection] = useState<
     {
       selection: string;
@@ -52,7 +50,6 @@ export function CreateForm({
       skuValue?: string;
     }[]
   >([]);
-  const [discount, setDiscount] = useState([]);
 
   const [descriptionStyle, setDescriptionStyle] = useState({
     minHeight: "2rem",
@@ -177,6 +174,9 @@ export function CreateForm({
     readSelection(updatedArr);
   };
 
+  // category creatation
+  const [categoryCreate, setCategoryCreate] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
   return (
     <div className={styles.CreateFormContainer}>
       {/* -----------------------------
@@ -209,25 +209,57 @@ export function CreateForm({
 
       {/* categories */}
       <div className={styles.categoryContainer}>
-        <button className={styles.categoryButton}>+</button>
-        <select
-          className={styles.category}
-          name={"category"}
-          onChange={(e) => {
-            console.log(e.target.value);
-            readCategory(e.target.value);
-          }}
-        >
-          {dbCategories.length ? (
-            dbCategories.map((category: any) => (
-              <option key={category.id} value={category.id}>
-                {category.category_description}
-              </option>
-            ))
-          ) : (
-            <option>loading...</option>
-          )}
-        </select>
+        {!categoryCreate ? (
+          <>
+            <button
+              className={styles.categoryButton}
+              onClick={() => {
+                setCategoryCreate(true);
+              }}
+            >
+              +
+            </button>
+            <select
+              className={styles.category}
+              name={"category"}
+              onChange={(e) => {
+                console.log(e.target.value);
+                readCategory(e.target.value);
+              }}
+            >
+              {dbCategories.length ? (
+                dbCategories.map((category: any) => (
+                  <option key={category.id} value={category.id}>
+                    {category.category_description}
+                  </option>
+                ))
+              ) : (
+                <option>loading...</option>
+              )}
+            </select>
+          </>
+        ) : (
+          <>
+            <button
+              className={styles.categoryButton}
+              onClick={() => {
+                setCategoryCreate(false);
+              }}
+            >
+              x
+            </button>
+            <InputValidation
+              valueName="create category"
+              triggerError={true}
+              errorMessage="must include product name"
+              sendValue={(value) => {
+                // setName(value);
+                readName(value);
+              }}
+              characterLimit={25}
+            />
+          </>
+        )}
       </div>
 
       {/* -----------------------------
