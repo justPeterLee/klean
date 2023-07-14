@@ -58,7 +58,7 @@ export function CreateForm({
 
   // ----- fetch categories -----
   const [dbCategories, setDbCategories] = useState<any>([]);
-  const fetchCategories = async () => {
+  const fetchCategories = async (setDefault: boolean) => {
     const response = await fetch("/api/admin/categories", {
       method: "GET",
       headers: {
@@ -68,10 +68,10 @@ export function CreateForm({
 
     const categories = await response.json();
     setDbCategories(categories);
-    readCategory(categories[0].id);
+    if (setDefault) readCategory(categories[0].id);
   };
   useEffect(() => {
-    fetchCategories();
+    fetchCategories(true);
   }, []);
 
   /* -------------------
@@ -178,7 +178,8 @@ export function CreateForm({
   const [catLabel, setCatLabel] = useState(false);
   const [newCatLoading, setNewCateLoading] = useState(false);
   const createCat = useRef<HTMLInputElement>(null);
-
+  const [category, setCategory] = useState<number>(1);
+  let catPause = false;
   const createCategory = async () => {
     setNewCateLoading(true);
     await fetch("/api/admin/categories", {
@@ -188,11 +189,16 @@ export function CreateForm({
       },
       body: JSON.stringify(newCategory),
     })
-      .then(() => {
+      .then(async (res) => {
+        catPause = true;
+        const cat = await res.json();
+        setCategory(cat.created.id);
+        readCategory(cat.created.id);
         setNewCategory("");
-        fetchCategories();
+        fetchCategories(false);
         setNewCateLoading(false);
         setCategoryCreate(false);
+        catPause = false;
       })
       .catch((err) => {
         console.log(err);
@@ -244,8 +250,9 @@ export function CreateForm({
             <select
               className={styles.category}
               name={"category"}
+              value={category}
               onChange={(e) => {
-                console.log(e.target.value);
+                setCategory(parseInt(e.target.value));
                 readCategory(e.target.value);
               }}
             >

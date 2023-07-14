@@ -133,7 +133,7 @@ export default function AdminCreate() {
             setPrice(params);
           }}
           readCategory={(params: string) => {
-            console.log(params);
+            console.log("cat ", params);
             setCategory(params);
           }}
           readDescription={(params: string) => {
