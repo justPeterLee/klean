@@ -208,24 +208,27 @@ export function CreateForm({
       </div>
 
       {/* categories */}
-      <select
-        className={styles.category}
-        name={"category"}
-        onChange={(e) => {
-          console.log(e.target.value);
-          readCategory(e.target.value);
-        }}
-      >
-        {dbCategories.length ? (
-          dbCategories.map((category: any) => (
-            <option key={category.id} value={category.id}>
-              {category.category_description}
-            </option>
-          ))
-        ) : (
-          <option>loading...</option>
-        )}
-      </select>
+      <div className={styles.categoryContainer}>
+        <button>+</button>
+        <select
+          className={styles.category}
+          name={"category"}
+          onChange={(e) => {
+            console.log(e.target.value);
+            readCategory(e.target.value);
+          }}
+        >
+          {dbCategories.length ? (
+            dbCategories.map((category: any) => (
+              <option key={category.id} value={category.id}>
+                {category.category_description}
+              </option>
+            ))
+          ) : (
+            <option>loading...</option>
+          )}
+        </select>
+      </div>
 
       {/* -----------------------------
             Info
