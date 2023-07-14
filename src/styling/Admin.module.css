@@ -497,3 +497,41 @@ Image preview
   background-color: rgb(210, 210, 210);
   cursor: pointer;
 }
+
+.categoryContainerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.createCategoryInput {
+  width: 100%;
+  height: 1.5rem;
+  font-size: 15px;
+
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-bottom: solid 1px rgb(120, 120, 120);
+}
+
+.createCategoryInput:focus {
+  outline: none;
+  border-bottom: solid 1px blue;
+}
+.categoryContainer {
+  align-items: flex-end;
+}
+
+.categoryContainerContainer label {
+  position: absolute;
+  font-size: 12px;
+  top: -1rem;
+  left: -10px;
+  color: blue;
+}

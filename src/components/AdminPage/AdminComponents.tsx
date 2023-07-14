@@ -177,6 +177,8 @@ export function CreateForm({
   // category creatation
   const [categoryCreate, setCategoryCreate] = useState(false);
   const [newCategory, setNewCategory] = useState("");
+  const [catLabel, setCatLabel] = useState(false);
+  const createCat = useRef<HTMLInputElement>(null);
   return (
     <div className={styles.CreateFormContainer}>
       {/* -----------------------------
@@ -213,8 +215,9 @@ export function CreateForm({
           <>
             <button
               className={styles.categoryButton}
-              onClick={() => {
-                setCategoryCreate(true);
+              onClick={async () => {
+                await setCategoryCreate(true);
+                createCat.current?.focus();
               }}
             >
               +
@@ -250,10 +253,19 @@ export function CreateForm({
             </button>
 
             <div className={styles.categoryContainerContainer}>
-              <label htmlFor="createCategory">create category</label>
+              <label style={!catLabel ? { color: "blue" } : { color: "black" }}>
+                Create Category
+              </label>
               <input
                 className={styles.createCategoryInput}
                 id="createCategory"
+                ref={createCat}
+                onBlur={() => {
+                  setCatLabel(true);
+                }}
+                onFocus={() => {
+                  setCatLabel(false);
+                }}
               />
             </div>
           </>
