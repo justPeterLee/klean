@@ -248,16 +248,14 @@ export function CreateForm({
             >
               x
             </button>
-            <InputValidation
-              valueName="create category"
-              triggerError={true}
-              errorMessage="must include product name"
-              sendValue={(value) => {
-                // setName(value);
-                readName(value);
-              }}
-              characterLimit={25}
-            />
+
+            <div className={styles.categoryContainerContainer}>
+              <label htmlFor="createCategory">create category</label>
+              <input
+                className={styles.createCategoryInput}
+                id="createCategory"
+              />
+            </div>
           </>
         )}
       </div>
