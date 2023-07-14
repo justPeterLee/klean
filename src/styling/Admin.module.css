@@ -491,7 +491,7 @@ Image preview
   justify-content: center;
 
   transition: all ease 0.2s;
-  font-size: 20px;
+  font-size: 15px;
 }
 .categoryButton:hover {
   background-color: rgb(210, 210, 210);
