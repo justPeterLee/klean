@@ -179,6 +179,16 @@ export function CreateForm({
   const [newCategory, setNewCategory] = useState("");
   const [catLabel, setCatLabel] = useState(false);
   const createCat = useRef<HTMLInputElement>(null);
+
+  const createCategory = async () => {
+    await fetch("/api/admin/categories", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newCategory),
+    });
+  };
   return (
     <div className={styles.CreateFormContainer}>
       {/* -----------------------------
@@ -275,6 +285,9 @@ export function CreateForm({
             <button
               className={styles.addCatButt}
               disabled={!newCategory.replace(/\s/g, "") ? true : false}
+              onClick={() => {
+                createCategory();
+              }}
             >
               add
             </button>
