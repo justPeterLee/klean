@@ -1,7 +1,8 @@
 "use client";
 import styles from "../../styling/Admin.module.css";
-import { useState, useRef, Fragment } from "react";
+import { useState, useRef, Fragment, useContext } from "react";
 import Image from "next/image";
+import { MyContext } from "../ClientContext";
 
 export default function AdminImage({
   sendImage,
@@ -10,6 +11,7 @@ export default function AdminImage({
   sendImage: (params: any[]) => void;
   readImage: (params: any) => void;
 }) {
+  const context = useContext(MyContext);
   const [imageFiles, setImageFiles] = useState<any>({});
   const [stageImageFiles, setStagedImageFiles] = useState<any>([]);
   const [addImageModal, setAddImageModal] = useState(false);
@@ -69,105 +71,111 @@ export default function AdminImage({
             onClick={() => {
               setAddImageModal(false);
               setStagedImageFiles([]);
+              context?.setStopScroll(false);
             }}
           />
 
-          <span className={styles.addImageModal}>
-            {stageImageFiles.length ? (
-              <div className={styles.imageModalImagesContainer}>
-                <span
-                  className={styles.imageModalImages}
-                  style={{
-                    gridTemplate: `repeat(${
-                      Math.floor(stageImageFiles.length / 3) + 1
-                    }, 100px) / repeat(3, 33%)`,
-                  }}
-                >
-                  <ImageInputForm handleImage={handleImage} isButton={true} />
-                  {stageImageFiles.map((image: Blob, index: number) => (
-                    <button
-                      className={styles.imageButton}
-                      key={index}
-                      onClick={() => {
-                        let proxyArr = stageImageFiles;
-                        proxyArr.splice(index, 1);
-                        const updatedArr = proxyArr.map((image: any) => image);
-                        setStagedImageFiles(updatedArr);
-                      }}
-                    >
-                      <Image
-                        src={URL.createObjectURL(image)}
-                        alt={`Selected Image ${index}`}
-                        width={100}
-                        height={100}
-                        className={styles.imageOne}
-                      />
-                    </button>
-                  ))}
-                </span>
-              </div>
-            ) : (
-              <ImageInputForm handleImage={handleImage} isButton={false} />
-            )}
-
-            <div className={styles.imageModalInfo}>
-              <div className={styles.imageModalInfoInput}>
-                <span className={styles.modalInputSpan}>
-                  <label>description</label>
-                  <input
-                    value={imageDescription}
-                    onChange={(e) => {
-                      setImageDescription(e.target.value);
-                    }}
-                    className={styles.modalInput}
-                    placeholder="(optional)"
-                  />
-                </span>
-
-                <span className={styles.modalInputSpan}>
-                  <label>image type</label>
-                  <select
-                    className={styles.category}
-                    name={"image-type"}
-                    value={imageType}
-                    onChange={(e) => {
-                      setImageType(e.target.value);
+          <div className={styles.centerDiv}>
+            <span className={styles.addImageModal}>
+              {stageImageFiles.length ? (
+                <div className={styles.imageModalImagesContainer}>
+                  <span
+                    className={styles.imageModalImages}
+                    style={{
+                      gridTemplate: `repeat(${
+                        Math.floor(stageImageFiles.length / 3) + 1
+                      }, 100px) / repeat(3, 33%)`,
                     }}
                   >
-                    <option value={"product-image"}>
-                      product image (default)
-                    </option>
-                    <option value={"thumbnail"}>thumbnail</option>
-                    <option value={"feature"}>feature</option>
-                  </select>
-                </span>
-              </div>
+                    <ImageInputForm handleImage={handleImage} isButton={true} />
+                    {stageImageFiles.map((image: Blob, index: number) => (
+                      <button
+                        className={styles.imageButton}
+                        key={index}
+                        onClick={() => {
+                          let proxyArr = stageImageFiles;
+                          proxyArr.splice(index, 1);
+                          const updatedArr = proxyArr.map(
+                            (image: any) => image
+                          );
+                          setStagedImageFiles(updatedArr);
+                        }}
+                      >
+                        <Image
+                          src={URL.createObjectURL(image)}
+                          alt={`Selected Image ${index}`}
+                          width={100}
+                          height={100}
+                          className={styles.imageOne}
+                        />
+                      </button>
+                    ))}
+                  </span>
+                </div>
+              ) : (
+                <ImageInputForm handleImage={handleImage} isButton={false} />
+              )}
 
-              <div className={styles.imageModalButtons}>
-                <button
-                  onClick={() => {
-                    if (stageImageFiles.length) {
+              <div className={styles.imageModalInfo}>
+                <div className={styles.imageModalInfoInput}>
+                  <span className={styles.modalInputSpan}>
+                    <label>description</label>
+                    <input
+                      value={imageDescription}
+                      onChange={(e) => {
+                        setImageDescription(e.target.value);
+                      }}
+                      className={styles.modalInput}
+                      placeholder="(optional)"
+                    />
+                  </span>
+
+                  <span className={styles.modalInputSpan}>
+                    <label>image type</label>
+                    <select
+                      className={styles.category}
+                      name={"image-type"}
+                      value={imageType}
+                      onChange={(e) => {
+                        setImageType(e.target.value);
+                      }}
+                    >
+                      <option value={"product-image"}>
+                        product image (default)
+                      </option>
+                      <option value={"thumbnail"}>thumbnail</option>
+                      <option value={"feature"}>feature</option>
+                    </select>
+                  </span>
+                </div>
+
+                <div className={styles.imageModalButtons}>
+                  <button
+                    onClick={() => {
+                      if (stageImageFiles.length) {
+                        setStagedImageFiles([]);
+                      }
+                      setAddImageModal(false);
                       setStagedImageFiles([]);
-                    }
-                    setAddImageModal(false);
-                    setStagedImageFiles([]);
-                  }}
-                >
-                  cancel
-                </button>
-                <button
-                  onClick={() => {
-                    setAddImageModal(false);
-                    uploadImage();
-                    setStagedImageFiles([]);
-                  }}
-                  disabled={!stageImageFiles.length}
-                >
-                  add
-                </button>
+                      context?.setStopScroll(false);
+                    }}
+                  >
+                    cancel
+                  </button>
+                  <button
+                    onClick={() => {
+                      setAddImageModal(false);
+                      uploadImage();
+                      setStagedImageFiles([]);
+                    }}
+                    disabled={!stageImageFiles.length}
+                  >
+                    add
+                  </button>
+                </div>
               </div>
-            </div>
-          </span>
+            </span>
+          </div>
         </>
       )}
       <button
@@ -175,6 +183,7 @@ export default function AdminImage({
         id={styles.technicalButton}
         onClick={() => {
           setAddImageModal(true);
+          context?.setStopScroll(true);
         }}
       >
         add image
