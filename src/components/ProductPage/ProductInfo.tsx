@@ -160,7 +160,7 @@ export default function ProductInfo(props: ProductInfoProps) {
           );
           cartContext?.initalCart();
         }
-        context?.setCartState(true);
+        context?.toggleCartOn();
       } else {
         console.log("out of stock");
       }

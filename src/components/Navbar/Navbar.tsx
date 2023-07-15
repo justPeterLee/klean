@@ -58,7 +58,7 @@ export default function Navbar() {
           <button
             className={styles.cartButton}
             onClick={() => {
-              context?.setCartState(true);
+              context?.toggleCartOn();
               if (cartContext?.loading) cartContext?.initalCart();
             }}
           >

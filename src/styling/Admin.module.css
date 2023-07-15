@@ -345,10 +345,9 @@ Image preview
 .addImageModal {
   height: 40rem;
   width: 30rem;
-  top: 6rem;
-  left: 30rem;
-  background-color: white;
   position: fixed;
+  background-color: white;
+
   z-index: 101;
   border-radius: 20px;
 

@@ -13,8 +13,10 @@ const inter = Inter({ subsets: ["latin"] });
 interface MyContextProps {
   cartActive: boolean;
   setCartState: any;
+  setStopScroll: any;
   newCart: NewCartItem | null;
   toggleOff: () => void;
+  toggleCartOn: () => void;
   getNewCartItem: (newItem: NewCartItem) => void;
   resetNewCartItem: () => void;
 }
@@ -36,10 +38,14 @@ export default function ClientContextProvider({
   children: React.ReactNode;
 }) {
   const [cartState, setCartState] = useState(false);
-
+  const [stopScroll, setStopScroll] = useState(false);
+  const toggleCartOn = () => {
+    setCartState(true);
+    setStopScroll(true);
+  };
   const toggleOff = () => {
     setCartState(false);
-
+    setStopScroll(false);
     resetNewCartItem();
   };
 
@@ -58,8 +64,9 @@ export default function ClientContextProvider({
       value={{
         cartActive: cartState,
         setCartState: setCartState,
+        setStopScroll: setStopScroll,
         toggleOff: toggleOff,
-
+        toggleCartOn: toggleCartOn,
         newCart: newCartItem,
 
         getNewCartItem: getNewCartItem,
@@ -68,7 +75,7 @@ export default function ClientContextProvider({
     >
       <body
         className={inter.className}
-        style={cartState ? { overflow: "hidden" } : {}}
+        style={stopScroll ? { overflow: "hidden" } : {}}
       >
         <CartContextProvider>
           {/* {cartState && <Cart />} */}

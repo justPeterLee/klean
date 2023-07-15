@@ -60,32 +60,6 @@ export default function AdminImage({
     readImage(updatedImages);
   };
 
-  // commit images
-  // const commitImage = async (images: string[]) => {
-  //   let proxyArr: string[] = [];
-  //   if (!imageFiles[imageType]) {
-  //     proxyArr = images.map((image) => image);
-  //   } else {
-  //     proxyArr = imageFiles[imageType].images;
-  //     images.map((image) => {
-  //       proxyArr.push(image);
-  //     });
-  //   }
-
-  //   const updatedImages = {
-  //     ...imageFiles,
-  //     [imageType]: {
-  //       images: proxyArr,
-  //       description: imageDescription,
-  //     },
-  //   };
-
-  //   setImageFiles(updatedImages);
-  //   readImage(updatedImages);
-
-  //   setImageType("product-image");
-  // };
-
   return (
     <div className={styles.image}>
       {addImageModal && (
