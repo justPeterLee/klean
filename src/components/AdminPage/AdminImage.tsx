@@ -3,7 +3,7 @@ import styles from "../../styling/Admin.module.css";
 import { useState, useRef, Fragment, useContext } from "react";
 import Image from "next/image";
 import { MyContext } from "../ClientContext";
-import { BsImage, BsImageFill } from "react-icons/bs";
+import { BsImage } from "react-icons/bs";
 import { ImageMainpulation } from "./ImageComponents/ImageManipulation";
 
 export default function AdminImage({
@@ -21,10 +21,12 @@ export default function AdminImage({
   const [imageType, setImageType] = useState("product-image");
   const [imageDescription, setImageDescription] = useState<string>();
 
+  const [imageManipulatiorShow, setImageManipulatiorShow] = useState(false);
   // on photo change
   const handleImage = async (event: any) => {
     const files = event.target.files;
     const selectedImagesArray = Array.from(files);
+    console.log(selectedImagesArray);
     if (stageImageFiles.length) {
       let proxyArr = stageImageFiles;
       selectedImagesArray.map((image: any) => {
@@ -32,8 +34,10 @@ export default function AdminImage({
       });
       const updatedArr = proxyArr.map((image: any) => image);
       setStagedImageFiles(updatedArr);
+      setImageManipulatiorShow(true);
     } else {
       setStagedImageFiles(selectedImagesArray);
+      setImageManipulatiorShow(true);
     }
   };
 
@@ -66,7 +70,15 @@ export default function AdminImage({
 
   return (
     <div className={styles.image}>
-      <ImageMainpulation />
+      {imageManipulatiorShow && (
+        <ImageMainpulation
+          hide={() => {
+            setImageManipulatiorShow(false);
+            setStagedImageFiles([]);
+          }}
+          image={stageImageFiles[0]}
+        />
+      )}
       {addImageModal && (
         <>
           <div

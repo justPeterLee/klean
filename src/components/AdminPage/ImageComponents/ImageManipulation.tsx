@@ -1,18 +1,46 @@
 import styles from "./ImageMainpulation.module.css";
 import { AiOutlinePlus } from "react-icons/ai";
-
-export function ImageMainpulation() {
+import Image from "next/image";
+interface ImageManipulationProps {
+  hide: () => void;
+  image: any;
+}
+export function ImageMainpulation({ hide, image }: ImageManipulationProps) {
   return (
     <div className={styles.ImageMainpulationContainer}>
       <div className={styles.ImageMainpulation}>
-        <button className={styles.cancelButton}>
-          <AiOutlinePlus className={styles.X} />
-        </button>
+        <ImageManipulationButton hide={hide} />
 
-        <button className={styles.saveButton}>
-          <p>Save</p>
-        </button>
+        <img
+          src={URL.createObjectURL(image)}
+          alt={`Selected Image ${0}`}
+          height={580}
+          className={styles.imageOne}
+        />
       </div>
     </div>
+  );
+}
+
+function ImageManipulationButton({ hide }: { hide: () => void }) {
+  return (
+    <>
+      <button
+        className={styles.cancelButton}
+        onClick={() => {
+          hide();
+        }}
+      >
+        <AiOutlinePlus className={styles.X} />
+      </button>
+      <button
+        className={styles.saveButton}
+        onClick={() => {
+          hide();
+        }}
+      >
+        <p>Save</p>
+      </button>
+    </>
   );
 }
