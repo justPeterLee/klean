@@ -4,6 +4,7 @@ import { useState, useRef, Fragment, useContext } from "react";
 import Image from "next/image";
 import { MyContext } from "../ClientContext";
 import { BsImage, BsImageFill } from "react-icons/bs";
+import { ImageMainpulation } from "./ImageComponents/ImageManipulation";
 
 export default function AdminImage({
   sendImage,
@@ -65,6 +66,7 @@ export default function AdminImage({
 
   return (
     <div className={styles.image}>
+      <ImageMainpulation />
       {addImageModal && (
         <>
           <div
