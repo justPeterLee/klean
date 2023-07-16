@@ -3,6 +3,7 @@ import styles from "../../styling/Admin.module.css";
 import { useState, useRef, Fragment, useContext } from "react";
 import Image from "next/image";
 import { MyContext } from "../ClientContext";
+import { BsImage, BsImageFill } from "react-icons/bs";
 
 export default function AdminImage({
   sendImage,
@@ -119,18 +120,6 @@ export default function AdminImage({
               <div className={styles.imageModalInfo}>
                 <div className={styles.imageModalInfoInput}>
                   <span className={styles.modalInputSpan}>
-                    <label>description</label>
-                    <input
-                      value={imageDescription}
-                      onChange={(e) => {
-                        setImageDescription(e.target.value);
-                      }}
-                      className={styles.modalInput}
-                      placeholder="(optional)"
-                    />
-                  </span>
-
-                  <span className={styles.modalInputSpan}>
                     <label>image type</label>
                     <select
                       className={styles.category}
@@ -147,10 +136,23 @@ export default function AdminImage({
                       <option value={"feature"}>feature</option>
                     </select>
                   </span>
+
+                  <span className={styles.modalInputSpan}>
+                    <label>description</label>
+                    <input
+                      value={imageDescription}
+                      onChange={(e) => {
+                        setImageDescription(e.target.value);
+                      }}
+                      className={styles.modalInput}
+                      placeholder="(optional)"
+                    />
+                  </span>
                 </div>
 
                 <div className={styles.imageModalButtons}>
                   <button
+                    className={styles.imageCancelButton}
                     onClick={() => {
                       if (stageImageFiles.length) {
                         setStagedImageFiles([]);
@@ -163,6 +165,7 @@ export default function AdminImage({
                     cancel
                   </button>
                   <button
+                    className={styles.imageAddButton}
                     onClick={() => {
                       setAddImageModal(false);
                       uploadImage();
@@ -170,7 +173,7 @@ export default function AdminImage({
                     }}
                     disabled={!stageImageFiles.length}
                   >
-                    add
+                    save image
                   </button>
                 </div>
               </div>
@@ -299,7 +302,9 @@ function ImageInputForm({
         className={styles.imageInputLabel}
         id={isButton ? styles.isButtonForm : ""}
       >
-        upload image
+        <BsImage size={175} color="rgb(250,250,250)" />
+
+        <span className={styles.imageInputLabelSpan}>upload image</span>
       </label>
       <input
         id="upload-image"
