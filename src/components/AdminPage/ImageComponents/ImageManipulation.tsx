@@ -11,12 +11,7 @@ export function ImageMainpulation({ hide, image }: ImageManipulationProps) {
       <div className={styles.ImageMainpulation}>
         <ImageManipulationButton hide={hide} />
 
-        <img
-          src={URL.createObjectURL(image)}
-          alt={`Selected Image ${0}`}
-          height={580}
-          className={styles.imageOne}
-        />
+        <ImageManipulationImage image={image} />
       </div>
     </div>
   );
@@ -42,5 +37,18 @@ function ImageManipulationButton({ hide }: { hide: () => void }) {
         <p>Save</p>
       </button>
     </>
+  );
+}
+
+function ImageManipulationImage({ image }: { image: any }) {
+  return (
+    <div>
+      <img
+        src={URL.createObjectURL(image)}
+        alt={`Selected Image ${0}`}
+        height={580}
+        className={styles.imageOne}
+      />
+    </div>
   );
 }
