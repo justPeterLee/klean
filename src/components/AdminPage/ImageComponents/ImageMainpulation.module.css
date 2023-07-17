@@ -99,11 +99,22 @@ buttons
 .imageLimitContainer {
   pointer-events: none;
   position: absolute;
-  height: 30rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 30rem;
+  height: 30rem;
   border: solid 2px rgb(230, 230, 230);
+
+  transition: top ease 0.2s;
+  transition: left ease 0.2s;
 }
 
+.centerDiv {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .topLeft,
 .topRight,
 .botRight,
