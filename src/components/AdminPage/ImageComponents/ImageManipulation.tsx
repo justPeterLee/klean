@@ -48,6 +48,7 @@ function ImageManipulationImage({ image }: { image: any }) {
   const imageRef = useRef<HTMLImageElement>(null);
   const [bound, setBound] = useState(0);
   const [lineStyle, setLineStyle] = useState({});
+  const [cursorStyle, setCursorStyle] = useState({});
   const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
 
   // Set the drag hook and define component movement based on gesture data
@@ -72,7 +73,14 @@ function ImageManipulationImage({ image }: { image: any }) {
     event.preventDefault();
   };
 
-  const downCorner = (e: any) => {};
+  const [scale, setScale] = useState(false);
+
+  const downCorner = (e: any) => {
+    setScale(true);
+  };
+  const upCorner = (e: any) => {
+    setScale(false);
+  };
   return (
     <div
       className={styles.ImageContainer}
@@ -81,12 +89,20 @@ function ImageManipulationImage({ image }: { image: any }) {
       }}
       onMouseUp={() => {
         setLineStyle({});
+        setScale(false);
+        setCursorStyle({});
       }}
+      onMouseMove={() => {
+        if (scale) {
+          console.log(true);
+        }
+      }}
+      style={cursorStyle}
     >
       {/* <animated.div className={styles.dragImage} {...bind()} style={{ x, y }}> */}
       <animated.img
         {...bind()}
-        style={{ x, y }}
+        style={{ x, y, ...cursorStyle }}
         src={URL.createObjectURL(image)}
         alt={`Selected Image ${0}`}
         height={580}
@@ -121,11 +137,46 @@ function ImageManipulationImage({ image }: { image: any }) {
           className={styles.topLeft}
           onMouseDown={(e) => {
             downCorner(e);
+            setCursorStyle({ cursor: "nwse-resize" });
+          }}
+          onMouseUp={(e) => {
+            upCorner(e);
+            setCursorStyle({});
           }}
         ></div>
-        <div className={styles.topRight}></div>
-        <div className={styles.botRight}></div>
-        <div className={styles.botLeft}></div>
+        <div
+          className={styles.topRight}
+          onMouseDown={(e) => {
+            downCorner(e);
+            setCursorStyle({ cursor: "nesw-resize" });
+          }}
+          onMouseUp={(e) => {
+            upCorner(e);
+            setCursorStyle({});
+          }}
+        ></div>
+        <div
+          className={styles.botRight}
+          onMouseDown={(e) => {
+            downCorner(e);
+            setCursorStyle({ cursor: "nwse-resize" });
+          }}
+          onMouseUp={(e) => {
+            upCorner(e);
+            setCursorStyle({});
+          }}
+        ></div>
+        <div
+          className={styles.botLeft}
+          onMouseDown={(e) => {
+            downCorner(e);
+            setCursorStyle({ cursor: "nesw-resize" });
+          }}
+          onMouseUp={(e) => {
+            upCorner(e);
+            setCursorStyle({});
+          }}
+        ></div>
       </div>
     </div>
   );

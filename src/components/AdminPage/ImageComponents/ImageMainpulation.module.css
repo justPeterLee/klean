@@ -30,6 +30,7 @@ Image Container
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  user-select: none;
 }
 
 /* ---------------------------------
@@ -87,6 +88,7 @@ buttons
   touch-action: none;
   position: absolute;
   pointer-events: all;
+  user-select: none;
 }
 .imageOne:hover {
   cursor: grab;
