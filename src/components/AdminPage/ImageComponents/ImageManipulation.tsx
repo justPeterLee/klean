@@ -46,26 +46,16 @@ function ImageManipulationButton({ hide }: { hide: () => void }) {
 function ImageManipulationImage({ image }: { image: any }) {
   const limiterRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
-  const [imageLeft, setImageLeft] = useState(0);
-  const [limiter, setLimiter] = useState(0);
   const [bound, setBound] = useState(0);
+  const [lineStyle, setLineStyle] = useState({});
   const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
 
   // Set the drag hook and define component movement based on gesture data
   const bind = useDrag(
     ({ active, cancel, offset: [mx, my] }) => {
-      console.log(imageRef.current?.offsetLeft);
-      console.log(imageRef.current?.offsetLeft);
       if (imageRef.current?.offsetLeft && limiterRef.current?.offsetLeft) {
-        setImageLeft(imageRef.current.offsetLeft);
         setBound(limiterRef.current.offsetLeft - imageRef.current.offsetLeft);
       }
-      if (limiterRef.current?.offsetLeft) {
-        setLimiter(limiterRef.current.offsetLeft);
-      }
-      //   console.log(
-      //     limiterRef.current?.offsetLeft - imageRef.current?.offsetLeft
-      //   );
       api.start({ x: mx, y: my, immediate: active });
     },
     {
@@ -84,7 +74,15 @@ function ImageManipulationImage({ image }: { image: any }) {
 
   const downCorner = (e: any) => {};
   return (
-    <div className={styles.ImageContainer}>
+    <div
+      className={styles.ImageContainer}
+      onMouseDown={() => {
+        setLineStyle({ backgroundColor: "rgb(240,240,240,.7)" });
+      }}
+      onMouseUp={() => {
+        setLineStyle({});
+      }}
+    >
       {/* <animated.div className={styles.dragImage} {...bind()} style={{ x, y }}> */}
       <animated.img
         {...bind()}
@@ -113,7 +111,12 @@ function ImageManipulationImage({ image }: { image: any }) {
             fillOpacity=".55"
           ></path>
         </svg>
-        <div className={styles.limitLines}></div>
+        <div className={styles.guideLines}>
+          <div className={styles.line} style={lineStyle}></div>
+          <div className={styles.line} style={lineStyle}></div>
+          <div className={styles.lineUp} style={lineStyle}></div>
+          <div className={styles.lineUp2} style={lineStyle}></div>
+        </div>
         <div
           className={styles.topLeft}
           onMouseDown={(e) => {

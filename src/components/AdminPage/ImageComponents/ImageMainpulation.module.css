@@ -156,4 +156,50 @@ buttons
 
 .Svg {
   pointer-events: none;
+  position: absolute;
+}
+
+.guideLines {
+  height: 100%;
+  width: 100%;
+  /* background-color: aliceblue; */
+  position: absolute;
+  top: 0;
+
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.line {
+  height: 2px;
+  width: 100%;
+  position: absolute;
+}
+
+.lineUp {
+  height: 100%;
+  width: 2px;
+
+  position: absolute;
+  left: 33%;
+}
+
+.lineUp2 {
+  height: 100%;
+  width: 2px;
+  position: absolute;
+  left: 66%;
+}
+.line:nth-child(1) {
+  top: 33%;
+}
+.line:nth-child(2) {
+  top: 66%;
+}
+
+.line,
+.lineUp,
+.lineUp2 {
+  transition: all ease 0.2s;
 }
