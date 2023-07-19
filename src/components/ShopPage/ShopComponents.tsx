@@ -2,9 +2,19 @@
 import styles from "../../styling/Shop.module.css";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+
 interface ShopMenuProps {
   categories: any;
   all: number;
+}
+interface ShopItemProps {
+  id: string;
+  name: string;
+  price: string;
+  imageUrl: string;
+}
+interface ShopItemDisplayProps {
+  items: ShopItemProps[];
 }
 
 export function ShopMenu(props: ShopMenuProps) {
@@ -40,24 +50,6 @@ export function ShopMenu(props: ShopMenuProps) {
   );
 }
 
-export function LoadingShopItem() {
-  return (
-    <div className={`${styles.ItemContainer}`}>
-      <div className={`${styles.Image} ${styles.LoadingSkeleton}`}></div>
-      <div className={`${styles.ItemInfo} ${styles.LoadingInfo}`}>
-        <div className={styles.LoadingBar}></div>
-        <div className={styles.LoadingBar} style={{ width: "13.8rem" }}></div>
-      </div>
-    </div>
-  );
-}
-interface ShopItemProps {
-  id: string;
-  name: string;
-  price: string;
-  imageUrl: string;
-}
-
 export function ShopItem({ id, name, price, imageUrl }: ShopItemProps) {
   const router = useRouter();
   return (
@@ -84,9 +76,6 @@ export function ShopItem({ id, name, price, imageUrl }: ShopItemProps) {
   );
 }
 
-interface ShopItemDisplayProps {
-  items: ShopItemProps[];
-}
 export function ShopItemDisplay({ items }: ShopItemDisplayProps) {
   return (
     <div className={styles.ItemDisplayContainer}>
@@ -105,6 +94,18 @@ export function ShopItemDisplay({ items }: ShopItemDisplayProps) {
       ) : (
         <p>no items</p>
       )}
+    </div>
+  );
+}
+
+export function LoadingShopItem() {
+  return (
+    <div className={`${styles.ItemContainer}`}>
+      <div className={`${styles.Image} ${styles.LoadingSkeleton}`}></div>
+      <div className={`${styles.ItemInfo} ${styles.LoadingInfo}`}>
+        <div className={styles.LoadingBar}></div>
+        <div className={styles.LoadingBar} style={{ width: "13.8rem" }}></div>
+      </div>
     </div>
   );
 }
