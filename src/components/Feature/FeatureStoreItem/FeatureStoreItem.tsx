@@ -7,6 +7,16 @@ import Image from "next/image";
 interface CaruselData {
   id: number;
   name: string;
+  price: number;
+  image: string;
+}
+interface StoreCarouselProps {
+  data: CaruselData[];
+  setData?: () => any;
+}
+interface StoreCarouselItem {
+  id: number;
+  name: string;
   price: number | null;
   image: string;
 }
@@ -28,22 +38,18 @@ export function StoreCarouselClient(props: { catId: number }) {
   return <StoreCarousel data={caruselData} setData={fetchDatas} />;
 }
 
-interface StoreCarouselProps {
-  data: { id: number; name: string; price: number | null; image: string }[];
-  setData?: () => any;
-}
 export function StoreCarousel(props: StoreCarouselProps) {
-  const [containerRef, isVisible] = useElementOnScreen({});
-
   const { data } = props;
-  const transitionPerItem = 16.8;
-  const maxClick = Math.floor(data.length / 3);
-  const minClick = 0;
-  const lastClick =
-    (data.length - Math.floor(data.length / 3) * 3) * transitionPerItem; // multpily by per trans (33.6)
 
+  const [containerRef, isVisible] = useElementOnScreen({});
   const [clickPos, setClickPos] = useState(0);
   const [transitionPos, setTransitionPos] = useState(0);
+
+  const transitionPerItem = 16.8;
+  const minClick = 0;
+  const maxClick = Math.floor(data.length / 3);
+  const lastClick =
+    (data.length - Math.floor(data.length / 3) * 3) * transitionPerItem; // multpily by per trans (33.6)
 
   const moveLeft = () => {
     if (clickPos > minClick) {
@@ -71,7 +77,6 @@ export function StoreCarousel(props: StoreCarouselProps) {
     if (isVisible && props.setData) {
       props.setData();
     }
-    console.log(isVisible);
   }, [isVisible]);
 
   return (
@@ -83,6 +88,7 @@ export function StoreCarousel(props: StoreCarouselProps) {
       >
         {"<"}
       </button>
+
       <div className={styles.CaruselDisplay}>
         <div
           className={`${styles.CaruselDisplaySub}`}
@@ -99,10 +105,12 @@ export function StoreCarousel(props: StoreCarouselProps) {
               />
             ))
           ) : (
+            // need styling
             <p>no items</p>
           )}
         </div>
       </div>
+
       <button
         className={styles.CaruselButton}
         style={{ right: "-5rem" }}
@@ -114,12 +122,6 @@ export function StoreCarousel(props: StoreCarouselProps) {
   );
 }
 
-interface StoreCarouselItem {
-  id: number;
-  name: string;
-  price: number | null;
-  image: string;
-}
 function StoreCarouselItem(props: StoreCarouselItem) {
   const { id, name, price, image } = props;
   const router = useRouter();

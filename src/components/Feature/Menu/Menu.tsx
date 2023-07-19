@@ -65,6 +65,7 @@ interface MenuProps {
 export default function Menu(props: MenuProps) {
   const { options, readOption, containerStyle, optionStyle, selected, hover } =
     props;
+
   const sendOption = (selectedOption: string) => {
     readOption(selectedOption);
   };
@@ -72,7 +73,6 @@ export default function Menu(props: MenuProps) {
   const [selectedStyle, setSelectedStyle] = useState({
     backgroundColor: "transparent",
   });
-
   const [hoverColor, setHoverColor] = useState(hover);
   const [containerStyleState, setContainerStyle] = useState(containerStyle);
 
