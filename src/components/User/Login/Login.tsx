@@ -3,7 +3,7 @@ import styles from "../../../styling/User.module.css";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { InputValidation } from "@/components/ContactPage/ContactForm";
+import InputValidation from "@/components/GlobalComponent/InputValidation";
 import Link from "next/link";
 export default function Login() {
   const { data: session, status } = useSession();

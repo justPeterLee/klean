@@ -1,7 +1,7 @@
 "use client";
 import styles from "../../styling/Review.module.css";
 
-import { InputValidation } from "../ContactPage/ContactForm";
+import InputValidation from "../GlobalComponent/InputValidation";
 import { LongInput } from "../AdminPage/AdminComponents";
 import { useState } from "react";
 

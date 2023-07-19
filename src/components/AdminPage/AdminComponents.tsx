@@ -1,7 +1,7 @@
 "use client";
 import styles from "../../styling/Admin.module.css";
 import { useState, useEffect, useRef } from "react";
-import { InputValidation } from "../ContactPage/ContactForm";
+import InputValidation from "../GlobalComponent/InputValidation";
 import AdminImage from "./AdminImage";
 
 /* ------------------------------

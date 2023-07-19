@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
-import { InputValidation } from "@/components/ContactPage/ContactForm";
+import InputValidation from "@/components/GlobalComponent/InputValidation";
 import styles from "../../../styling/User.module.css";
 import Link from "next/link";
 export default function Register() {
