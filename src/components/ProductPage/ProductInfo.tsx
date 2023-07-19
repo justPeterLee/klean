@@ -186,7 +186,6 @@ export default function ProductInfo(props: ProductInfoProps) {
       <LINEBREAK />
       {/* selection (selection, options) */}
 
-      {JSON.stringify(productSku)}
       <Selection
         selection={data.selection}
         sku={data.SKUs}
@@ -273,8 +272,8 @@ function Option(props: OptionProp) {
   const { selection, selected, selectedSku, sku, readOption } = props;
   const skuStructure = sku.map((skuData: any) => {
     const skuValues = skuData.product_sku.split("-");
+
     skuValues.splice(0, 3);
-    // console.log(skuValues);
     return { sku: skuValues, quanity: skuData.quanity };
   });
   // console.log(skuStructure);
@@ -282,7 +281,6 @@ function Option(props: OptionProp) {
   return (
     <div className={styles.OptionMainContainer}>
       {selection.selection_name}
-
       {/* option */}
       <div className={styles.OptionContiner}>
         {selection.product_option ? (

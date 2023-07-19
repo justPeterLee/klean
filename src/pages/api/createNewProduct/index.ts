@@ -89,10 +89,10 @@ async function attactSelection(selection: any[], productId: number) {
       });
 
       const optionInstance = select.options.map(
-        (option: { option: string; skuValue: string }) => {
+        (option: { key: any; option: string; skuValue: string }) => {
           return {
             option_name: option.option,
-            option_sku: option.skuValue,
+            option_sku: `${option.skuValue}${option.key}`,
             selection_id: selectionInstance.id,
           };
         }
