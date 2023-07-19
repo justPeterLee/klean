@@ -1,6 +1,8 @@
-import { ShopItemDisplay } from "@/components/ShopPage/ShopComponents";
 import prisma from "../../../../lib/db";
 import fetchImage from "../../../../serverComponents/fetchImage";
+
+// components
+import { ShopItemDisplay } from "@/components/ShopPage/ShopComponents";
 
 interface Props {
   params: {
