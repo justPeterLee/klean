@@ -1,7 +1,10 @@
-import { ShopItemDisplay } from "@/components/ShopPage/ShopComponents";
 import fetchImage from "../../../serverComponents/fetchImage";
 import prisma from "../../../lib/db";
 
+// components
+import { ShopItemDisplay } from "@/components/ShopPage/ShopComponents";
+
+// GET all products
 async function getAllProducts() {
   const productData = await prisma.product.findMany({
     include: {

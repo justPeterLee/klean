@@ -35,8 +35,8 @@ model user {
 
   user_name     String          @db.VarChar(255)
   user_last     String          @db.VarChar(255)
-  email         String?
-  password      String?
+  email         String          @db.VarChar(255)
+  password      String          @db.VarChar(255)
   isAdmin       Boolean         @default(false)
   user_shipping user_shipping[]
   user_payment  user_payment[]
@@ -217,7 +217,7 @@ model category {
   updatedAt DateTime @default(now()) @updatedAt
 
   category_name        String             @db.VarChar(75)
-  category_description String?
+  category_description String             @db.VarChar(100)
   product_category     product_category[]
 }
 
@@ -247,9 +247,9 @@ model product_selection {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  selection_name        String?
+  selection_name        String @db.VarChar(75)
   selection_description String?
-  selection_key         Int?
+  selection_key         Int 
 
   product_id     Int
   product_ref    product          @relation(fields: [product_id], references: [id])
@@ -264,9 +264,9 @@ model product_option {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  option_name        String?
+  option_name        String @db.VarChar(75)
   option_description String?
-  option_sku         String?
+  option_sku         String @db.VarChar(75)
 
   selection_id  Int
   selection_ref product_selection @relation(fields: [selection_id], references: [id])
@@ -333,9 +333,9 @@ model image {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  image_file        String?
+  image_file        String @db.VarChar(1000)
   image_description String?
-  image_name        String?
+  image_name        String @db.VarChar(255)
 
   product_id  Int
   product_ref product @relation(fields: [product_id], references: [id])
