@@ -45,6 +45,10 @@ function ImageManipulationButton({ hide }: { hide: () => void }) {
   );
 }
 
+interface xy {
+  x: number;
+  y: number;
+}
 function ImageManipulationImage({ image }: { image: any }) {
   const limiterRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
@@ -109,7 +113,6 @@ function ImageManipulationImage({ image }: { image: any }) {
       const origin = { x: originPoint.left, y: originPoint.top };
       const changeX = newPoint.x - origin.x;
       const changeY = newPoint.y - origin.y;
-      console.log(origin);
       if (changeX > changeY) {
         return {
           top: origin.y + changeX,
@@ -156,7 +159,6 @@ function ImageManipulationImage({ image }: { image: any }) {
       const origin = { x: originPoint.right, y: originPoint.bottom };
       const changeX = origin.x - newPoint.x;
       const changeY = origin.y - newPoint.y;
-      console.log(origin);
       if (changeX > changeY) {
         return {
           top: originPoint.top,
@@ -200,6 +202,52 @@ function ImageManipulationImage({ image }: { image: any }) {
     }
   };
 
+  const [imageScale, setImageScale] = useState<any>({ transform: "scale(1)" });
+  const [imageTranslate, setImageTranslate] = useState<any>({});
+  function calculateDistanceAndCenter(point1: xy, point2: xy) {
+    const centerPoint = {
+      x: (point1.x + point2.x) / 2,
+      y: (point1.y + point2.y) / 2,
+    };
+
+    const xDistance = point2.x - point1.x;
+    const yDistance = point2.y - point1.y;
+    const distance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
+
+    return {
+      distance: distance,
+      centerPoint: centerPoint,
+    };
+  }
+
+  function calculateDistance(point1: xy, point2: xy) {
+    const xDistance = point2.x - point1.x;
+    const yDistance = point2.y - point1.y;
+    const distance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
+    return distance;
+  }
+
+  const scaleValue = (originPoint: xy, newPoint: xy, height: number) => {
+    const distance = Math.sqrt(
+      (newPoint.x - originPoint.x) ** 2 + (newPoint.y - originPoint.y) ** 2
+    );
+    console.log(originPoint, newPoint);
+    console.log(distance);
+    const newHeight = height + distance;
+    const scale = newHeight / height;
+    return scale;
+  };
+
+  const centerDiv = (origin: xy, newOrigin: xy, anchor: xy) => {
+    const originDistance = calculateDistanceAndCenter(origin, anchor);
+    const newDistance = calculateDistanceAndCenter(newOrigin, anchor);
+    const newCenter = {
+      x: originDistance.centerPoint.y - newDistance.centerPoint.y,
+      y: originDistance.centerPoint.x - newDistance.centerPoint.x,
+    };
+
+    return newCenter;
+  };
   return (
     <div
       ref={containerRef}
@@ -224,13 +272,53 @@ function ImageManipulationImage({ image }: { image: any }) {
             containerRef.current!.getBoundingClientRect().top
         );
         setWidth(limiterRef.current!.getBoundingClientRect().width);
+
+        setImageScale({ ...imageScale, transition: "none" });
+
+        // console.log(limiterRef.current?.getBoundingClientRect());
       }}
-      onMouseUp={() => {
+      onMouseUp={(e) => {
+        if (scale) {
+          const newX: number =
+            e.clientX - containerRef.current!.getBoundingClientRect().left;
+          const newY: number =
+            e.clientY - containerRef.current!.getBoundingClientRect().top;
+
+          const scaleRatio = scaleValue(
+            { x: right, y: top },
+            { x: newX, y: newY },
+            imageRef.current!.getBoundingClientRect().width
+          );
+
+          setImageScale({
+            transform: `scale(${scaleRatio})`,
+            transition: "transform linear 100ms",
+          });
+          //   console.log(limiterRef.current?.getBoundingClientRect());
+
+          const imageTrans = centerDiv(
+            { x: right, y: top },
+            { x: newX, y: newY },
+            { x: left, y: bottom }
+          );
+          console.log(imageTrans);
+          setImageTranslate({
+            transform: `translate(${imageTrans.x}px, ${imageTrans.y}px)`,
+          });
+        }
         setLineStyle({});
         setScale(false);
         setCursorStyle({});
         setCurrCorner(0);
-        setLimiterStyle({});
+        setLimiterStyle({
+          transition: "all 100ms linear ",
+          top: `${top}px`,
+          bottom: `${bottom}px`,
+          left: `${left}px`,
+          right: `${right}px`,
+          width: `${480}px`,
+          height: `${480}px`,
+        });
       }}
       onMouseMove={(e) => {
         if (scale && currCorner) {
@@ -241,7 +329,7 @@ function ImageManipulationImage({ image }: { image: any }) {
           const data = changeImageCalc(
             { top, bottom, left, right },
             { x: newX, y: newY },
-            width,
+            width - 4,
             currCorner
           );
 
@@ -261,7 +349,7 @@ function ImageManipulationImage({ image }: { image: any }) {
     >
       <animated.img
         {...bind()}
-        style={{ x, y, ...cursorStyle }}
+        style={{ x, y, ...cursorStyle, ...imageScale }}
         src={URL.createObjectURL(image)}
         alt={`Selected Image ${0}`}
         height={580}
