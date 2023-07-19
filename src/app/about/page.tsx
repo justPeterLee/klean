@@ -1,11 +1,13 @@
 "use client";
+import styles from "../../styling/About.module.css";
 import { useState } from "react";
+
+// components
 import Menu from "@/components/Feature/Menu/Menu";
 import {
   CommentBlock,
   TeamHeadShot,
 } from "@/components/AboutPage/CommentBlock";
-import styles from "../../styling/About.module.css";
 
 const text1 =
   "Welcome to Klean, the premier destination for computer mice enthusiasts seeking high-quality and unique products. At Klean, we understand the importance of a reliable and comfortable mouse for your computing needs. That's why we have curated a remarkable collection of top-notch computer mice that combine exceptional performance, ergonomic design, and cutting-edge technology. Whether you're a gamer, designer, or professional, Klean is committed to delivering an unparalleled browsing and gaming experience through our carefully selected range of mice.";
