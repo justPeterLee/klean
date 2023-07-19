@@ -13,15 +13,6 @@ interface ProxyError {
   message: boolean;
 }
 
-interface ProxyInput {
-  first: string;
-  last: string;
-  email: string;
-  order: string;
-  subject: string;
-  message: string;
-}
-
 // contact form MAIN component
 interface ContactForm {
   sendEmailData: (params: any) => void;
