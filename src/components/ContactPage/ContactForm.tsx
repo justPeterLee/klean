@@ -2,7 +2,7 @@
 import styles from "../../styling/Contact.module.css";
 import { useEffect, useState, useRef } from "react";
 
-import InputValidation from "../GlobalComponent/InputValidation";
+import InputValidation from "../GlobalComponent/InputValidation/InputValidation";
 
 interface ProxyError {
   first: boolean;

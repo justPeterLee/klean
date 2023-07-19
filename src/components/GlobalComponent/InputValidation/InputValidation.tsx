@@ -1,5 +1,5 @@
 "use client";
-import styles from "../../styling/Contact.module.css";
+import styles from "./InputValidation.module.css";
 import { useState, useEffect, useRef } from "react";
 
 interface inputValidationProps {
