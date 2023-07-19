@@ -37,7 +37,7 @@ async function fetchMenuData() {
         link: item.category_ref.category_name,
       };
     } else {
-      sortedCategory[item.category_ref.category_description!] = {
+      sortedCategory[item.category_ref.category_description] = {
         amount: (sortedCategory[
           item.category_ref.category_description!
         ].amount += 1),
