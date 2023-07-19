@@ -1,9 +1,16 @@
 "use client";
 import styles from "../../styling/About.module.css";
+
 interface CommentBlockProps {
   title?: string;
   comment: string;
 }
+interface TeamHeadShot {
+  image?: string;
+  name: string;
+  role: string;
+}
+
 export function CommentBlock(props: CommentBlockProps) {
   const { title, comment } = props;
   return (
@@ -14,11 +21,6 @@ export function CommentBlock(props: CommentBlockProps) {
   );
 }
 
-interface TeamHeadShot {
-  image?: string;
-  name: string;
-  role: string;
-}
 export function TeamHeadShot(props: TeamHeadShot) {
   const { image, name, role } = props;
   return (
