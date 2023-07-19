@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./Feature.module.css";
-import Menu from "./Menu/Menu";
+import Menu from "../GlobalComponent/Menu/Menu";
 
 export function MainFeature() {
   const [optionSelected, setOptionSelected] = useState("color 1");

@@ -3,7 +3,7 @@ import styles from "../../styling/About.module.css";
 import { useState } from "react";
 
 // components
-import Menu from "@/components/Feature/Menu/Menu";
+import Menu from "@/components/GlobalComponent/Menu/Menu";
 import {
   CommentBlock,
   TeamHeadShot,

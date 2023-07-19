@@ -1,7 +1,7 @@
 "use client";
 import styles from "../../../styling/User.module.css";
 import { signOut, useSession } from "next-auth/react";
-import Menu from "@/components/Feature/Menu/Menu";
+import Menu from "@/components/GlobalComponent/Menu/Menu";
 import { useState } from "react";
 import { Favorites, Purchases } from "./UserInfo";
 export default function User() {
