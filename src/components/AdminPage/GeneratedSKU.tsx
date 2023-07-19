@@ -8,7 +8,11 @@ interface GeneratedSKUProps {
     category: string;
     selection: {
       selection: string;
-      options: { option: string; skuValue: string }[];
+      options: {
+        key: number;
+        option: string;
+        skuValue: string;
+      }[];
       skuValue?: string;
     }[];
   };
@@ -68,7 +72,11 @@ export function GeneratedSKU(props: GeneratedSKUProps) {
     if (selection.length !== 0) {
       for (let i = 0; i < selection.length; i++) {
         for (let j = 0; j < selection[i].options.length; j++) {
-          currOptionArr.push(templateSKU(selection[i].options[j].option));
+          currOptionArr.push(
+            `${templateSKU(selection[i].options[j].option)}${
+              selection[i].options[j].key
+            }`
+          );
         }
         optionArr.push(currOptionArr);
         currOptionArr = [];
@@ -78,14 +86,16 @@ export function GeneratedSKU(props: GeneratedSKUProps) {
 
       const skuValues: string[] = optionSKUValues!.map((sku) => {
         return `${selectionNum}-${name ? nameSKU : "(no name)"}-${
-          category && catSKU
+          category && `${catSKU}`
         }-${sku}`;
       });
       setGeneratedSKU(skuValues);
       readSku(skuValues);
     } else {
       const proxySku = [
-        `${selectionNum}-${name ? nameSKU : "(no name)"}-${category && catSKU}`,
+        `${selectionNum}-${name ? nameSKU : "(no name)"}-${
+          category && `${catSKU}`
+        }`,
       ];
       setGeneratedSKU(proxySku);
       readSku(proxySku);

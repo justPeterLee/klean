@@ -70,7 +70,7 @@ export default function AdminImage({
 
   return (
     <div className={styles.image}>
-      {imageManipulatiorShow && (
+      {/* {imageManipulatiorShow && (
         <ImageMainpulation
           hide={() => {
             setImageManipulatiorShow(false);
@@ -78,7 +78,7 @@ export default function AdminImage({
           }}
           image={stageImageFiles[0]}
         />
-      )}
+      )} */}
       {addImageModal && (
         <>
           <div
@@ -184,6 +184,7 @@ export default function AdminImage({
                       setAddImageModal(false);
                       uploadImage();
                       setStagedImageFiles([]);
+                      context?.setStopScroll(false);
                     }}
                     disabled={!stageImageFiles.length}
                   >

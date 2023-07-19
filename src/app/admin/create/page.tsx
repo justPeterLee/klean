@@ -14,7 +14,7 @@ export default function AdminCreate() {
   const [selection, setSelection] = useState<
     {
       selection: string;
-      options: { option: string; skuValue: string }[];
+      options: { option: string; skuValue: string; key: number }[];
       skuValue?: string;
     }[]
   >([]); // selection
@@ -145,7 +145,7 @@ export default function AdminCreate() {
           readSelection={(
             params: {
               selection: string;
-              options: { option: string; skuValue: string }[];
+              options: { option: string; skuValue: string; key: number }[];
               skuValue?: string;
             }[]
           ) => {

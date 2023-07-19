@@ -46,7 +46,7 @@ export function CreateForm({
   const [selection, setSelection] = useState<
     {
       selection: string;
-      options: { option: string; skuValue: string }[];
+      options: { option: string; skuValue: string; key: number }[];
       skuValue?: string;
     }[]
   >([]);
@@ -136,6 +136,7 @@ export function CreateForm({
     optionIndex?: number;
     index: number;
     mutation: string;
+    key: number;
   }) => {
     let proxySelection = selection;
 
@@ -152,6 +153,7 @@ export function CreateForm({
     const optionValue = {
       option: sentOption.option,
       skuValue: templateSKU(sentOption.option),
+      key: sentOption.key,
     };
     if (sentOption.mutation === "add") {
       proxySelection[sentOption.index].options.push(optionValue);
@@ -561,7 +563,7 @@ function SelectionDisplay({
   addNewOption,
 }: {
   selection: string;
-  options: { option: string; skuValue: string }[];
+  options: { option: string; skuValue: string; key: number }[];
   index: number;
   sendSelection: (param: {
     selection: string;
@@ -572,6 +574,7 @@ function SelectionDisplay({
     option: string;
     index: number;
     mutation: string;
+    key: any;
   }) => void;
 }) {
   const [changeSelection, setChangeSelection] = useState(false);
@@ -584,8 +587,18 @@ function SelectionDisplay({
     optionIndex: number;
     index: number;
     mutation: string;
+    key: number;
   }) => {
     addNewOption(optionData);
+  };
+  const uniqueKeyGenerate = (keys: number[], key: number) => {
+    if (keys.includes(key)) {
+      const newUniqueKey = Math.floor(Math.random() * 1000) + 1;
+      uniqueKeyGenerate(keys, newUniqueKey);
+    } else {
+      return key;
+    }
+    console.log("key", key);
   };
   return (
     <span className={styles.selectionItemContainer}>
@@ -613,7 +626,7 @@ function SelectionDisplay({
         ) : (
           <input
             autoFocus
-            placeholder="changing point"
+            placeholder="changing selection..."
             id={styles.technicalNewInput}
             className={styles.technicalAdd}
             value={newSelection}
@@ -647,6 +660,7 @@ function SelectionDisplay({
             key={index}
             selectionIndex={selectionIndex}
             sendChangeOption={mutateOption}
+            optionKey={option.key}
           />
         ))}
 
@@ -675,10 +689,13 @@ function SelectionDisplay({
               if (!newOption.replace(/\s/g, "")) {
                 setAddOption(false);
               } else {
+                const currKey = Math.floor(Math.random() * 1000) + 1;
+                const genKey = uniqueKeyGenerate([0], currKey);
                 addNewOption({
                   option: newOption,
                   index: index,
                   mutation: "add",
+                  key: genKey,
                 });
                 setAddOption(false);
                 setNewOption("");
@@ -696,6 +713,7 @@ function OptionDisplay({
   optionSKU,
   selection,
   index,
+  optionKey,
   selectionIndex,
   sendChangeOption,
 }: {
@@ -703,12 +721,14 @@ function OptionDisplay({
   optionSKU: string;
   selection: string;
   index: number;
+  optionKey: number;
   selectionIndex: number;
   sendChangeOption: (param: {
     option: string;
     optionIndex: number;
     index: number;
     mutation: string;
+    key: number;
   }) => void;
 }) {
   const [changeOption, setChangeOption] = useState(false);
@@ -724,6 +744,7 @@ function OptionDisplay({
             optionIndex: index,
             index: selectionIndex,
             mutation: "remove",
+            key: optionKey,
           });
         }}
       ></div>
@@ -748,6 +769,7 @@ function OptionDisplay({
                 optionIndex: index,
                 index: selectionIndex,
                 mutation: "change",
+                key: optionKey,
               });
               setChangeOption(false);
             }
