@@ -10,7 +10,7 @@ interface ReviewItemProps {
   };
 }
 export default function ReviewItem({
-  data: { id, name, category, price, image },
+  data: { name, category, price, image },
 }: ReviewItemProps) {
   return (
     <div className={styles.ReviewItemContainer}>
