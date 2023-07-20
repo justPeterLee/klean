@@ -1,5 +1,5 @@
 "use client";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import styles from "../../styling/Product.module.css";
 import { MyContext } from "../ClientContext";
 import { CartContext } from "../Context/CartContext";
@@ -21,26 +21,15 @@ interface ProductInfoProps {
   };
 }
 
-interface Review {
-  id: number;
-  createdAt: Date;
-  updatedAt: Date;
-  review_rate: number;
-  review_date: Date;
-  review_message: string | null;
-  product_id: number;
-  user_name: string;
-}
-
 interface SelectionType {
   id: number;
   createdAt: Date;
   updatedAt: Date;
   product_id: number;
-  selection_description: string | null;
-  selection_key: number | null;
-  selection_name: string | null;
-  product_option: OptionType[] | null;
+  selection_description: string;
+  selection_key: number;
+  selection_name: string;
+  product_option: OptionType[];
 }
 
 interface OptionType {
@@ -48,18 +37,18 @@ interface OptionType {
   createdAt: Date;
   updatedAt: Date;
   selection_id: number;
-  option_description: null | string;
-  option_name: string | null;
-  option_sku: string | null;
+  option_description: string;
+  option_name: null;
+  option_sku: string;
 }
 
 interface ImageType {
   id: number;
   createdAt: Date;
   updatedAt: Date;
-  image_description: string | null;
-  image_file: string | null;
-  image_name: string | null;
+  image_description: string;
+  image_file: string;
+  image_name: string;
   product_id: number;
 }
 
@@ -85,12 +74,12 @@ export default function ProductInfo(props: ProductInfoProps) {
   const context = useContext(MyContext);
   const cartContext = useContext(CartContext);
 
+  const [productSku, setProductSku] = useState<any>();
+
   // get thumbnail
   const thumbnail = data.images.filter((images: any) => {
     return images.image_name === "thumbnail";
   })[0];
-
-  const [productSku, setProductSku] = useState<any>();
 
   //turn selection into sku
   const decryptSku = (sku: any) => {
@@ -242,7 +231,6 @@ function Selection(props: SelectionProps) {
   return (
     <div className={styles.SelectionContainer}>
       {selection.map((select: any) => {
-        // console.log(select);
         return (
           <Option
             key={select.id}
@@ -276,7 +264,6 @@ function Option(props: OptionProp) {
     skuValues.splice(0, 3);
     return { sku: skuValues, quanity: skuData.quanity };
   });
-  // console.log(skuStructure);
 
   return (
     <div className={styles.OptionMainContainer}>
