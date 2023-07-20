@@ -1,14 +1,14 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-
 import styles from "../../../../styling/Review.module.css";
-
-import ReviewRedirect from "@/components/ReviewPage/ReviewRedirect";
-import ReviewForm from "@/components/ReviewPage/ReviewForm";
 
 import prisma from "../../../../../lib/db";
 import fetchImage from "../../../../../serverComponents/fetchImage";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
+import ReviewRedirect from "@/components/ReviewPage/ReviewRedirect";
+import ReviewForm from "@/components/ReviewPage/ReviewForm";
 import ReviewItem from "@/components/ReviewPage/ReviewItem";
+
 async function fetchItem(params: number) {
   const res = await prisma.product.findFirst({
     where: { id: params },
@@ -17,8 +17,6 @@ async function fetchItem(params: number) {
       image: { where: { image_name: "thumbnail" } },
     },
   });
-
-  await prisma.$disconnect();
 
   const image = await fetchImage(res?.image[0].image_file!);
 
@@ -38,6 +36,8 @@ export default async function reivew({
   params: { productId: string };
 }) {
   const session = await getServerSession(authOptions);
+
+  // check if user is logged in
   if (!session) {
     return <ReviewRedirect />;
   }
