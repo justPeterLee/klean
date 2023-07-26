@@ -8,7 +8,7 @@ import {
   SideFeature,
   ContactButton,
 } from "@/components/Feature/Feature";
-import { StoreCarousel } from "@/components/Feature/FeatureStoreItem/FeatureStoreItem";
+import { StoreCarousel } from "@/components/GlobalComponent/CarouselItem.tsx/CarouselItem";
 
 // GET carousel items (products)
 async function getFeatureCarousel() {

@@ -3,7 +3,7 @@ import prisma from "../../../../lib/db";
 
 import ProductImage from "@/components/ProductPage/ProductImage";
 import ProductInfo from "@/components/ProductPage/ProductInfo";
-import { StoreCarouselClient } from "@/components/Feature/FeatureStoreItem/FeatureStoreItem";
+import { StoreCarouselClient } from "@/components/GlobalComponent/CarouselItem.tsx/CarouselItem";
 import fetchImage from "../../../../serverComponents/fetchImage";
 
 interface Props {

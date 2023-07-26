@@ -1,5 +1,5 @@
 "use client";
-import styles from "../Feature.module.css";
+import styles from "./CarouselItem.module.css";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useElementOnScreen from "@/hooks/useElementOnScreen";
