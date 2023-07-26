@@ -100,7 +100,7 @@ export function StoreCarousel(props: StoreCarouselProps) {
           style={{ transform: `translateX(-${transitionPos}rem)` }}
         >
           {loading ? (
-            <StoreCarouselItemLoading amount={11} />
+            <StoreCarouselItemLoading amount={4} />
           ) : data.length ? (
             data.map((item) => (
               <StoreCarouselItem
@@ -170,7 +170,7 @@ function StoreCarouselItemLoading(props: { amount: number }) {
     <>
       {amountArr.map((index) => (
         <div className={styles.StoreCarouselItemContainer} key={index}>
-          <span className={styles.CaruselItemImageLoading}>loading...</span>
+          <span className={styles.CaruselItemImage}>loading...</span>
         </div>
       ))}
     </>
