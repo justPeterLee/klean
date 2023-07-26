@@ -29,41 +29,64 @@ async function getProductDetail(productId: string) {
     },
   });
 
-  const data = productData
-    ? {
-        id: productData.id,
-        name: productData.product_name,
-        price: productData.product_price,
-        category:
-          productData.product_category[0].category_ref.category_description,
-        categoryId: productData.product_category[0].category_id,
-        description: productData.product_description,
-        technical: productData.technical_point,
-        selection: productData.product_selection,
-        SKUs: productData.product_sku,
-        images: productData.image,
-        review: productData.review,
-      }
-    : false;
-  return data;
+  if (productData) {
+    const imageFiles = await Promise.all(
+      productData.image.map(async (imageObj: any) => {
+        const image = await fetchImage(imageObj.image_file);
+        return {
+          id: imageObj.id,
+          file: image,
+          name: imageObj.image_name,
+          key: imageObj.image_file,
+        };
+      })
+    );
+
+    return {
+      id: productData.id,
+      name: productData.product_name,
+      price: productData.product_price,
+      category:
+        productData.product_category[0].category_ref.category_description,
+      categoryId: productData.product_category[0].category_id,
+      description: productData.product_description,
+      technical: productData.technical_point,
+      selection: productData.product_selection,
+      SKUs: productData.product_sku,
+      review: productData.review,
+      image_files: imageFiles,
+    };
+  } else {
+    return false;
+  }
+
+  // const data = productData
+  //   ? {
+  //       id: productData.id,
+  //       name: productData.product_name,
+  //       price: productData.product_price,
+  //       category:
+  //         productData.product_category[0].category_ref.category_description,
+  //       categoryId: productData.product_category[0].category_id,
+  //       description: productData.product_description,
+  //       technical: productData.technical_point,
+  //       selection: productData.product_selection,
+  //       SKUs: productData.product_sku,
+  //       images: productData.image,
+  //       review: productData.review,
+  //     }
+  //   : false;
+  // return data;
 }
 
 export default async function ProductDetail({ params }: Props) {
   const productData: any = await getProductDetail(params.productId);
-  const imageFiles = await Promise.all(
-    productData.images.map(async (imageObj: any) => {
-      const image = await fetchImage(imageObj.image_file);
-      return { file: image, name: imageObj.image_name };
-    })
-  );
-  const productDataStruct = { ...productData, image_files: imageFiles };
-
   return (
     <div className={styles.main}>
       {productData && (
         <div className={styles.ProductInfo}>
-          <ProductImage images={imageFiles} />
-          <ProductInfo data={productDataStruct} />
+          <ProductImage images={productData.image_files} />
+          <ProductInfo data={productData} />
         </div>
       )}
 

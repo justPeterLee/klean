@@ -1,6 +1,6 @@
 "use client";
 import styles from "../../styling/Product.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 interface ProductImageProps {
   images: { name: string; file: string }[];
@@ -11,18 +11,31 @@ export default function ProductImage(props: ProductImageProps) {
   const thumbnail = images.filter((image) => {
     return image.name === "thumbnail";
   })[0].file;
-
+  let orderImage: { name: string; file: string }[] = [];
+  images.map((image) => {
+    if (image.name !== "thumbnail") {
+      orderImage.push(image);
+    } else {
+      orderImage.unshift(image);
+    }
+  });
   const [mainImage, setMainImage] = useState(thumbnail);
   const [selected, setSelected] = useState(0);
   const readImage = (image: string) => {
     setMainImage(image);
   };
 
+  useEffect(() => {
+    console.log(props);
+    console.log(thumbnail);
+    console.log(orderImage);
+  }, []);
+
   return (
     <div className={styles.ImageContainer}>
       <div className={styles.SubImageContainer}>
-        {images.length ? (
-          images.map((image, index) => (
+        {orderImage.length ? (
+          orderImage.map((image, index) => (
             <SubImage
               key={index}
               id={index}
@@ -39,7 +52,6 @@ export default function ProductImage(props: ProductImageProps) {
         )}
       </div>
       <div className={styles.MainImageContainer}>
-        {/* <span className={styles.MainImage}>{mainImage}</span> */}
         <Image
           src={mainImage}
           alt=""
@@ -69,14 +81,14 @@ function SubImage(props: SubImageProps) {
         sendImage(image);
         sendSelected(id);
       }}
-      style={selected === id ? { border: "solid 2px black" } : {}}
     >
       <Image
+        className={styles.SubImagePic}
         src={image}
         alt=""
-        width={77}
-        height={77}
-        style={{ borderRadius: "10px" }}
+        height={100}
+        width={100}
+        style={selected === id ? { filter: "brightness(0.5)" } : {}}
       />
     </button>
   );

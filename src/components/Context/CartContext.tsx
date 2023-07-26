@@ -153,6 +153,9 @@ export default function CartContextProvider({
   }
   useEffect(() => {
     // initalCart();
+    if (!window.localStorage.getItem("cart")) {
+      window.localStorage.setItem("cart", JSON.stringify([]));
+    }
   }, []);
 
   return (

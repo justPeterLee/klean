@@ -70,18 +70,24 @@ image
   cursor: pointer;
 }
 
+.SubImageButton:hover .SubImagePic {
+  opacity: 80%;
+}
 /* --------------------------------
 Product Info
 ---------------------------------*/
 .ProductInfoContainer {
   width: 25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 }
 
 /* product general */
 .ProductGeneralContainer {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 1.25rem;
   position: relative;
 }
 
@@ -103,10 +109,18 @@ Product Info
   /* margin-right: 5rem; */
 }
 
-.Category {
+/* .Category {
   color: rgb(120, 120, 120);
-}
+} */
 
+.nameCatContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+.nameCatContainer p {
+  margin: 0;
+}
 /* favorite */
 .Favorite {
   position: absolute;
@@ -129,10 +143,8 @@ Product Info
 
 .line {
   width: 100%;
-  height: 1.5px;
+  height: 1px;
   background-color: rgb(200, 200, 200);
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
 }
 
 /* Product Descroption */
@@ -146,7 +158,7 @@ Product Info
 .SelectionContainer {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.5rem;
 }
 /* Selection Option */
 .OptionContiner {
@@ -154,8 +166,9 @@ Product Info
   gap: 0.5rem;
 }
 .OptionButton {
-  width: 7rem;
-  height: 3rem;
+  max-width: 7rem;
+  min-width: 4rem;
+  height: 2.6rem;
   text-align: center;
   background-color: transparent;
   border: solid 1.5px rgb(200, 200, 200);
@@ -174,16 +187,19 @@ Product Info
 .OptionMainContainer {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
 }
 
+.SelectionTitle {
+  margin: 0;
+  margin-bottom: 5px;
+  font-size: 15px;
+}
 /* add to cart */
 .AddToCartButton {
   height: 3rem;
   width: 10rem;
   border-radius: 10px;
   border: none;
-  margin-top: 1.5rem;
 }
 
 .AddToCartButton:hover {
@@ -299,4 +315,18 @@ Review Action buttons
 }
 .ReviewAdd:hover {
   cursor: pointer;
+}
+
+.TechnicalUl {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 22rem;
+  /* padding: 1rem; */
+}
+
+.SubImagePic {
+  border-radius: 10px;
+  width: 77px;
+  height: 77px;
 }

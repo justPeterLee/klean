@@ -16,7 +16,11 @@ interface ProductInfoProps {
     selection: SelectionType[];
     SKUs: SkuType[];
     images: ImageType[];
-    imageFiles: { file: string; name: string }[];
+    image_files: {
+      key: string;
+      file: string;
+      name: string;
+    }[];
     review: any[];
   };
 }
@@ -77,8 +81,8 @@ export default function ProductInfo(props: ProductInfoProps) {
   const [productSku, setProductSku] = useState<any>();
 
   // get thumbnail
-  const thumbnail = data.images.filter((images: any) => {
-    return images.image_name === "thumbnail";
+  const thumbnail = data.image_files.filter((images: any) => {
+    return images.name === "thumbnail";
   })[0];
 
   //turn selection into sku
@@ -103,12 +107,13 @@ export default function ProductInfo(props: ProductInfoProps) {
       // quantity check ( make sure specific sku is "in-stock")
       if (selectedSKU[0].quanity) {
         // create instance of cart data (will be passed to cart component )
+        console.log(thumbnail);
         const productData = {
           id: data.id,
           name: data.name,
           category: data.category,
           price: data.price,
-          image: thumbnail.image_file,
+          image: thumbnail.key,
           skuId: selectedSKU[0].id,
         };
 
@@ -162,32 +167,28 @@ export default function ProductInfo(props: ProductInfoProps) {
     <div className={styles.ProductInfoContainer}>
       {/* general information (name, price, category, favoirte(button)) */}
       <div className={styles.ProductGeneralContainer}>
-        <span className={styles.NamePrice}>
+        <span className={styles.nameCatContainer}>
           <p id={styles.name}>{data.name}</p>
-          <p id={styles.price}>${data.price}</p>
+          <p className={styles.Category}>{data.category}</p>
         </span>
 
-        <span className={styles.Category}>{data.category}</span>
-
-        <button className={styles.Favorite}>{"<3"}</button>
+        <p id={styles.price}>${data.price}</p>
       </div>
+      <LINEBREAK marginTop={-20} />
 
-      <LINEBREAK />
       {/* selection (selection, options) */}
-
-      <Selection
-        selection={data.selection}
-        sku={data.SKUs}
-        available={data.SKUs}
-        readOption={(params) => {
-          decryptSku(params);
-        }}
-      />
-
+      <div>
+        <Selection
+          selection={data.selection}
+          sku={data.SKUs}
+          readOption={(params) => {
+            decryptSku(params);
+          }}
+        />
+      </div>
       <button className={styles.AddToCartButton} onClick={addToCart}>
         add to cart
       </button>
-
       <LINEBREAK />
 
       {/* description (description, technical points) */}
@@ -214,19 +215,24 @@ export default function ProductInfo(props: ProductInfoProps) {
   );
 }
 
-export function LINEBREAK() {
-  return <div className={styles.line}></div>;
+export function LINEBREAK(props: { marginTop?: number; marginBot?: number }) {
+  const { marginTop, marginBot } = props;
+  return (
+    <div
+      className={styles.line}
+      style={{ marginTop: `${marginTop}px`, marginBottom: `${marginBot}px` }}
+    ></div>
+  );
 }
 
 interface SelectionProps {
   //   selection?: {}[];
   selection: SelectionType[];
   sku: SkuType[];
-  available: SkuType[];
   readOption: (params: any) => void;
 }
 function Selection(props: SelectionProps) {
-  const { selection, sku, available, readOption } = props;
+  const { selection, sku, readOption } = props;
   const [selectionKey, setSelectionKey] = useState<any>(Object.create(null));
   return (
     <div className={styles.SelectionContainer}>
@@ -267,7 +273,7 @@ function Option(props: OptionProp) {
 
   return (
     <div className={styles.OptionMainContainer}>
-      {selection.selection_name}
+      <p className={styles.SelectionTitle}>{selection.selection_name}</p>
       {/* option */}
       <div className={styles.OptionContiner}>
         {selection.product_option ? (

@@ -41,15 +41,19 @@ export default function QuantityProvider({
   });
 
   useEffect(() => {
-    const proxyCart = JSON.parse(window.localStorage.getItem("cart")!).map(
-      (item: any) => {
-        return item.skuId;
-      }
-    );
+    if (window.localStorage.getItem("cart")) {
+      if (JSON.parse(window.localStorage.getItem("cart")!)) {
+        const proxyCart = JSON.parse(window.localStorage.getItem("cart")!).map(
+          (item: any) => {
+            return item.skuId;
+          }
+        );
 
-    const quantityCart = { ids: proxyCart };
-    console.log(queryString.stringify(quantityCart));
-    setUrl(`/api/quantity?${queryString.stringify(quantityCart)}`);
+        const quantityCart = { ids: proxyCart };
+        console.log(queryString.stringify(quantityCart));
+        setUrl(`/api/quantity?${queryString.stringify(quantityCart)}`);
+      }
+    }
   }, []);
 
   useEffect(() => {
