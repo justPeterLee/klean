@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useElementOnScreen from "@/hooks/useElementOnScreen";
 import Image from "next/image";
+import { LoadingShopItem } from "@/components/ShopPage/ShopComponents";
 interface CaruselData {
   id: number;
   name: string;
@@ -45,6 +46,8 @@ export function StoreCarousel(props: StoreCarouselProps) {
   const [clickPos, setClickPos] = useState(0);
   const [transitionPos, setTransitionPos] = useState(0);
 
+  const [loading, setLoading] = useState(true);
+
   const transitionPerItem = 16.8;
   const minClick = 0;
   const maxClick = Math.floor(data.length / 3);
@@ -75,7 +78,9 @@ export function StoreCarousel(props: StoreCarouselProps) {
 
   useEffect(() => {
     if (isVisible && props.setData) {
-      props.setData();
+      props.setData().then(() => {
+        setLoading(false);
+      });
     }
   }, [isVisible]);
 
@@ -94,7 +99,9 @@ export function StoreCarousel(props: StoreCarouselProps) {
           className={`${styles.CaruselDisplaySub}`}
           style={{ transform: `translateX(-${transitionPos}rem)` }}
         >
-          {data.length ? (
+          {loading ? (
+            <StoreCarouselItemLoading amount={11} />
+          ) : data.length ? (
             data.map((item) => (
               <StoreCarouselItem
                 key={item.id}
@@ -149,5 +156,23 @@ function StoreCarouselItem(props: StoreCarouselItem) {
         <p>${price}</p>
       </span>
     </div>
+  );
+}
+
+function StoreCarouselItemLoading(props: { amount: number }) {
+  const { amount } = props;
+  let amountArr = [];
+  for (let i = 0; i < amount; i++) {
+    amountArr.push(i);
+  }
+
+  return (
+    <>
+      {amountArr.map((index) => (
+        <div className={styles.StoreCarouselItemContainer} key={index}>
+          <span className={styles.CaruselItemImageLoading}>loading...</span>
+        </div>
+      ))}
+    </>
   );
 }
