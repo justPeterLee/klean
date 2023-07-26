@@ -28,7 +28,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/contact/api/sendemail/route.js"
+    "src/app/contact/api/sendemail/route.js",
+    "src/components/GlobalComponent/CarouselItem"
   ],
   "exclude": ["node_modules"]
 }
