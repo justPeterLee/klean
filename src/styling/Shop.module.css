@@ -55,10 +55,24 @@
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
   background-color: rgb(252, 252, 252);
+
+  display: flex;
+  flex-direction: column;
 }
 
 .ItemContainer:hover {
   cursor: pointer;
+}
+
+#ImagePic {
+  transition: all linear 0.2s;
+}
+.ItemContainer:hover #ImagePic {
+  transform: scale(1.03);
+}
+.ItemContainer:hover .Name {
+  color: rgb(150, 150, 150);
+  text-decoration: underline;
 }
 
 .Image {
@@ -71,16 +85,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: -5.36px;
+  overflow: hidden;
 }
 
 .ItemInfo {
   display: flex;
   justify-content: space-between;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  width: 100%;
 }
 
+.Name {
+  padding-left: 0.75rem;
+  transition: color linear 0.2s;
+}
+.Price {
+  padding-right: 0.75rem;
+}
 .LoadingSkeleton {
   animation: skeleton-loading 1s linear infinite alternate;
 }

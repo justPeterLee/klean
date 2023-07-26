@@ -66,6 +66,7 @@ export function ShopItem({ id, name, price, imageUrl }: ShopItemProps) {
           className={styles.Image}
           width={100}
           height={100}
+          id={styles.ImagePic}
         />
       </div>
       <div className={styles.ItemInfo}>
