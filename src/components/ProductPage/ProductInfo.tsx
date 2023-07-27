@@ -80,6 +80,10 @@ export default function ProductInfo(props: ProductInfoProps) {
 
   // selected SKU
   const [productSku, setProductSku] = useState<string>();
+  // selected section
+  const [productSkuSelection, setProductSkuSelection] = useState<any>([]);
+  // selection error
+  const [selectionError, setSelectionError] = useState(false);
 
   // get thumbnail
   const thumbnail = data.image_files.filter((images: any) => {
@@ -93,20 +97,24 @@ export default function ProductInfo(props: ProductInfoProps) {
       .split("-")
       .splice(0, 3);
 
+    const selectedSection = [];
     // iterate through selected sku obj -> push each value into array
     if (Object.keys(sku).length) {
       for (let key in sku) {
         initialSku.push(sku[key].value);
+        selectedSection.push(sku[key].selection);
       }
     }
 
-    // console.log(initialSku);
+    setProductSkuSelection(selectedSection);
     // join array to get structured sku
     setProductSku(initialSku.join("-"));
   };
 
   // add item to selection
   const addToCart = async () => {
+    setSelectionError(false);
+
     // compares and returns selected sku from db
     const selectedSKU = data.SKUs.filter((sku: any) => {
       return sku.product_sku === productSku;
@@ -168,6 +176,8 @@ export default function ProductInfo(props: ProductInfoProps) {
         console.log("out of stock");
       }
     } else {
+      setSelectionError(true);
+      console.log(productSku);
       console.log("failed");
     }
   };
@@ -189,7 +199,9 @@ export default function ProductInfo(props: ProductInfoProps) {
       <div>
         <Selection
           selection={data.selection}
+          selectedSection={productSkuSelection}
           sku={data.SKUs}
+          error={selectionError}
           readOption={(params) => {
             decryptSku(params);
           }}
@@ -236,11 +248,13 @@ export function LINEBREAK(props: { marginTop?: number; marginBot?: number }) {
 
 interface SelectionProps {
   selection: SelectionType[];
+  selectedSection: string[];
   sku: SkuType[];
+  error: boolean;
   readOption: (params: any) => void;
 }
 function Selection(props: SelectionProps) {
-  const { selection, sku, readOption } = props;
+  const { selection, selectedSection, sku, error, readOption } = props;
   const [selectionKey, setSelectionKey] = useState<any>(Object.create(null));
   useEffect(() => {
     console.log(selection);
@@ -271,6 +285,8 @@ function Selection(props: SelectionProps) {
                 },
               });
             }}
+            selectedSection={selectedSection}
+            error={error}
           />
         );
       })}
@@ -284,9 +300,20 @@ interface OptionProp {
   selectedSku: any;
   sku: any[];
   readOption: (params: { key: string | number; value: string }) => void;
+
+  selectedSection: string[];
+  error: boolean;
 }
 function Option(props: OptionProp) {
-  const { selection, selected, selectedSku, sku, readOption } = props;
+  const {
+    selection,
+    selected,
+    selectedSku,
+    sku,
+    readOption,
+    selectedSection,
+    error,
+  } = props;
 
   // all varients of sku
   const skuStructure = sku.map((skuData: any) => {
@@ -298,6 +325,15 @@ function Option(props: OptionProp) {
 
   return (
     <div className={styles.OptionMainContainer}>
+      {error ? (
+        !selectedSection.includes(selection.selection_name) ? (
+          <p>error</p>
+        ) : (
+          <></>
+        )
+      ) : (
+        <></>
+      )}
       <p className={styles.SelectionTitle}>{selection.selection_name}</p>
       {/* option */}
       <div className={styles.OptionContiner}>
