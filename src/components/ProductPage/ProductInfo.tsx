@@ -1,5 +1,5 @@
 "use client";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import styles from "../../styling/Product.module.css";
 import { MyContext } from "../ClientContext";
 import { CartContext } from "../Context/CartContext";
@@ -78,7 +78,8 @@ export default function ProductInfo(props: ProductInfoProps) {
   const context = useContext(MyContext);
   const cartContext = useContext(CartContext);
 
-  const [productSku, setProductSku] = useState<any>();
+  // selected SKU
+  const [productSku, setProductSku] = useState<string>();
 
   // get thumbnail
   const thumbnail = data.image_files.filter((images: any) => {
@@ -87,17 +88,26 @@ export default function ProductInfo(props: ProductInfoProps) {
 
   //turn selection into sku
   const decryptSku = (sku: any) => {
-    const proxySku: string[] = data.SKUs[0].product_sku.split("-").splice(0, 3);
+    // gets starting of sku (will be same with all sku (specific products))
+    const initialSku: string[] = data.SKUs[0].product_sku
+      .split("-")
+      .splice(0, 3);
+
+    // iterate through selected sku obj -> push each value into array
     if (Object.keys(sku).length) {
       for (let key in sku) {
-        proxySku.push(sku[key]);
+        initialSku.push(sku[key].value);
       }
     }
-    setProductSku(proxySku.join("-"));
+
+    // console.log(initialSku);
+    // join array to get structured sku
+    setProductSku(initialSku.join("-"));
   };
 
   // add item to selection
   const addToCart = async () => {
+    // compares and returns selected sku from db
     const selectedSKU = data.SKUs.filter((sku: any) => {
       return sku.product_sku === productSku;
     });
@@ -107,7 +117,6 @@ export default function ProductInfo(props: ProductInfoProps) {
       // quantity check ( make sure specific sku is "in-stock")
       if (selectedSKU[0].quanity) {
         // create instance of cart data (will be passed to cart component )
-        console.log(thumbnail);
         const productData = {
           id: data.id,
           name: data.name,
@@ -226,7 +235,6 @@ export function LINEBREAK(props: { marginTop?: number; marginBot?: number }) {
 }
 
 interface SelectionProps {
-  //   selection?: {}[];
   selection: SelectionType[];
   sku: SkuType[];
   readOption: (params: any) => void;
@@ -234,6 +242,9 @@ interface SelectionProps {
 function Selection(props: SelectionProps) {
   const { selection, sku, readOption } = props;
   const [selectionKey, setSelectionKey] = useState<any>(Object.create(null));
+  useEffect(() => {
+    console.log(selection);
+  }, []);
   return (
     <div className={styles.SelectionContainer}>
       {selection.map((select: any) => {
@@ -245,8 +256,20 @@ function Selection(props: SelectionProps) {
             selectedSku={selectionKey}
             sku={sku}
             readOption={(option: any) => {
-              setSelectionKey({ ...selectionKey, [option.key]: option.value });
-              readOption({ ...selectionKey, [option.key]: option.value });
+              setSelectionKey({
+                ...selectionKey,
+                [option.key]: {
+                  value: option.value,
+                  selection: select.selection_name,
+                },
+              });
+              readOption({
+                ...selectionKey,
+                [option.key]: {
+                  value: option.value,
+                  selection: select.selection_name,
+                },
+              });
             }}
           />
         );
@@ -257,13 +280,15 @@ function Selection(props: SelectionProps) {
 
 interface OptionProp {
   selection: SelectionType;
-  selected: string;
+  selected: { value: string; selection: string };
   selectedSku: any;
   sku: any[];
   readOption: (params: { key: string | number; value: string }) => void;
 }
 function Option(props: OptionProp) {
   const { selection, selected, selectedSku, sku, readOption } = props;
+
+  // all varients of sku
   const skuStructure = sku.map((skuData: any) => {
     const skuValues = skuData.product_sku.split("-");
 
@@ -278,6 +303,7 @@ function Option(props: OptionProp) {
       <div className={styles.OptionContiner}>
         {selection.product_option ? (
           selection.product_option.map((option: any) => {
+            // if option sku consist of varient sku, assign them that sku varient
             let assignSku: any[] = [];
 
             skuStructure.map((skuStructureArr: any) => {
@@ -286,9 +312,15 @@ function Option(props: OptionProp) {
               }
             });
 
+            // recreate selected sku with varient value -> allowing to see if product is in stock (ahead of time)
             let assSelectedSku: any[] = [];
             let isInStock = true;
-            let proxySelectedSku = { ...selectedSku };
+            let proxySelectedSku: any = {};
+            if (Object.keys(selectedSku).length) {
+              for (let key in selectedSku) {
+                proxySelectedSku[key] = selectedSku[key].value;
+              }
+            }
             proxySelectedSku[selection.selection_key!] = option.option_sku;
 
             if (Object.keys(proxySelectedSku).length) {
@@ -321,7 +353,7 @@ function Option(props: OptionProp) {
             return (
               <button
                 style={
-                  selected === option.option_sku
+                  selected && selected.value === option.option_sku
                     ? { border: "solid 2px rgb(125,125,125)" }
                     : {}
                 }
