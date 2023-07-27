@@ -84,7 +84,7 @@ export default function ProductInfo(props: ProductInfoProps) {
   const [productSkuSelection, setProductSkuSelection] = useState<any>([]);
   // selection error
   const [selectionError, setSelectionError] = useState(false);
-
+  const [errorStatement, setErrorStatement] = useState("");
   // get thumbnail
   const thumbnail = data.image_files.filter((images: any) => {
     return images.name === "thumbnail";
@@ -173,12 +173,12 @@ export default function ProductInfo(props: ProductInfoProps) {
         }
         context?.toggleCartOn();
       } else {
-        console.log("out of stock");
+        setSelectionError(true);
+        setErrorStatement("* Out of stock");
       }
     } else {
       setSelectionError(true);
-      console.log(productSku);
-      console.log("failed");
+      setErrorStatement("* Not all selected");
     }
   };
 
@@ -210,6 +210,10 @@ export default function ProductInfo(props: ProductInfoProps) {
       <button className={styles.AddToCartButton} onClick={addToCart}>
         add to cart
       </button>
+
+      {selectionError && (
+        <p className={styles.errorStatement}>{errorStatement}</p>
+      )}
       <LINEBREAK />
 
       {/* description (description, technical points) */}
@@ -325,16 +329,18 @@ function Option(props: OptionProp) {
 
   return (
     <div className={styles.OptionMainContainer}>
-      {error ? (
-        !selectedSection.includes(selection.selection_name) ? (
-          <p>error</p>
-        ) : (
-          <></>
-        )
-      ) : (
-        <></>
-      )}
-      <p className={styles.SelectionTitle}>{selection.selection_name}</p>
+      <p
+        className={styles.SelectionTitle}
+        style={
+          error
+            ? !selectedSection.includes(selection.selection_name)
+              ? { color: "red" }
+              : {}
+            : {}
+        }
+      >
+        {selection.selection_name}
+      </p>
       {/* option */}
       <div className={styles.OptionContiner}>
         {selection.product_option ? (
