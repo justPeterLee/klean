@@ -84,12 +84,16 @@ export default function ProductReview(props: ProductReviewProps) {
         )}
 
         <div className={styles.ActionReviewButton}>
-          <ShowMoreButton
-            productId={props.productId}
-            readShowReview={(newReview: any) => {
-              setShowMoreReview(newReview);
-            }}
-          />
+          {initalReview.length ? (
+            <ShowMoreButton
+              productId={props.productId}
+              readShowReview={(newReview: any) => {
+                setShowMoreReview(newReview);
+              }}
+            />
+          ) : (
+            <></>
+          )}
 
           <AddReviewButton productId={props.productId} />
         </div>
@@ -177,13 +181,13 @@ interface ShowMoreButtonProps {
 function ShowMoreButton({ productId, readShowReview }: ShowMoreButtonProps) {
   const [pageNumber, setPageNumber] = useState(2);
   const [loading, setLoading] = useState(false);
+  const [hide, setHide] = useState(false);
   const [showReview, setShowReview] = useState<any[]>([1, 2, 3, 4]);
 
   const sendShowReview = (newReview: any[]) => {
     setShowReview(newReview);
     setPageNumber(pageNumber + 1);
     setLoading(false);
-    console.log(newReview);
     readShowReview(newReview);
   };
   const fetchReviewPagination = async () => {
@@ -197,14 +201,21 @@ function ShowMoreButton({ productId, readShowReview }: ShowMoreButtonProps) {
     }).then(async (response) => {
       const newReviews = await response.json();
       sendShowReview(newReviews);
+      console.log(newReviews);
     });
   };
 
+  useEffect(() => {
+    if (showReview.length !== 4) {
+      setHide(true);
+    }
+  }, [showReview]);
   return (
     <button
       className={styles.ShowMoreButton}
       onClick={fetchReviewPagination}
       disabled={loading || showReview.length !== 4}
+      style={hide ? { visibility: "hidden" } : {}}
     >
       <p>show more</p>
 
