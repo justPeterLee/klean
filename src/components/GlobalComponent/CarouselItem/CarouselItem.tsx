@@ -81,6 +81,8 @@ export function StoreCarousel(props: StoreCarouselProps) {
       props.setData().then(() => {
         setLoading(false);
       });
+    } else {
+      setLoading(false);
     }
   }, [isVisible]);
 
