@@ -330,3 +330,9 @@ Review Action buttons
   width: 77px;
   height: 77px;
 }
+
+.errorStatement {
+  position: absolute;
+  font-size: 12px;
+  color: red;
+}

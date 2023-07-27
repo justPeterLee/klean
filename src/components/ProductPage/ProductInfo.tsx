@@ -207,13 +207,16 @@ export default function ProductInfo(props: ProductInfoProps) {
           }}
         />
       </div>
-      <button className={styles.AddToCartButton} onClick={addToCart}>
-        add to cart
-      </button>
 
-      {selectionError && (
-        <p className={styles.errorStatement}>{errorStatement}</p>
-      )}
+      <div>
+        <button className={styles.AddToCartButton} onClick={addToCart}>
+          add to cart
+        </button>
+
+        {selectionError && (
+          <p className={styles.errorStatement}>{errorStatement}</p>
+        )}
+      </div>
       <LINEBREAK />
 
       {/* description (description, technical points) */}
