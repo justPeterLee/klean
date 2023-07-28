@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useElementOnScreen from "@/hooks/useElementOnScreen";
 import Image from "next/image";
-import { LoadingShopItem } from "@/components/ShopPage/ShopComponents";
+import { BsArrowLeftShort, BsArrowRightShort } from "react-icons/bs";
 interface CaruselData {
   id: number;
   name: string;
@@ -94,10 +94,17 @@ export function StoreCarousel(props: StoreCarouselProps) {
     <div className={styles.CaruselContainer} ref={containerRef}>
       <button
         className={styles.CaruselButton}
-        style={{ left: "-5rem" }}
+        style={
+          clickPos <= minClick
+            ? { color: "rgb(200,200,200)", left: "-5rem" }
+            : { left: "-5rem" }
+        }
         onClick={moveLeft}
       >
-        {"<"}
+        <BsArrowLeftShort
+          size={23}
+          style={clickPos <= minClick ? { color: "rgb(200,200,200)" } : {}}
+        />
       </button>
 
       <div className={styles.CaruselDisplay}>
@@ -129,7 +136,10 @@ export function StoreCarousel(props: StoreCarouselProps) {
         style={{ right: "-5rem" }}
         onClick={moveRight}
       >
-        {">"}
+        <BsArrowRightShort
+          size={23}
+          style={clickPos >= maxClick ? { color: "rgb(200,200,200)" } : {}}
+        />
       </button>
     </div>
   );
