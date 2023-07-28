@@ -54,3 +54,12 @@
 .teamInfo {
   text-align: center;
 }
+
+.teamName {
+  transition: color linear 0.05s;
+}
+.teamName:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: rgb(150, 150, 150);
+}
