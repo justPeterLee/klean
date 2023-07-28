@@ -47,6 +47,7 @@ export function StoreCarousel(props: StoreCarouselProps) {
   const [transitionPos, setTransitionPos] = useState(0);
 
   const [loading, setLoading] = useState(true);
+  const [dataState, setDataState] = useState<any>([]);
 
   const transitionPerItem = 16.8;
   const minClick = 0;
@@ -78,14 +79,17 @@ export function StoreCarousel(props: StoreCarouselProps) {
 
   useEffect(() => {
     if (isVisible && props.setData) {
-      props.setData().then(() => {
-        setLoading(false);
-      });
-    } else {
-      setLoading(false);
+      props.setData();
     }
   }, [isVisible]);
 
+  useEffect(() => {
+    if (data.length) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [data]);
   return (
     <div className={styles.CaruselContainer} ref={containerRef}>
       <button
