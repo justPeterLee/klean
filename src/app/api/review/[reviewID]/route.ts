@@ -9,7 +9,6 @@ export async function POST(request: Request) {
     take: 4,
     skip: 3 * (reviewData.pageNumber - 1),
   });
-  console.log(reviews);
   return new NextResponse(JSON.stringify(reviews), {
     headers: { "content-type": "application/json" },
   });

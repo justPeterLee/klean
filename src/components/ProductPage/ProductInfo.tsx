@@ -263,9 +263,7 @@ interface SelectionProps {
 function Selection(props: SelectionProps) {
   const { selection, selectedSection, sku, error, readOption } = props;
   const [selectionKey, setSelectionKey] = useState<any>(Object.create(null));
-  useEffect(() => {
-    console.log(selection);
-  }, []);
+
   return (
     <div className={styles.SelectionContainer}>
       {selection.map((select: any) => {

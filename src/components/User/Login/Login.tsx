@@ -41,7 +41,6 @@ export default function Login() {
 
     if (!Object.values(proxyError).includes(false)) {
       try {
-        console.log("running");
         const result = await signIn("credentials", {
           redirect: false,
           email: email,

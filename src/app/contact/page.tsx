@@ -6,8 +6,6 @@ import { ContactForm, ContactDesc } from "@/components/ContactPage/ContactForm";
 
 export default function Contact() {
   const readEmailData = async (emailData: any) => {
-    console.log(emailData);
-
     await fetch("/api/contact/recieveEmail", {
       method: "POST",
       body: JSON.stringify(emailData),

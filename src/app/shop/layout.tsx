@@ -26,8 +26,6 @@ async function fetchMenuData() {
       },
     });
 
-  console.log(productCategory);
-
   let sortedCategory: any = { ["All Products"]: 0 };
 
   productCategory.map((item: ProductCategory) => {

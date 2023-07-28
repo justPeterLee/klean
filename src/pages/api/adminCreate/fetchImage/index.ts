@@ -4,7 +4,6 @@ import path from "path";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const imageDirectory = path.join(process.cwd(), "public", "uploads");
-  console.log(imageDirectory);
   // Read the contents of the image directory
   fs.readdir(imageDirectory, (err, files) => {
     if (err) {

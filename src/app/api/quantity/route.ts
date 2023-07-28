@@ -7,7 +7,6 @@ export async function GET(request: any) {
     .map((id: string) => parseInt(id));
 
   const quantity = await getQuantity(ids);
-  console.log(quantity);
   return new NextResponse(JSON.stringify(quantity), {
     headers: { "content-type": "application/json" },
   });

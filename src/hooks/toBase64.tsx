@@ -20,8 +20,6 @@ export const generateBlurDataURL = async (
   const ctx = canvas.getContext("2d");
   ctx!.filter = `blur(${blurAmount}px)`;
   ctx!.drawImage(img, 0, 0, w, h);
-  console.log(canvas.toDataURL());
-  console.log(canvas);
 
   return canvas.toDataURL();
 };

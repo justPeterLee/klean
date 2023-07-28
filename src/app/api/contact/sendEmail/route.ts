@@ -16,17 +16,6 @@ export async function POST(req: any) {
   const apiKey: any = process.env.SENDGRID_API_KEY;
   sgMail.setApiKey(apiKey);
 
-  // const createEmail = async (mailOptions: any) => {
-  //   try {
-  //     const info = await sgMail.send(mailOptions);
-  //     console.log("Message sent: %s");
-  //     return info;
-  //   } catch (error) {
-  //     console.error("Error sending email:", error);
-  //     throw error;
-  //   }
-  // };
-
   const msg = {
     to: `${process.env.CONTACT_INFO}`, // Change to your recipient
     from: `${emailData.email}`, // Change to your verified sender

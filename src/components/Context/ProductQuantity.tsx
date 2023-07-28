@@ -50,7 +50,6 @@ export default function QuantityProvider({
         );
 
         const quantityCart = { ids: proxyCart };
-        console.log(queryString.stringify(quantityCart));
         setUrl(`/api/quantity?${queryString.stringify(quantityCart)}`);
       }
     }

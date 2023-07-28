@@ -231,8 +231,6 @@ function ImageManipulationImage({ image }: { image: any }) {
     const distance = Math.sqrt(
       (newPoint.x - originPoint.x) ** 2 + (newPoint.y - originPoint.y) ** 2
     );
-    console.log(originPoint, newPoint);
-    console.log(distance);
     const newHeight = height + distance;
     const scale = newHeight / height;
     return scale;
@@ -274,8 +272,6 @@ function ImageManipulationImage({ image }: { image: any }) {
         setWidth(limiterRef.current!.getBoundingClientRect().width);
 
         setImageScale({ ...imageScale, transition: "none" });
-
-        // console.log(limiterRef.current?.getBoundingClientRect());
       }}
       onMouseUp={(e) => {
         if (scale) {
@@ -294,14 +290,12 @@ function ImageManipulationImage({ image }: { image: any }) {
             transform: `scale(${scaleRatio})`,
             transition: "transform linear 100ms",
           });
-          //   console.log(limiterRef.current?.getBoundingClientRect());
 
           const imageTrans = centerDiv(
             { x: right, y: top },
             { x: newX, y: newY },
             { x: left, y: bottom }
           );
-          console.log(imageTrans);
           setImageTranslate({
             transform: `translate(${imageTrans.x}px, ${imageTrans.y}px)`,
           });

@@ -64,15 +64,9 @@ router
       });
     });
 
-    console.log(productId);
-    console.log(productImageType);
-    console.log(image);
     return res.status(200).json({ message: "Files uploaded successfully." });
   })
   .get(async (req: any, res: any) => {
-    console.log("returning");
-    console.log(req.query.image);
-
     const getObjectParams = {
       Bucket: bucketName,
       Key: "05cf089cea4d58599b11ccb9fc0d4708de8f85d8f6bc80f69ff524248c6869d3",
@@ -80,8 +74,6 @@ router
 
     const command = new GetObjectCommand(getObjectParams);
     const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
-
-    console.log("return image url: ", url);
 
     return res.send(url);
   });

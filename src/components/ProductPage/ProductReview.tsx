@@ -24,7 +24,6 @@ export default function ProductReview(props: ProductReviewProps) {
       headers: { "content-type": "application/json" },
     }).then(async (response) => {
       const data = await response.json();
-      console.log(data);
       setInitalReview(data);
       setLoading(false);
     });
@@ -201,7 +200,6 @@ function ShowMoreButton({ productId, readShowReview }: ShowMoreButtonProps) {
     }).then(async (response) => {
       const newReviews = await response.json();
       sendShowReview(newReviews);
-      console.log(newReviews);
     });
   };
 

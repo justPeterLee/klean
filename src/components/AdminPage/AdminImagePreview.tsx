@@ -12,10 +12,8 @@ export default function AdminImagePreview({ images }: { images: Blob[] }) {
 
   useEffect(() => {
     if (images) {
-      // console.log("new image: ", images);
       firstImage = images[0];
       const updatedArr = images.map((image: Blob) => image);
-      // console.log(updatedArr);
       setImageArr(updatedArr);
     }
   }, [images]);

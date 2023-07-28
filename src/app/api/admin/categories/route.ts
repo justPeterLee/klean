@@ -4,7 +4,6 @@ export async function GET() {
   //   const request = req;
   const categories = await prisma.category.findMany();
 
-  console.log(categories);
   return new NextResponse(JSON.stringify(categories), {
     headers: { "content-type": "application/json" },
   });

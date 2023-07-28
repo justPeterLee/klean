@@ -22,8 +22,6 @@ export const POST = async (req: any) => {
       subject: "Contact Form Submission",
       text: "test email",
     });
-
-    console.log("Email sent successfully!");
   } catch (error) {
     console.log("Error occurred while sending email: " + error);
   }

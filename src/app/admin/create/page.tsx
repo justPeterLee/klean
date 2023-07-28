@@ -43,13 +43,11 @@ export default function AdminCreate() {
       images["thumbnail"] &&
       skuArr.length
     ) {
-      console.log(images["thumbnail"].images.length);
       // image validation (not empty)
       if (
         images["product-image"].images.length &&
         images["thumbnail"].images.length
       ) {
-        console.log("worssking");
         // ----- product insertion -----
 
         // selection order (for sku encryption)
@@ -67,7 +65,6 @@ export default function AdminCreate() {
           selection: selectionKey,
           sku: skuArr,
         };
-        console.log("asdf", category);
 
         // request to insert data into database
         const productResponse = await fetch("/api/createNewProduct", {
@@ -133,7 +130,6 @@ export default function AdminCreate() {
             setPrice(params);
           }}
           readCategory={(params: string) => {
-            console.log("cat ", params);
             setCategory(params);
           }}
           readDescription={(params: string) => {

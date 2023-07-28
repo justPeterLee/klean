@@ -74,7 +74,6 @@ export default function FavoriteContextProvider({
         });
 
         const favoriteItems = await res.json();
-        console.log(favoriteItems);
         setFavorite(favoriteItems);
         setError(false);
       } catch (err) {
@@ -225,7 +224,6 @@ export default function FavoriteContextProvider({
 
   useEffect(() => {
     fetchFavorite();
-    // console.log(session)
   }, [session]);
   return (
     <FavoriteContext.Provider

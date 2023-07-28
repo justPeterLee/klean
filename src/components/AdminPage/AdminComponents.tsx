@@ -598,7 +598,6 @@ function SelectionDisplay({
     } else {
       return key;
     }
-    console.log("key", key);
   };
   return (
     <span className={styles.selectionItemContainer}>
