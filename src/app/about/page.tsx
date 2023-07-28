@@ -24,13 +24,6 @@ const comments = [
   },
 ];
 
-const team = [
-  { image: "", name: "Peter Lee", role: "CEO" },
-  { image: "", name: "Name name", role: "Developer" },
-  { image: "", name: "Name name", role: "Developer" },
-  { image: "", name: "Name name", role: "Developer" },
-];
-
 async function fetchTeam() {
   const teamData = process.env.GITHUB_TOKEN;
   try {
@@ -62,7 +55,6 @@ async function fetchTeam() {
   } catch (error) {
     console.log(error);
   }
-  // const res = await fetch()
 }
 
 export default async function About() {
