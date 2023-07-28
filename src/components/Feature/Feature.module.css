@@ -22,15 +22,16 @@
   bottom: 2.5rem;
   right: 3rem;
 
-  background-color: rgba(38, 104, 103, 0.8);
   color: white;
 
-  transition: background-color ease 0.07s;
+  transition: background-color ease 0.2s;
+
+  background-color: rgba(50, 50, 50, 0.1);
 }
 
 .viewProductButton:hover {
   cursor: pointer;
-  background-color: rgba(18, 84, 83);
+  background-color: rgba(50, 50, 50, 0.4);
 }
 
 /* ---------- store feature ------------ */
