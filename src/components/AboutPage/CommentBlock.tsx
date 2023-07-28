@@ -46,7 +46,7 @@ export function TeamHeadShot(props: TeamHeadShot) {
         >
           {name}
         </p>
-        <p className={styles.teamRole}>{role}</p>
+        <p className={styles.teamRole}>({role})</p>
       </div>
     </div>
   );
