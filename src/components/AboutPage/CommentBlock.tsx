@@ -29,7 +29,14 @@ export function TeamHeadShot(props: TeamHeadShot) {
   const { image, name, role, link } = props;
   return (
     <div className={styles.headShotContainer}>
-      <img className={styles.teamImage} src={image} alt={name} />
+      <img
+        className={styles.teamImage}
+        src={image}
+        alt={name}
+        onClick={() => {
+          window.open(link, "_blank");
+        }}
+      />
       <div className={styles.teamInfo}>
         <p
           className={styles.teamName}
