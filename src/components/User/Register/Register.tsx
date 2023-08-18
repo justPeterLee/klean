@@ -42,6 +42,7 @@ export default function Register() {
     e.preventDefault();
     setPassError(true);
     setEmailError(true);
+    let proxyPassError = true;
 
     const proxyValues: any = { first, last, email, password };
     let proxyError: any = error;
@@ -67,10 +68,15 @@ export default function Register() {
       ) {
       } else {
         setPassError(false);
+        proxyPassError = false;
       }
     }
 
-    if (!Object.values(proxyError).includes(false) && emailError && passError) {
+    if (
+      !Object.values(proxyError).includes(false) &&
+      emailError &&
+      proxyPassError
+    ) {
       const response = await fetch("/api/auth/signup", {
         method: "POST",
         body: JSON.stringify({ first, last, email, password }),
